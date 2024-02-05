@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
+//import React from 'react';
+//import logo from './logo.svg';
+import { Link } from 'react-router-dom';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="w-full h-full flex flex-col items-center justify-center">
+			<div className='w-96 px-10 py-16 border border-slate-400 rounded-lg shadow-lg flex flex-col items-start justify-start'>
+				<div className='text-3xl mb-8 font-bold'>Shuttlers</div>
+				<Link to="/signup" className='text-md mt-4 cursor-pointer'>Sign up</Link>
+				<Link to="/signin" className='text-md mt-4 cursor-pointer'>Sign in</Link>
+				<Link to="/user" className='text-md mt-4 cursor-pointer'>User dashboard</Link>
+			</div>
+		</div>
+	);
 }
 
 export default App;
