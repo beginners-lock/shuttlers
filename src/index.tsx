@@ -11,6 +11,7 @@ import { ErrorPage } from './Error';
 import Signup from './pages/Signup';
 import User from './pages/User';
 import Signin from './pages/Signin';
+import Forgotpassword from './pages/Forgotpassword';
 
 const router = createBrowserRouter([
 	{
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
 	{
 		path: "user",
 		element: <User/>
+	},
+	{
+		path: "forgotpassword",
+		element: <Forgotpassword/>
 	}
 ]);
 

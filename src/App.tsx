@@ -11,6 +11,7 @@ function App() {
 				<Link to="/signup" className='text-md mt-4 cursor-pointer'>Sign up</Link>
 				<Link to="/signin" className='text-md mt-4 cursor-pointer'>Sign in</Link>
 				<Link to="/user" className='text-md mt-4 cursor-pointer'>User dashboard</Link>
+				<Link to="/forgotpassword" className='text-md mt-4 cursor-pointer'>Forgot password</Link>
 			</div>
 		</div>
 	);

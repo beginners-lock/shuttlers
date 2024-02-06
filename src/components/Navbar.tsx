@@ -24,6 +24,8 @@ const Navbar = () => {
 			</div>
 
 			<img alt="settings" src="settings.png" style={{display:url.slice(url.lastIndexOf('/')+1)==='user'?'flex':'none'}}/>
+
+			<img alt="burger" src="burger.png"  style={{display:url.slice(url.lastIndexOf('/')+1)==='forgotpassword'?'flex':'none'}}/>
 		</div>
 	)
 }
