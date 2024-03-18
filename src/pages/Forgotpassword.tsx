@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import { useRef, useState} from 'react';
 import Navbar from '../components/Navbar'
 import { NEUTRAL500, NEUTRAL700, PRIMARY700, PRIMARY800, SECONDARY500, LIGHTPURPLE } from '../theme/colors'
 import { Link } from 'react-router-dom';

@@ -1,9 +1,9 @@
 import { MODALBG, PRIMARY700, NEUTRAL400, NEUTRAL300, MODALBODYTEXT, SECONDARY500, LIGHTPURPLE, NEUTRAL500, NEUTRAL800 } from "../theme/colors";
-import { FORGOTPASSWORDMODAL, CHANGEPASSWORDMODAL, CURRENTLOCATIONMODAL, DESTINATIONMODAL, PAYMENTMETHODMODAL, DEPARTMENTMODAL, HOSTELMODAL, RIDETYPEMODAL, RECENTRIDESMODAL, LOGOUTMODAL, ARRIVINGMODAL } from "../theme/messages";
-import { ModalObjType, ModalPaymentListType } from "../theme/messages";
+//import { FORGOTPASSWORDMODAL, CHANGEPASSWORDMODAL, CURRENTLOCATIONMODAL, DESTINATIONMODAL, PAYMENTMETHODMODAL, DEPARTMENTMODAL, HOSTELMODAL, RIDETYPEMODAL, RECENTRIDESMODAL, LOGOUTMODAL, ARRIVINGMODAL } from "../theme/messages";
+import { ModalObjType } from "../theme/messages";
 
 
-const isModalPaymentListType = (x: any): x is ModalPaymentListType => x.text && x.img;
+//const isModalPaymentListType = (x: any): x is ModalPaymentListType => x.text && x.img;
 
 type ModalProps = {
     modalobj: ModalObjType

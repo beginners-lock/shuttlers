@@ -1,4 +1,4 @@
-import { PRIMARY800, PRIMARY700, NEUTRAL700 } from "../theme/colors";
+import { /*PRIMARY800, */PRIMARY700, NEUTRAL700 } from "../theme/colors";
 import Modal from "../components/Modal";
 import { CHANGEPASSWORDMODAL } from "../theme/messages";
 
@@ -6,7 +6,7 @@ export default function Changepassword(){
     return(
         <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4 overflow-hidden">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 text-xl font-bold"  style={{color:PRIMARY700}}>
-                <img src="back.png"/>
+                <img alt="backimg" src="back.png"/>
                 Change Password
                 <div></div>
             </div>

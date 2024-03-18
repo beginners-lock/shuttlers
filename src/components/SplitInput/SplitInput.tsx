@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useEffect } from 'react';
+import React, { useMemo /*, useRef, useState*/, useEffect } from 'react';
 import './SplitInput.css';
 import { NEUTRAL500 } from '../../theme/colors';
 
@@ -45,7 +45,7 @@ const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen}: SplitI
                 </div>
             ))}
         </div>
-    , [otp]);
+    , [onPress, otp, otplen]);
 
     return (
         <div className='w-full'>
