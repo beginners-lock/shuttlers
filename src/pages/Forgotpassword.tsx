@@ -1,8 +1,11 @@
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
-import { NEUTRAL400, NEUTRAL500, NEUTRAL700, PRIMARY700, PRIMARY800, SECONDARY500 } from '../theme/colors'
+import { NEUTRAL500, NEUTRAL700, PRIMARY700, PRIMARY800, SECONDARY500, LIGHTPURPLE } from '../theme/colors'
 import { Link } from 'react-router-dom';
 import SplitInput from '../components/SplitInput/SplitInput';
+import Modal from '../components/Modal';
+import { FORGOTPASSWORDMODAL } from '../theme/messages';
+
 
 const Forgotpassword = () => {
     const [otp, setOtp] = useState<string>('');
@@ -14,11 +17,11 @@ const Forgotpassword = () => {
     }
 
     return (
-        <div className="font-poppins w-full box-border flex flex-col items-center justify-start p-4">
+        <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4">
             <Navbar/>
             <div className="mt-20 w-full box-border flex flex-row items-start justify-start overflow-x-scroll">
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start'>
-                    <img className='border-4 p-0.5 rounded-md' alt="fingerprint" src="fingerprint.png" style={{borderColor: NEUTRAL400}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="fingerprint" src="fingerprint.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Forgot password?
                     </div>
@@ -44,7 +47,7 @@ const Forgotpassword = () => {
                 </div>
 
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start'>
-                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="mail.png" style={{borderColor: NEUTRAL400}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Password Reset
                     </div>
@@ -79,7 +82,7 @@ const Forgotpassword = () => {
                 </div>
 
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start'>
-                    <img className='border-4 p-0.5 rounded-md' alt="key" src="key.png" style={{borderColor: NEUTRAL400}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="key" src="key.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Set New Password
                     </div>
@@ -109,6 +112,9 @@ const Forgotpassword = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+                modalobj={FORGOTPASSWORDMODAL}
+            />
         </div>
     )
 }

@@ -10,7 +10,7 @@ const Navbar = () => {
 	}, [url]);
 
 	return (
-		<div className="w-full flex flex-row items-center justify-between font-poppins">
+		<div className="w-full flex flex-row items-center justify-between font-poppins mt-4">
 			<img alt="userimage" src="userimg.png" style={{display:url.slice(url.lastIndexOf('/')+1)==='user'?'flex':'none'}}/>
 			
 			<img style={{width:'45px', height:'45px'}} alt="logo" src='logo.png'/>

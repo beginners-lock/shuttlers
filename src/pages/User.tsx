@@ -1,10 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import { NEUTRAL100, NEUTRAL300, NEUTRAL400, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
+import { ARRIVINGMODAL, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL } from '../theme/messages';
+import Modal from '../components/Modal';
 
 const User = () => {
 	return (
-		<div className="font-poppins w-full box-border flex flex-col items-center justify-start p-4">
+		<div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4">
 			<Navbar/>
 			<div className="mt-9 w-full flex flex-col items-start justify-start">
 				<div className='font-bold' style={{color: PRIMARY900}}>Welcome Back,</div>
@@ -65,6 +67,9 @@ const User = () => {
 					</div>
 				</div>
 			</div>
+			<Modal
+				modalobj={ARRIVINGMODAL}
+			/>
 		</div>
 	);
 }

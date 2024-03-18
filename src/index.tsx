@@ -12,6 +12,8 @@ import Signup from './pages/Signup';
 import User from './pages/User';
 import Signin from './pages/Signin';
 import Forgotpassword from './pages/Forgotpassword';
+import Changepassword from './pages/Changepassword';
+import Settings from './pages/Settings';
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
 	{
 		path: "forgotpassword",
 		element: <Forgotpassword/>
+	},
+	{
+		path: "changepassword",
+		element: <Changepassword/>
+	},
+	{
+		path: "settings",
+		element: <Settings/>
 	}
 ]);
 
