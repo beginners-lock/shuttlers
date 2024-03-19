@@ -1,6 +1,6 @@
 import { ERROR700, NEUTRAL600, NEUTRAL700, NEUTRAL800, PRIMARY700, PRIMARY900 } from "../theme/colors";
 import Modal from "../components/Modal";
-import { LOGOUTMODAL } from "../theme/messages";
+import { LOGOUTMODAL } from "../constants/modalvariables";
 
 export default function Settings(){
     return(

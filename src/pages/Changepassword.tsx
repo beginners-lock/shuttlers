@@ -1,6 +1,6 @@
 import { /*PRIMARY800, */PRIMARY700, NEUTRAL700 } from "../theme/colors";
 import Modal from "../components/Modal";
-import { CHANGEPASSWORDMODAL } from "../theme/messages";
+import { CHANGEPASSWORDMODAL } from "../constants/modalvariables";
 
 export default function Changepassword(){
     return(

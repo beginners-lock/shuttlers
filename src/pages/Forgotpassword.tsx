@@ -4,7 +4,7 @@ import { NEUTRAL500, NEUTRAL700, PRIMARY700, PRIMARY800, SECONDARY500, LIGHTPURP
 import { Link } from 'react-router-dom';
 import SplitInput from '../components/SplitInput/SplitInput';
 import Modal from '../components/Modal';
-import { FORGOTPASSWORDMODAL } from '../theme/messages';
+import { FORGOTPASSWORDMODAL } from '../constants/modalvariables';
 
 
 const Forgotpassword = () => {
