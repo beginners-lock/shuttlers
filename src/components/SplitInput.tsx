@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect } from 'react';
+import { NEUTRAL500 } from '../theme/colors';
 
 /*export enum KeyBoardTypes {
     default = 'default',
@@ -16,7 +17,7 @@ type SplitInputProps = {
     setOtp: React.Dispatch<React.SetStateAction<string>>,
     onPress: ()=>void
     confirmotp: ()=>void,
-    otplen: number,
+    otplen: number
 }
 
 const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen}: SplitInputProps) => {
@@ -31,22 +32,22 @@ const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen}: SplitI
     }
 
     const otpContent = useMemo(() =>
-        <div className='mt-2 flex flex-row w-full items-center justify-between w-[320px]'>
+        <div className='mt-2 flex flex-row w-full items-center justify-between'>
             {Array.from({ length: otplen }).map((_, i) => (
                 <div
                     key={'si'+i}
-                    className='flex flex-row items-center justify-center font-bold border w-10 h-14 text-[#1e40af]'
+                    className='flex flex-row items-center justify-center font-bold border rounded-md w-1/5 h-28'
                     onClick={onPress}
-                    style={{borderColor:'rgba(0,0,0,0)', borderBottom:otp.length===i ? '3px #1d4ed8 solid' : otp.length>i ? '3px #1e40af solid' : '3px grey solid', fontSize:'30px'}}
+                    style={{borderColor: NEUTRAL500, fontSize:'50px'}}
                 >
                     {otp[i]}
                 </div>
             ))}
         </div>
-    , [otp]);
+    , [onPress, otp, otplen]);
 
     return (
-        <div className='w-full flex flex-row items-center justify-center'>
+        <div className='w-full'>
             <input id="otpinput" type='number' maxLength={otplen} ref={inputRef}
                 style={styles.input} onChange={(e) =>{ if(e.target.value.length <= otplen){ setOtp(e.target.value); } }}
                 value={otp}

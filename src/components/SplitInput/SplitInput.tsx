@@ -1,5 +1,4 @@
-import React, { useMemo /*, useRef, useState*/, useEffect } from 'react';
-import './SplitInput.css';
+import React, { useMemo, useEffect } from 'react';
 import { NEUTRAL500 } from '../../theme/colors';
 
 /*export enum KeyBoardTypes {

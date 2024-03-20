@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { ERROR700, NEUTRAL600, NEUTRAL700, NEUTRAL800, PRIMARY700, PRIMARY900 } from "../theme/colors";
 import Modal from "../components/Modal";
 import { LOGOUTMODAL } from "../constants/modalvariables";
 
 export default function Settings(){
+    const [showmodal, setShowmodal] = useState(false);
+
     return(
         <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4 overflow-hidden">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 text-xl font-bold"  style={{color:PRIMARY700}}>
@@ -72,6 +75,7 @@ export default function Settings(){
             </div>
             
             <Modal
+                showmodal={showmodal}
                 modalobj={LOGOUTMODAL}
             />
         </div>

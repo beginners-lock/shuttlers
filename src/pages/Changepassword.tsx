@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { /*PRIMARY800, */PRIMARY700, NEUTRAL700 } from "../theme/colors";
 import Modal from "../components/Modal";
 import { CHANGEPASSWORDMODAL } from "../constants/modalvariables";
 
 export default function Changepassword(){
+    const [showmodal, setShowmodal] = useState(false);
+
     return(
         <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4 overflow-hidden">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 text-xl font-bold"  style={{color:PRIMARY700}}>
@@ -33,6 +36,7 @@ export default function Changepassword(){
             </div>
 
             <Modal
+                showmodal={showmodal}
                 modalobj={CHANGEPASSWORDMODAL}
             />
         </div>

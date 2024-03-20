@@ -6,12 +6,13 @@ import { ModalObjType } from "../constants/modalvariables";
 //const isModalPaymentListType = (x: any): x is ModalPaymentListType => x.text && x.img;
 
 type ModalProps = {
-    modalobj: ModalObjType
+    modalobj: ModalObjType,
+    showmodal: boolean
 }
 
-export default function Modal({ modalobj }: ModalProps ){
+export default function Modal({ modalobj, showmodal }: ModalProps ){
     return(
-        <div className="absolute z-0 w-full h-[100%] flex flex-row items-center justify-center" style={{backgroundColor: MODALBG}}>
+        <div className="absolute z-0 w-full h-[100%] flex-row items-center justify-center" style={{backgroundColor: MODALBG, display: showmodal ? 'flex' : 'none'}}>
             <div className="bg-white w-[450px] box-border rounded-xl p-8">
                 <div className="w-full h-full flex flex-col items-center justify-start box-border">
                     <div className="w-full flex flex-row items-center justify-between" style={{display: !modalobj.goback && !modalobj.close ? "none" : "flex"}}>

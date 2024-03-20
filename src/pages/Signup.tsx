@@ -178,7 +178,6 @@ const Signup = () => {
 		setOtpwarning('');
 		
 		if(otpinput === otp){
-			console.log('in bro');
 			setOtploading(true);
 			axios.post(URL+'/createaccount', {fname: firstname, lname: lastname, email: email, matric: matricnumber, password: password}).then(response => {
 				if(response.status===200){
@@ -187,7 +186,6 @@ const Signup = () => {
 						setOtpwarning(PROCESSING_ERROR); setOtploading(false);
 					}else{
 						//State store user details in session
-						console.log(data.user);
 						sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
 						window.location.href = '/user';
 						setOtploading(false);
@@ -204,8 +202,8 @@ const Signup = () => {
 	return (
 		<div className="font-poppins w-full box-border flex flex-col items-center justify-start p-4">
 			<Navbar/>
-			<div id="createslider" className="w-full box-border mt-24 flex flex-row items-center justify-start overflow-x-hidden scroll-smooth">
-				<div className="min-w-full max-w-full box-border px-24">
+			<div id="createslider" className="w-full box-border mt-24 flex flex-row items-center justify-start overflow-x-hidden scroll-smooth snap-x snap-mandatory">
+				<div className="min-w-full max-w-full box-border px-24 snap-center">
 					<div className='w-full flex flex-col justify-start items-center'>
 						<div className='flex flex-row items-center justify-center px-4 py-1.5 text-2xl font-bold rounded-full' style={{color: PRIMARY800, backgroundColor: PRIMARY300}}>
 							Welcome to Shuttlers! 
@@ -296,7 +294,7 @@ const Signup = () => {
 				</div>
 				
 				
-				<div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start'>
+				<div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start snap-center'>
                     <img className='border-4 p-0.5 rounded-md' alt="mail" src="mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Email Confirmation
@@ -311,7 +309,7 @@ const Signup = () => {
                             otp={otpinput}
                             onPress={onPress}
                             setOtp={setOtpinput}
-                            confirmotp={confirmotp}
+                            confirmotp={()=>{ if(!otploading){ finish(); } }}
                             otplen={4}
                         />            
 
@@ -328,7 +326,7 @@ const Signup = () => {
 
                         <div className='mt-6 flex flex-row items-center justify-center'>
                             Did't receive an email? 
-                            <div className='ml-2 font-bold' style={{color:SECONDARY500}} onClick={()=>{setOtploading(true); sendotp();}}>Click to resend</div>
+                            <div className='ml-2 font-bold' style={{color:SECONDARY500}} onClick={()=>{ if(!otploading){ setOtploading(true); sendotp(); } }}>Click to resend</div>
                         </div>
 
                         <div className='mt-8 flex flex-row items-center justify-center' onClick={()=>{goback();}}>
