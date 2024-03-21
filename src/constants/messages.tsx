@@ -7,4 +7,4 @@ export const PROCESSING_ERROR = "An error occured while processing, please try a
 export const SIMILAR_USER = "A user already exists with this email or matric number";
 export const INVALID_OTP_ERROR = "Invalid OTP";
 export const NO_EMAIL_EXISTS = "No user exists with this email";
-export const INVALID_PASSWORD = "Invalid password";
+export const INVALID_PASSWORD = "Wrong password";

@@ -52,8 +52,8 @@ export const FORGOTPASSWORDMODAL: ModalObjType = {
     type: "forgotpasswordmodal",
     title: "Successful!",
     body: "Your Password has been reset successfully!",
-    close: true, goback: false,
-    button: false, buttontext: "",
+    close: false, goback: false,
+    button: true, buttontext: "Home",
     dropdown: false, dropdowntext: "",
     list: false
 }
@@ -62,8 +62,8 @@ export const CHANGEPASSWORDMODAL: ModalObjType = {
     type: "changepasswordmodal",
     title: "Successful!",
     body: "Your Password has been changed successfully!",
-    close: true, goback: false,
-    button: false, buttontext: "",
+    close: false, goback: false,
+    button: true, buttontext: "Home",
     dropdown: false, dropdowntext: "",
     list: false
 }

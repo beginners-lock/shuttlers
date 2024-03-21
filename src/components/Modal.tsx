@@ -10,7 +10,13 @@ type ModalProps = {
     showmodal: boolean
 }
 
-export default function Modal({ modalobj, showmodal }: ModalProps ){
+export default function Modal({ modalobj, showmodal }: ModalProps ){    
+    const buttonClick1 = () => {
+        if(modalobj.type==='changepasswordmodal' || modalobj.type==="forgotpasswordmodal"){
+            window.location.href = '/user';
+        }
+    }
+
     return(
         <div className="absolute z-0 w-full h-[100%] flex-row items-center justify-center" style={{backgroundColor: MODALBG, display: showmodal ? 'flex' : 'none'}}>
             <div className="bg-white w-[450px] box-border rounded-xl p-8">
@@ -140,7 +146,7 @@ export default function Modal({ modalobj, showmodal }: ModalProps ){
                                     <button className="w-[45%] font-md rounded-full p-2 border" style={{color: NEUTRAL400, borderColor: NEUTRAL400}}>{modalobj.buttontext[0]}</button>
                                     <button className="w-[45%] text-white font-md rounded-full p-2" style={{backgroundColor: PRIMARY700}}>{modalobj.buttontext[1]}</button>
                                 </div>
-                            :   <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor: PRIMARY700}}>{modalobj.buttontext}</button>
+                            :   <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor: PRIMARY700}} onClick={()=>{ buttonClick1(); }}>{modalobj.buttontext}</button>
                         : ''    
                     }
                 </div>
