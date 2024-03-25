@@ -1,13 +1,12 @@
 //import React from 'react';
 //import logo from './logo.svg';
-import { redirect } from 'react-router-dom';
 import './App.css';
 import { PRIMARY700 } from './theme/colors';
 import { useEffect } from 'react';
 
 function App() {
 	useEffect(()=>{
-		const interval = setTimeout(()=>{
+		setTimeout(()=>{
 			let user = sessionStorage.getItem('shuttlersuser');
 			console.log(user);
 			if(user){

@@ -17,7 +17,6 @@ const Signup = () => {
 	const [lastname, setLastname] = useState('');
 	const [matricnumber, setMatricnumber] = useState('');
 	const [password, setPassword] = useState('');
-	const [password2, setPassword2] = useState('');
 	const [passvisible, setPassvisible] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [otploading, setOtploading] = useState(false);
@@ -35,10 +34,6 @@ const Signup = () => {
         inputRef.current?.focus(); 
     }
 
-	const confirmotp = () => {
-
-	}
-
 	const resetwarnings = () => {
 		setFnamew(''); setLnamew(''); setMatricw(''); setEmailw(''); setPasswordw('');
 	}
@@ -55,7 +50,7 @@ const Signup = () => {
 		fninput.value = ''; lninput.value = ''; passinput.value = ''; pass2input.value = '';
 		matricinput.value = ''; emailinput.value = '';
 
-		setFirstname(''); setLastname(''); setPassword(''); setPassword2('');
+		setFirstname(''); setLastname(''); setPassword('');
 		setMatricnumber(''); setEmail('');
 	}
 
@@ -121,7 +116,7 @@ const Signup = () => {
 		//If no error was recorded proceed to signup
 		if(!error){
 			setLoading(true);
-			setFirstname(fname); setLastname(lname); setPassword2(pass2); setEmail(email); setMatricnumber(matric);
+			setFirstname(fname); setLastname(lname); setEmail(email); setMatricnumber(matric);
 
 			axios.post(URL+'/userdetailsexistencecheck', {email: email, matric: matric}).then(response => {
 				if(response.status===200){
@@ -290,6 +285,7 @@ const Signup = () => {
 								borderTopColor={PRIMARY700}
 							/>
 						</button>
+						<div className='w-full text-center text-lg mt-3 h-6' style={{color:ERROR700}}>{processwarning}</div>
 					</div>
 				</div>
 				

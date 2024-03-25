@@ -9,9 +9,7 @@ import axios from "axios";
 
 export default function Changepassword(){
     const [showmodal, setShowmodal] = useState(false);
-    const [oldpass, setOldpass] = useState('');
     const [password, setPassword] = useState('');
-    const [pass2, setPass2] = useState('');
     const [oldpassw, setOldpassw] = useState('');
     const [pass2w, setPass2w] = useState('');
     const [passvisible, setPassvisible] = useState(false);

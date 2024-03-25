@@ -1,11 +1,12 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import Navbar from '../components/Navbar'
 import { NEUTRAL100, NEUTRAL300, NEUTRAL400, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
 import { ARRIVINGMODAL/*, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL*/ } from '../constants/modalvariables';
 import Modal from '../components/Modal';
 
 const User = () => {
-	const [showmodal, setShowmodal] = useState(false);
+	const showmodal = false;
+	//const [showmodal, setShowmodal] = useState(false);
 
 	return (
 		<div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4">
