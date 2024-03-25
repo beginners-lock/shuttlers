@@ -7,14 +7,33 @@ import { ModalObjType } from "../constants/modalvariables";
 
 type ModalProps = {
     modalobj: ModalObjType,
-    showmodal: boolean
+    showmodal: boolean,
+    hidemodal?: ()=>void
 }
 
-export default function Modal({ modalobj, showmodal }: ModalProps ){    
+export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){    
     const buttonClick1 = () => {
         if(modalobj.type==='changepasswordmodal' || modalobj.type==="forgotpasswordmodal"){
             window.location.href = '/user';
         }
+    }
+
+    const buttonClick2 = (button: number) => {
+        //For the first button out of the 2....left button
+        if(button===0 && modalobj.buttontext[0]==='Cancel' && hidemodal){
+            hidemodal(); 
+        }
+
+        
+        //For the first button out of the 2....right button
+        if(button===1 && modalobj.buttontext[1]==='Logout' && hidemodal){ 
+            hidemodal(); 
+            sessionStorage.removeItem('shuttlersuser');
+            window.location.href = '/signin';
+        }
+
+
+
     }
 
     return(
@@ -143,8 +162,8 @@ export default function Modal({ modalobj, showmodal }: ModalProps ){
                         modalobj.button?
                             Array.isArray(modalobj.buttontext) ?    
                                 <div className="mt-6 flex flex-row items-center justify-between w-[80%] box-border">
-                                    <button className="w-[45%] font-md rounded-full p-2 border" style={{color: NEUTRAL400, borderColor: NEUTRAL400}}>{modalobj.buttontext[0]}</button>
-                                    <button className="w-[45%] text-white font-md rounded-full p-2" style={{backgroundColor: PRIMARY700}}>{modalobj.buttontext[1]}</button>
+                                    <button className="w-[45%] font-md rounded-full p-2 border" style={{color: NEUTRAL400, borderColor: NEUTRAL400}} onClick={()=>{ buttonClick2(0); }}>{modalobj.buttontext[0]}</button>
+                                    <button className="w-[45%] text-white font-md rounded-full p-2" style={{backgroundColor: PRIMARY700}}  onClick={()=>{ if(modalobj.buttontext[0]==='Cancel'){ buttonClick2(1); } }}>{modalobj.buttontext[1]}</button>
                                 </div>
                             :   <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor: PRIMARY700}} onClick={()=>{ buttonClick1(); }}>{modalobj.buttontext}</button>
                         : ''    

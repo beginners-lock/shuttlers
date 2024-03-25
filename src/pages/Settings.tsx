@@ -1,16 +1,15 @@
-//import { useState } from "react";
+import { useState } from "react";
 import { ERROR700, NEUTRAL600, NEUTRAL700, NEUTRAL800, PRIMARY700, PRIMARY900 } from "../theme/colors";
 import Modal from "../components/Modal";
 import { LOGOUTMODAL } from "../constants/modalvariables";
 
 export default function Settings(){
-    const showmodal = false;
-    //const [showmodal, setShowmodal] = useState(false);
+    const [showmodal, setShowmodal] = useState(false);
 
     return(
         <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4 overflow-hidden">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 text-xl font-bold"  style={{color:PRIMARY700}}>
-                <img alt="backimg" src="back.png"/>
+                <img alt="backimg" src="back.png" onClick={()=>{ window.location.href = '/user'; }}/>
                 Profile Settings
                 <div></div>
             </div>
@@ -64,7 +63,7 @@ export default function Settings(){
             </div>
 
             <div className="w-full mt-10 p-4 box-border text-lg font-semibold" style={{color:ERROR700}}>
-                <div className="w-full flex flex-row items-center justify-start box-border py-5">
+                <div className="w-full flex flex-row items-center justify-start box-border py-5" onClick={()=>{ setShowmodal(true); }}>
                     <img className="mr-3" alt="logout" src="logout.png"/>
                     Log Out
                 </div>
@@ -78,6 +77,7 @@ export default function Settings(){
             <Modal
                 showmodal={showmodal}
                 modalobj={LOGOUTMODAL}
+                hidemodal={()=>{ setShowmodal(false); }}
             />
         </div>
     );

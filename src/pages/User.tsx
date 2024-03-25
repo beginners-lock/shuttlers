@@ -1,16 +1,24 @@
-//import { useState } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar'
 import { NEUTRAL100, NEUTRAL300, NEUTRAL400, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
 import { ARRIVINGMODAL/*, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL*/ } from '../constants/modalvariables';
 import Modal from '../components/Modal';
+import Sidebar from '../components/Sidebar';
 
 const User = () => {
 	const showmodal = false;
+	const [showsidebar, setShowsidebar] = useState(false);
 	//const [showmodal, setShowmodal] = useState(false);
+
+	const toggleSidebar = () => {
+		setShowsidebar( state => { return !state; } )
+	}
 
 	return (
 		<div className="font-poppins w-full box-border flex flex-col items-center justify-start px-4">
-			<Navbar/>
+			<Navbar
+				showSidebar={toggleSidebar}
+			/>
 			<div className="mt-9 w-full flex flex-col items-start justify-start">
 				<div className='font-bold' style={{color: PRIMARY900}}>Welcome Back,</div>
 				<div className='font-bold' style={{color: PRIMARY900}}>Daniel</div>
@@ -73,6 +81,10 @@ const User = () => {
 			<Modal
 				showmodal={showmodal}
 				modalobj={ARRIVINGMODAL}
+			/>
+			<Sidebar
+				showstate={showsidebar}
+				hide={()=>{ setShowsidebar(false); }}
 			/>
 		</div>
 	);
