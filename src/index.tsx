@@ -14,6 +14,8 @@ import Signin from './pages/Signin';
 import Forgotpassword from './pages/Forgotpassword';
 import Changepassword from './pages/Changepassword';
 import Settings from './pages/Settings';
+import SignupD from './pages/SignupD';
+import SigninD from './pages/SigninD';
 
 const router = createBrowserRouter([
 	{
@@ -22,28 +24,36 @@ const router = createBrowserRouter([
 		errorElement: <ErrorPage/>
 	},
 	{
-		path: "signup",
+		path: "/user/signup",
 		element: <Signup/>
 	},
 	{
-		path: "signin",
+		path: "/user/signin",
 		element: <Signin/>
 	},
 	{
-		path: "user",
+		path: "/user/dashboard",
 		element: <User/>
 	},
 	{
-		path: "forgotpassword",
+		path: "/user/forgotpassword",
 		element: <Forgotpassword/>
 	},
 	{
-		path: "changepassword",
+		path: "/user/changepassword",
 		element: <Changepassword/>
 	},
 	{
-		path: "settings",
+		path: "/user/settings",
 		element: <Settings/>
+	},
+	{
+		path: "/driver/signup",
+		element: <SignupD/>
+	},
+	{
+		path: "/driver/signin",
+		element: <SigninD/>
 	}
 ]);
 
