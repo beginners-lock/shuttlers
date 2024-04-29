@@ -50,7 +50,7 @@ const Signin = () => {
 
 						if(data.msg==='success'){
 							sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
-							window.location.href = '/user';
+							window.location.href = '/user/dashboard';
 							setLoading(false);
 						}
 					}
@@ -81,7 +81,7 @@ const Signin = () => {
 						<label className='text-lg' style={{color:NEUTRAL700}}>Password</label>
 						<div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2.5 rounded-lg border border-[#C4C4C4]">
 							<input id="passinput" type={passvisible?"text":"password"} className='box-border w-full rounded-lg active:outline-none focus:outline-none'/>
-							<img alt="eyeimg" src={passvisible?"show.png":"hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
+							<img alt="eyeimg" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
 						</div>
 						<div className='mt-2 text-sm h-6' style={{color:ERROR700}}>{passw}</div>
 					</div>
@@ -90,7 +90,7 @@ const Signin = () => {
 							<input type="checkbox" className='mr-2'/>
 							Remember credentials
 						</div>
-						<Link to="/forgotpassword" className='font-bold' style={{color:SECONDARY500}}>Forgot your password?</Link>
+						<Link to="/user/forgotpassword" className='font-bold' style={{color:SECONDARY500}}>Forgot your password?</Link>
 					</div>
 					<button className='flex flex-row items-center justify-center w-full h-12 mt-12 rounded-md text-white text-lg' style={{backgroundColor:PRIMARY700}} onClick={()=>{ if(!loading){ login(); } }}>
 							<div style={{display:loading?'none':'flex'}}>Login</div>
@@ -104,7 +104,7 @@ const Signin = () => {
 					<div className='w-full text-center mt-2 text-md h-6' style={{color:ERROR700}}>{processwarning}</div>
 					<div className='mt-4 flex flex-row items-center justify-center text-md'>
 						Don't have an account
-						<Link to="/signup" className="ml-1 font-bold cursor-pointer" style={{color: SECONDARY500}}>Sign up</Link>
+						<Link to="/user/signup" className="ml-1 font-bold cursor-pointer" style={{color: SECONDARY500}}>Sign up</Link>
 					</div>
 				</div>
 			</div>

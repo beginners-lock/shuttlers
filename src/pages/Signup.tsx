@@ -182,7 +182,7 @@ const Signup = () => {
 					}else{
 						//State store user details in session
 						sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
-						window.location.href = '/user';
+						window.location.href = '/user/dashboard';
 						setOtploading(false);
 					}
 				}else{
@@ -202,7 +202,7 @@ const Signup = () => {
 					<div className='w-full flex flex-col justify-start items-center'>
 						<div className='flex flex-row items-center justify-center px-4 py-1.5 text-2xl font-bold rounded-full' style={{color: PRIMARY800, backgroundColor: PRIMARY300}}>
 							Welcome to Shuttlers! 
-							<img className="ml-0.5" alt="hand" src="hand.png"/>
+							<img className="ml-0.5" alt="hand" src="../hand.png"/>
 						</div>
 						<div className='mt-2 font-bold' style={{color: NEUTRAL500}}>A team commited to ensuring secure travels for students</div>
 					</div>
@@ -237,30 +237,30 @@ const Signup = () => {
 							<label className='text-lg' style={{color:NEUTRAL700}}>Create Password</label>
 							<div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2.5 rounded-lg border border-[#C4C4C4]">
 								<input id="passinput" type={passvisible?"text":"password"} className='box-border w-full rounded-lg active:outline-none focus:outline-none' onKeyUp={(e)=>{ passwordTracker(e); }}/>
-								<img alt="eyeimg" src={passvisible?"show.png":"hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
+								<img alt="eyeimg" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
 							</div>
 							<div className='mt-2 w-5/6 flex flex-row items-start justify-start box-border flex-wrap'>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick1" src="tick.png" style={{visibility: password!=='' && lowercaseCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick1" src="../tick.png" style={{visibility: password!=='' && lowercaseCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && lowercaseCheck(password) ? PRIMARY900 : NEUTRAL500}}>Lowercase characters</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick2" src="tick.png" style={{visibility: password!=='' && password.length>=PASSWORD_LENGTH ?'visible':'hidden'}}/>
+										<img alt="tick2" src="../tick.png" style={{visibility: password!=='' && password.length>=PASSWORD_LENGTH ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && password.length>=PASSWORD_LENGTH ? PRIMARY900 : NEUTRAL500}}>9 characters minimum</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick3" src="tick.png" style={{visibility: password!=='' && numericCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick3" src="../tick.png" style={{visibility: password!=='' && numericCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && numericCheck(password) ? PRIMARY900 : NEUTRAL500}}>Numbers</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick4" src="tick.png" style={{visibility: password!=='' && uppercaseCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick4" src="../tick.png" style={{visibility: password!=='' && uppercaseCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && uppercaseCheck(password) ? PRIMARY900 : NEUTRAL500}}>Uppercase characters</div>
 								</div>
@@ -271,7 +271,7 @@ const Signup = () => {
 							<label className='text-lg' style={{color:NEUTRAL700}}>Confirm Password</label>
 							<div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2.5 rounded-lg border border-[#C4C4C4]">
 								<input id="pass2input" type={passvisible?"text":"password"} className='box-border w-full rounded-lg active:outline-none focus:outline-none'/>
-								<img alt="eyeimg" src={passvisible?"show.png":"hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
+								<img alt="eyeimg" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
 							</div>
 							<div className='mt-2 text-sm h-6' style={{color:ERROR700}}>{passwordw}</div>
 						</div>
@@ -291,7 +291,7 @@ const Signup = () => {
 				
 				
 				<div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start snap-center'>
-                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="../mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Email Confirmation
                     </div>
@@ -326,7 +326,7 @@ const Signup = () => {
                         </div>
 
                         <div className='mt-8 flex flex-row items-center justify-center' onClick={()=>{goback();}}>
-                            <img alt="back" src="back.png" className='mr-2'/>
+                            <img alt="back" src="../back.png" className='mr-2'/>
                             Back to Signup
                         </div>
                     </div>

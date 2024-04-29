@@ -14,7 +14,7 @@ type ModalProps = {
 export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){    
     const buttonClick1 = () => {
         if(modalobj.type==='changepasswordmodal' || modalobj.type==="forgotpasswordmodal"){
-            window.location.href = '/user';
+            window.location.href = '/user/dashboard';
         }
     }
 
@@ -29,7 +29,7 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
         if(button===1 && modalobj.buttontext[1]==='Logout' && hidemodal){ 
             hidemodal(); 
             sessionStorage.removeItem('shuttlersuser');
-            window.location.href = '/signin';
+            window.location.href = '/user/signin';
         }
 
 
@@ -42,24 +42,24 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                 <div className="w-full h-full flex flex-col items-center justify-start box-border">
                     <div className="w-full flex flex-row items-center justify-between" style={{display: !modalobj.goback && !modalobj.close ? "none" : "flex"}}>
                         <div className="flex flex-row items-center justify-start text-md" style={{visibility: modalobj.goback?'visible':'hidden'}}>
-                            <img alt="goback" src="goback.png" className="mr-2"/>
+                            <img alt="goback" src="../goback.png" className="mr-2"/>
                             Go back
                         </div>
-                        <img alt="close" src="modalclose.png" style={{visibility: modalobj.close?'visible':'hidden'}} />
+                        <img alt="close" src="../modalclose.png" style={{visibility: modalobj.close?'visible':'hidden'}} />
                     </div>
 
-                    <img alt="modaltick" src="modaltick.png" style={{display:modalobj.type==="changepasswordmodal" || modalobj.type==="forgotpasswordmodal"?"flex":"none" }}/>
+                    <img alt="modaltick" src="../modaltick.png" style={{display:modalobj.type==="changepasswordmodal" || modalobj.type==="forgotpasswordmodal"?"flex":"none" }}/>
                     
                     {
                         typeof modalobj.title==="string"?
                             <div className="mt-5 text-center text-2xl font-semibold" style={{color: PRIMARY700}}>{modalobj.title}</div>
                         :   <div className="mt-5 w-full flex flex-row items-center justify-between">
-                                <img alt="driverpic" src={modalobj.title.userimg}/>
+                                <img alt="driverpic" src={'../'+modalobj.title.userimg}/>
                                 <div className="w-[70%]" style={{color:PRIMARY700}}>
                                     <div className="font-semibold text-xl">{'Arriving in '+modalobj.title.time.toString()+' mins'}</div>
                                     <div className="mt-0.5 text-sm">{modalobj.title.cardesc}</div>
                                 </div>
-                                <img alt="arrivingimg" src={modalobj.title.carimg}/>
+                                <img alt="arrivingimg" src={'../'+modalobj.title.carimg}/>
                             </div>
                     }
 
@@ -71,7 +71,7 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                 modalobj.list.map(obj => {
                                     return(
                                         <div className="mt-2 w-full text-sm flex flex-row items-center justify-start px-5 py-3.5 border rounded-full" style={{borderColor: NEUTRAL300}}>
-                                            <img className="mr-2" alt="pmimg" src={obj.img}/>
+                                            <img className="mr-2" alt="pmimg" src={'../'+obj.img}/>
                                             {obj.text}
                                         </div>
                                     )
@@ -80,13 +80,13 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                 modalobj.list.map(obj => {
                                     return(
                                         <div className="box-border w-full mt-2 border flex flex-row items-center justify-between p-3.5 rounded-lg" style={{borderColor:NEUTRAL300}}>
-                                            <img alt="rideimg" src={obj.car}/>
+                                            <img alt="rideimg" src={'../'+obj.car}/>
                                             <div className="w-[65%] text-slate-500 ">
                                                 <div className="font-semibold">{obj.type}</div>
                                                 <div className="mt-0.5 flex flex-row items-center justify-start text-sm">
-                                                    <img className="mr-1" alt="timeimg" src="time.png"/>
+                                                    <img className="mr-1" alt="timeimg" src="../time.png"/>
                                                     <div className="mr-3">{obj.time?.toString()+' mins'}</div>
-                                                    <img  className="mr-1" alt="passengersimg" src="passengers.png"/>
+                                                    <img  className="mr-1" alt="passengersimg" src="../passengers.png"/>
                                                     <div>{obj.passengers?.toString()}</div>
                                                 </div>
                                             </div>
@@ -99,7 +99,7 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                     return(
                                         <div className="w-full px-2.5 py-4 mt-2 flex flex-row items-center justify-between text-md font-semibold rounded-lg border" style={{borderColor:NEUTRAL300}}>
                                             <div className="flex flex-row items-center justify-start">
-                                                <img alt="rrimg" src="car.png" className="mr-2"/>
+                                                <img alt="rrimg" src="../car.png" className="mr-2"/>
                                                 {obj.destination}
                                             </div>
                                             <div style={{color: SECONDARY500}}>{obj.time?.toString()+' mins ago'}</div>
@@ -116,7 +116,7 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                 typeof modalobj.dropdowntext === 'string' ? 
                                     modalobj.dropdowntext
                                 :   <div className="w-full flex flex-row items-center justify-start">
-                                        <img alt="dropdownimg" src={modalobj.dropdowntext.img}/>
+                                        <img alt="dropdownimg" src={'../'+modalobj.dropdowntext.img}/>
                                         <div>{modalobj.dropdowntext.text}</div>
                                     </div>
                             }
@@ -130,17 +130,17 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                 Actions
                                 <div className="mt-3.5 mb-7 flex flex-row items-center justify-between text-sm" style={{color: NEUTRAL500}}>
                                     <div className="flex flex-col items-center justify-start">
-                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="rdimg" src="reachdriver.png"/>
+                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="rdimg" src="../reachdriver.png"/>
                                         Reach Driver
                                     </div>
 
                                     <div className="flex flex-col items-center justify-start">
-                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="ifimg" src="invitefriends.png"/>
+                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="ifimg" src="../invitefriends.png"/>
                                         Invite Friends
                                     </div>
 
                                     <div className="flex flex-col items-center justify-start">
-                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="srimg" src="safetyrules.png"/>
+                                        <img className="p-3 rounded-md mb-2" style={{backgroundColor:LIGHTPURPLE}} alt="srimg" src="../safetyrules.png"/>
                                         Safety Rules
                                     </div>
                                 </div>
@@ -148,10 +148,10 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                                 Destination
                                 <div className="box-border mt-3 w-full flex flex-row items-center justify-between rounded-xl p-3" style={{backgroundColor: LIGHTPURPLE}}>
                                     <div className="w-[90%] flex flex-row items-center justify-start" style={{color:NEUTRAL800}}>
-                                        <img alt="searchimg" className="mr-2 rounded-full p-2" src="search2.png" style={{backgroundColor:NEUTRAL800}}/>
+                                        <img alt="searchimg" className="mr-2 rounded-full p-2" src="../search2.png" style={{backgroundColor:NEUTRAL800}}/>
                                         Civil Building 
                                     </div>
-                                    <img alt="officialtick" src="officialpurpletick.png"/>
+                                    <img alt="officialtick" src="../officialpurpletick.png"/>
                                 </div>
                             </div>
                         :""

@@ -150,7 +150,7 @@ const Forgotpassword = () => {
             <Navbar/>
             <div id="fpslider" className="mt-20 w-full box-border flex flex-row items-start justify-start overflow-x-hidden scroll-smooth snap-x snap-mandatory">
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start snap-center'>
-                    <img className='border-4 p-0.5 rounded-md' alt="fingerprint" src="fingerprint.png" style={{backgroundColor: LIGHTPURPLE}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="fingerprint" src="../fingerprint.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Forgot password?
                     </div>
@@ -176,15 +176,15 @@ const Forgotpassword = () => {
                         </button>
                         <div className='w-full text-center mt-2 text-sm h-6' style={{color:ERROR700}}>{processingw1}</div>
 
-                        <Link to="/signin" className='mt-8 flex flex-row items-center justify-center'>
-                            <img alt="back" src="back.png" className='mr-2'/>
+                        <Link to="/user/signin" className='mt-8 flex flex-row items-center justify-center'>
+                            <img alt="back" src="../back.png" className='mr-2'/>
                             Back to Login
                         </Link>
                     </div>
                 </div>
 
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start snap-center'>
-                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="mail" src="../mail.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Confirm Email
                     </div>
@@ -218,15 +218,15 @@ const Forgotpassword = () => {
                             <div className='ml-2 font-bold' style={{color:SECONDARY500}} onClick={()=>{ if(!otploading){ setOtploading(true); sendotp(); } }}>Click to resend</div>
                         </div>
 
-                        <Link to="/signin" className='mt-8 flex flex-row items-center justify-center'>
-                            <img alt="back" src="back.png" className='mr-2'/>
+                        <Link to="/user/signin" className='mt-8 flex flex-row items-center justify-center'>
+                            <img alt="back" src="../back.png" className='mr-2'/>
                             Back to Login
                         </Link>
                     </div>
                 </div>
 
                 <div className='min-w-full max-w-full box-border px-36 flex flex-col items-center justify-start snap-center'>
-                    <img className='border-4 p-0.5 rounded-md' alt="key" src="key.png" style={{backgroundColor: LIGHTPURPLE}}/>
+                    <img className='border-4 p-0.5 rounded-md' alt="key" src="../key.png" style={{backgroundColor: LIGHTPURPLE}}/>
                     <div className='w-full text-center mt-8 font-bold text-xl' style={{color:PRIMARY800}}>
                         Set New Password
                     </div>
@@ -239,30 +239,30 @@ const Forgotpassword = () => {
                             <label className='text-lg font-bold' style={{color:NEUTRAL700}}>Password</label>
                             <div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2.5 rounded-lg border border-[#C4C4C4]">
                                 <input id="passinput" type={passvisible?"text":"password"} className='box-border w-full rounded-lg active:outline-none focus:outline-none' onKeyUp={(e)=>{ passwordTracker(e); }}/>
-                                <img alt="eyeimg" src={passvisible?"show.png":"hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
+                                <img alt="eyeimg" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
                             </div>
-                            <div className='mt-2 w-5/6 flex flex-row items-start justify-start box-border flex-wrap'>
+                            <div className='mt-2 w-full flex flex-row items-start justify-start box-border flex-wrap'>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick1" src="tick.png" style={{visibility: password!=='' && lowercaseCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick1" src="../tick.png" style={{visibility: password!=='' && lowercaseCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && lowercaseCheck(password) ? PRIMARY900 : NEUTRAL500}}>Lowercase characters</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick2" src="tick.png" style={{visibility: password!=='' && password.length>=PASSWORD_LENGTH ?'visible':'hidden'}}/>
+										<img alt="tick2" src="../tick.png" style={{visibility: password!=='' && password.length>=PASSWORD_LENGTH ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && password.length>=PASSWORD_LENGTH ? PRIMARY900 : NEUTRAL500}}>9 characters minimum</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick3" src="tick.png" style={{visibility: password!=='' && numericCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick3" src="../tick.png" style={{visibility: password!=='' && numericCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && numericCheck(password) ? PRIMARY900 : NEUTRAL500}}>Numbers</div>
 								</div>
 								<div className='w-1/2 flex flex-row justify-start items-center box-border mt-2'>
 									<div className='p-0.5' style={{backgroundColor:PRIMARY300}}>
-										<img alt="tick4" src="tick.png" style={{visibility: password!=='' && uppercaseCheck(password) ?'visible':'hidden'}}/>
+										<img alt="tick4" src="../tick.png" style={{visibility: password!=='' && uppercaseCheck(password) ?'visible':'hidden'}}/>
 									</div>
 									<div className='ml-2 text-sm font-bold' style={{color: password!=='' && uppercaseCheck(password) ? PRIMARY900 : NEUTRAL500}}>Uppercase characters</div>
 								</div>
@@ -273,7 +273,7 @@ const Forgotpassword = () => {
                             <label className='text-lg font-bold' style={{color:NEUTRAL700}}>Confirm Password</label>
                             <div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2.5 rounded-lg border border-[#C4C4C4]">  
                                 <input id="pass2input" type={passvisible?"text":"password"} className='box-border w-full rounded-lg active:outline-none focus:outline-none'/>
-                                <img alt="eyeimg" src={passvisible?"show.png":"hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
+                                <img alt="eyeimg" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{ setPassvisible(state => !state); }}/>
                             </div>
                             <div className='mt-2 text-sm h-6' style={{color:ERROR700}}>{passwordw}</div>
                         </div>
@@ -289,8 +289,8 @@ const Forgotpassword = () => {
                         </button>
 						<div className='w-full text-center text-lg mt-3 h-6' style={{color:ERROR700}}>{processingw2}</div>
 
-                        <Link to="/signin" className='mt-8 flex flex-row items-center justify-center'>
-                            <img alt="back" src="back.png" className='mr-2'/>
+                        <Link to="/user/signin" className='mt-8 flex flex-row items-center justify-center'>
+                            <img alt="back" src="../back.png" className='mr-2'/>
                             Back to Login
                         </Link>
                     </div>

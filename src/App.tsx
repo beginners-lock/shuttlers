@@ -10,9 +10,9 @@ function App() {
 			let user = sessionStorage.getItem('shuttlersuser');
 			console.log(user);
 			if(user){
-				window.location.href = "/user";
+				window.location.href = "/user/dashboard";
 			}else{
-				window.location.href = "/signin";
+				window.location.href = "/user/signin";
 			}
 		}, 8000)
 	}, []);
