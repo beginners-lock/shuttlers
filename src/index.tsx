@@ -16,6 +16,7 @@ import Changepassword from './pages/Changepassword';
 import Settings from './pages/Settings';
 import SignupD from './pages/SignupD';
 import SigninD from './pages/SigninD';
+import Documentation from './pages/Documentation';
 
 const router = createBrowserRouter([
 	{
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
 	{
 		path: "/driver/signin",
 		element: <SigninD/>
+	},
+	{
+		path: "/docs",
+		element: <Documentation/>
 	}
 ]);
 
