@@ -4,21 +4,19 @@ export default function Documentation(){
     return(
         <div className="w-full h-full flex flex-row items-start justify-end box-border overflow-x-hidden">
             <div className="left-0 fixed px-8 pt-4 w-[30%] h-full box-border border border-black">
-                <div className="mt-2 text-sm">Project Name</div>
+                <div className="mt-2 text-md font-bold">Table of Contents</div>
+                <div className="mt-4 text-sm">Project Name</div>
                 <div className="mt-3 text-sm">Project Overview</div>
                 <div className="mt-3 text-sm">Team Members</div>
                 <div className="mt-3 text-sm">Introduction</div>
                 <div className="mt-3 text-sm">Project Objectives</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
-                <div className="mt-3 text-sm">Project Name</div>
+                <div className="mt-3 text-sm">System Architecture</div>
+                <div className="mt-3 text-sm">Technologies Used</div>
+                <div className="mt-3 text-sm">Features</div>
+                <div className="mt-3 text-sm">User Interface Design</div>
+                <div className="mt-3 text-sm">Database Schema</div>
+                <div className="mt-3 text-sm">Setup Instructions</div>
+                <div className="mt-3 text-sm">Conclusion</div>
             </div>
             <div className="w-[70%] px-8 pt-4 pb-8 overflow-y-auto box-border">
                 <h1 className="font-bold text-3xl">Documentation</h1>
@@ -69,6 +67,49 @@ export default function Documentation(){
 
                 <div className="mt-16"> 
                     <div className="font-bold text-2xl underline" style={{color: PRIMARY800}}>Project Objectives</div>
+                    <div className="mt-4">The Shuttlers web app project seeks to achieve the following objectives:</div>
+                    <li className="mt-2">To enhance mobility of students within the university environment and provide a platform for punctuality.</li>
+                    <li className="mt-2">To offer a user-friendly platform that makes booking rides quick and effortless for students.</li>
+                    <li className="mt-2">To have a accessible data and information on registered drivers therefore promoting safety and security.</li>
+                    <li className="mt-2">To improve its services based on user feedback and performance metrics.</li>
+                    <li className="mt-2">To scale and meet increasing demands as the university community grows and evolves.</li>   
+                </div>
+
+                <div className="mt-16"> 
+                    <div className="font-bold text-2xl underline" style={{color: PRIMARY800}}>System Architecture</div>
+                    <div className="font-bold text-xl mt-4">Client-Side</div>
+                    <div className="mt-2">
+                    The client-side application comprises the user interface that user interact with and is built on the ReactJS framework using Typescript and TailwindCSS.
+                    It consists of the various web pages that are visited like: <em>the authentication pages for signing in and creating an account</em>, <em>a page for changing password when forgotten</em>,
+                    <em>pages for depositing to and withdrawing from your shuttlers virtual wallet</em>, <em>a user dashboard page</em>, <em>pages for view available drivers</em>, <em>track their rides</em>, <em>manage their accounts</em>, etc.
+                    <br/><br/>
+                    
+                    This client-side is divided into three possible routes depending on the user who is logging or the current user session. This could either be a driver, a student or an admin.
+                    <br/><br/>
+                    
+                    <strong>The admin</strong> is the user that is in charge of registering and accepting drivers that send a request after filling a form with proof of authenticity. They also have the various 
+                    data and shuttler metrics on their dashboard which may inclde <em>total number of shuttle drivers</em>, <em>shuttle rides completed</em>, etc. The admin can also revoke a shuttle driver
+                    shuttlers license or privilege.
+                    <br/><br/>
+                    
+                    <strong>The drivers</strong> would have their own distinct UI which notifies them of available student passengers while the students UI would have the 
+                    ability to book rides.
+                    <br/><br/>
+                    
+                    </div>
+
+
+                    <div className="font-bold text-xl mt-6">Server-Side</div>
+                    <div>
+
+                    </div>
+
+
+
+                    <div className="font-bold text-xl mt-6">Database</div>
+                    <div>
+
+                    </div>
                 </div>
             </div>
         </div>
