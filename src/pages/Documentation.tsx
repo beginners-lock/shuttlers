@@ -92,23 +92,40 @@ export default function Documentation(){
                     shuttlers license or privilege.
                     <br/><br/>
                     
-                    <strong>The drivers</strong> would have their own distinct UI which notifies them of available student passengers while the students UI would have the 
-                    ability to book rides.
-                    <br/><br/>
-                    
+                    <strong>The drivers</strong> would have their own distinct UI which would have features such as notification on pending ride orders from student passengers, funds withdrawal while <em>the students</em> UI would have the 
+                    ability to book rides and see available drivers.
+                    <br/><br/>                    
                     </div>
 
 
                     <div className="font-bold text-xl mt-6">Server-Side</div>
-                    <div>
-
+                    <div className="mt-2">
+                        The server-side application manages the business logic, handles user requests, and interacts with the database and external services. 
+                        It manages the authentication process, storing of user data and sensitive information, handling requests from the client side and returning back responses.
+                        The server-side of this project is built on NodeJS and ExpressJS majorly using Typescript language.
+                        <br/><br/>
+                        Responses and requests are exchanged and parsed between client and server in a json format and without the need of keys. 
+                        Through asynchronous request handle we ensure to joggle multiple request simultaneously on the server-side thereby reducing communication lag between client and server.
+                        Various endpoints and routes are communicated to most times using POST request with the axios library which is a dependency on the client-side.
                     </div>
 
 
 
                     <div className="font-bold text-xl mt-6">Database</div>
-                    <div>
+                    <div className="mt-2">
+                        The database stores all relevant data for the application, including user profiles, ride requests, driver information, and transaction records. 
+                        Databases can be RDBMS (relational database management system) such as MySQL, PostgreSQL or SQLite. Sometimes it could be NoSQL databases such
+                        as MongoDB. This project uses the MongoDB database to store data and information while using Firebase to store media(Firestore) and for real-time
+                        data communication.
+                        <br/><br/>
+                        It is important to make a good choice for a database as well as setting proper security guidelines because a compromised database puts a lot of user
+                        information at risk of compromise. One possible work aroud for this would be the encryption on sensitive user information that is store in the database
+                        such as password using methods like 'password hashing'.
+                    </div>
 
+                    <div className="font-bold text-xl mt-6">API Layer</div>
+                    <div className="mt-2 text-red-700 font-bold">
+                        The project made use of majorly two APIs for its functionality. REVISIT LATER.
                     </div>
                 </div>
             </div>
