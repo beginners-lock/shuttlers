@@ -63,8 +63,8 @@ export default function Driver(){
                 <div className='font-semibold text-lg' style={{color:SECONDARY900}}>Trips</div>
                 <div className='mt-4 flex flex-row items-center justify-between'>
                     <div className='flex flex-row items-center justify-between'>
-                        <div className='px-2.5 py-1 rounded-full mr-2' onClick={()=>{ if(activetriptab!=='available'){ setActivetriptab('available'); } }} style={{backgroundColor: activetriptab==='available'?SECONDARY900:'transparent', color: activetriptab==='available'?'white':'black'}}>Available</div>
-                        <div className='px-2.5 py-1 rounded-full' onClick={()=>{ if(activetriptab!=='completed'){ setActivetriptab('completed'); } }} style={{backgroundColor: activetriptab==='completed'?SECONDARY900:'transparent', color: activetriptab==='completed'?'white':'black'}}>Completed</div>
+                        <div className='px-2.5 py-1 rounded-full text-sm mr-2' onClick={()=>{ if(activetriptab!=='available'){ setActivetriptab('available'); } }} style={{backgroundColor: activetriptab==='available'?SECONDARY900:'transparent', color: activetriptab==='available'?'white':'black'}}>Available</div>
+                        <div className='px-2.5 py-1 rounded-full text-sm' onClick={()=>{ if(activetriptab!=='completed'){ setActivetriptab('completed'); } }} style={{backgroundColor: activetriptab==='completed'?SECONDARY900:'transparent', color: activetriptab==='completed'?'white':'black'}}>Completed</div>
                     </div>
 
                     <div className='text-sm' style={{color:SECONDARY500}}>view more</div>

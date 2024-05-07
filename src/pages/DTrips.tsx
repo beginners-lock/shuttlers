@@ -33,6 +33,27 @@ export default function DTrips(){
                 </div>
             </div>
 
+            <div className="w-[240px] mt-4 flex flex-row items-center justify-between">
+                <div className='px-3.5 py-1 rounded-full mr-2' onClick={()=>{ if(activetriptab!=='available'){ setActivetriptab('available'); } }} style={{backgroundColor: activetriptab==='available'?SECONDARY900:'transparent', color: activetriptab==='available'?'white':'black'}}>Available</div>
+                <div className='px-3.5 py-1 rounded-full' onClick={()=>{ if(activetriptab!=='completed'){ setActivetriptab('completed'); } }} style={{backgroundColor: activetriptab==='completed'?SECONDARY900:'transparent', color: activetriptab==='completed'?'white':'black'}}>Completed</div>
+            </div>
+
+            <div className="px-2 mt-4 w-full pb-16">
+                <div className="w-full border border-slate-300 rounded-md px-2 py-3 mb-4">
+                    <div className='w-full flex flex-row items-center justify-between'>
+                        <div className='text-left text-md font-semibold' style={{color:SECONDARY900}}>Student Username</div>
+                        <div className='text-sm'>Dest: EIE</div>
+                    </div>
+                    <div className='w-full flex flex-row items-center justify-between mt-4'>
+                        <div className='flex flex-row items-center justify-start' style={{color:NEUTRAL500}}>
+                            <img alt="passengers" src="../trippassengers.png" className='mr-2'/>
+                            3 passengers
+                        </div>
+                        <div className='text-xs'>45 mins ago</div>
+                    </div>
+                </div>
+            </div>
+
             
             <DNavbar/>
         </div>

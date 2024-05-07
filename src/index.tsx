@@ -19,6 +19,7 @@ import SigninD from './pages/SigninD';
 import Documentation from './pages/Documentation';
 import Driver from './pages/Driver';
 import DSettings from './pages/DSettings';
+import DTrips from './pages/DTrips';
 
 const router = createBrowserRouter([
 	{
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
 	{
 		path: "/driver/dashboard",
 		element: <Driver/>
+	},
+	{
+		path: "/driver/trips",
+		element: <DTrips/>
 	},
 	{
 		path: "/driver/settings",
