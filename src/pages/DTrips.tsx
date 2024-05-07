@@ -2,8 +2,10 @@ import DNavbar from "../components/DNavbar";
 import { useState } from 'react';
 import { ERROR500, NEUTRAL500, SECONDARY500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
 
-
 export default function DTrips(){
+    const [online, setOnline] = useState(false);
+    const [activetriptab, setActivetriptab] = useState('available');
+
     return(
         <div className="relative w-full h-full flex flex-col items-center justify-start">
             <div className='w-full h-[140px] flex flex-row items-center justify-between p-5' style={{backgroundColor: SECONDARY900}}>
