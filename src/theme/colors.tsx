@@ -26,3 +26,4 @@ export const ERROR700 = "#E02D3C";
 export const ERROR500 = "#FA3C4C";
 
 export const SUCCESS500 = "#00CC8F";
+export const SUCCESS700 = "#00835C";
