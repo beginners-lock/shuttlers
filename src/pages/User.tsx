@@ -35,7 +35,7 @@ const User = () => {
 						<div style={{color:'lightgrey'}}>Balance</div>
 						<div className="mt-2 flex flex-row items-center justify-start" style={{color:'white'}}>
 							<div className='text-3xl font-semibold'>1000 NGN</div>
-							<div className='flex flex-row itme-center justify-start ml-6'>
+							<div className='flex flex-row items-center justify-start ml-6'>
 								<img alt="addcircle" src="../addcircle.png" className='mr-1'/>
 								Top-Up
 							</div>

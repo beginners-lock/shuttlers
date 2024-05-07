@@ -6,6 +6,7 @@ export const PRIMARY300 = "#F1EAFF";
 
 export const SECONDARY500 = "#0055CC";
 export const SECONDARY800 = "#002B67";
+export const SECONDARY900 = "#002355";
 
 export const NEUTRAL100 = "#f1f5f9";
 export const NEUTRAL400 = "#94a3b8";
@@ -22,3 +23,6 @@ export const MODALBG = "#80A8A8A8";
 export const MODALBODYTEXT = "#78626D88";
 
 export const ERROR700 = "#E02D3C";
+export const ERROR500 = "#FA3C4C";
+
+export const SUCCESS500 = "#00CC8F";
