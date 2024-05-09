@@ -1,12 +1,15 @@
 //import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import { PRIMARY700 } from './theme/colors';
-import { useEffect } from 'react';
+import LoadingSpinner from './components/Spinner';
+import { PRIMARY700, SECONDARY800 } from './theme/colors';
+import { useEffect, useState } from 'react';
 
 function App() {
+	const [logintype, setLogintype] = useState('user');
+
 	useEffect(()=>{
-		setTimeout(()=>{
+		/*setTimeout(()=>{
 			let user = sessionStorage.getItem('shuttlersuser');
 			console.log(user);
 			if(user){
@@ -14,13 +17,76 @@ function App() {
 			}else{
 				window.location.href = "/user/signin";
 			}
-		}, 8000)
+		}, 8000)*/
 	}, []);
 
+	const btnClick = (type: string) => {
+		setLogintype(type);
+
+		//Set favicon
+		let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+		let linka = document.querySelector("link[rel~='apple-touch-icon']") as HTMLLinkElement;
+		if(!link){
+			link = document.createElement('link');
+			link.rel = "icon";
+			document.head.appendChild(link)
+		}
+
+		if(!linka){
+			linka = document.createElement('link');
+			linka.rel = "apple-touch-icon";
+			document.head.appendChild(linka)
+		}
+		
+		if(type==='user'){
+			link.href = "./logo.png";
+			linka.href = "./logo.png";
+		}else{
+			link.href = "./logoD.png";
+			linka.href = "./logoD.png";
+		}
+
+		let el = document.getElementById('appscrollpane') as HTMLDivElement;
+		console.log(window.innerWidth);
+		el.scrollLeft = window.innerWidth;
+
+		setTimeout(()=>{
+			if(type==='user'){
+				window.location.href = "/user/signin";
+			}else{
+				window.location.href = "/driver/signin";
+			}
+		}, 5000);
+	}
+
 	return (
-		<div className="font-poppins w-full h-full flex flex-col items-center justify-center font-bold text-4xl" style={{color: PRIMARY700}}>
-				<img className="w-20 h-20 mb-8" alt="logo" src="logo.png"/>
-				Shuttlers
+		<div id="appscrollpane" className="font-poppins w-full h-full flex flex-row items-center justify-start overflow-y-hidden overflow-x-hidden scroll-smooth">
+			<div className="min-w-full max-w-full h-full flex flex-col items-center justify-center">
+				<div className='text-slate-700 text-md md:text-lg font-semibold'>Log in as a:</div>
+				<div className="mt-12 text-white w-40 h-14 rounded-full text-md md:text-lg font-semibold flex flex-row items-center justify-center cursor-pointer" style={{backgroundColor:PRIMARY700}} onClick={()=>{btnClick('user');}}>User</div>
+				<div className="mt-8 text-white w-40 h-14 rounded-full text-md md:text-lg font-semibold flex flex-row items-center justify-center cursor-pointer" style={{backgroundColor:SECONDARY800}} onClick={()=>{btnClick('driver');}}>Driver</div>
+			</div>
+			<div className="min-w-full max-w-full h-full flex flex-col items-center justify-center font-bold text-2xl md:text-3xl" style={{color: logintype==='user'?PRIMARY700:SECONDARY800}}>
+				{
+					logintype==="user"?
+						<img className="w-14 md:w-16 mb-8" alt="logo" src="logo.png"/>
+					:
+						<img className="w-14 md:w-16 mb-8" alt="logo" src="logoD.png"/>
+				}	
+				<div className='mb-6'>Shuttlers</div>
+				<LoadingSpinner
+					loading={logintype==='user'}
+					size={'25px'}
+					borderTopColor={'white'}
+					borderColor={PRIMARY700}
+				/>
+				<LoadingSpinner
+					loading={logintype==='driver'}
+					size={'25px'}
+					borderTopColor={'white'}
+					borderColor={SECONDARY800}
+				/>
+			</div>
 		</div>
 	);
 }
