@@ -4,6 +4,7 @@ import './App.css';
 import LoadingSpinner from './components/Spinner';
 import { PRIMARY700, SECONDARY800 } from './theme/colors';
 import { useEffect, useState } from 'react';
+import setfavicon from './constants/setfavicon';
 
 function App() {
 	const [logintype, setLogintype] = useState('user');
@@ -23,28 +24,7 @@ function App() {
 	const btnClick = (type: string) => {
 		setLogintype(type);
 
-		//Set favicon
-		let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-		let linka = document.querySelector("link[rel~='apple-touch-icon']") as HTMLLinkElement;
-		if(!link){
-			link = document.createElement('link');
-			link.rel = "icon";
-			document.head.appendChild(link)
-		}
-
-		if(!linka){
-			linka = document.createElement('link');
-			linka.rel = "apple-touch-icon";
-			document.head.appendChild(linka)
-		}
-		
-		if(type==='user'){
-			link.href = "./logo.png";
-			linka.href = "./logo.png";
-		}else{
-			link.href = "./logoD.png";
-			linka.href = "./logoD.png";
-		}
+		setfavicon({ type });
 
 		let el = document.getElementById('appscrollpane') as HTMLDivElement;
 		console.log(window.innerWidth);

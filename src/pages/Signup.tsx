@@ -139,7 +139,7 @@ const Signup = () => {
 	}
 
 	const sendotp = (arg = email) => {
-		setOtpwarning(''); setProcesswarning('');
+		setOtpwarning(''); setProcesswarning(''); setLoading(true); setOtploading(true);
 
 		axios.post(URL+'/sendotp', {email: arg}).then(response => {
 			if(response.status === 200){
@@ -174,7 +174,7 @@ const Signup = () => {
 		
 		if(otpinput === otp){
 			setOtploading(true);
-			axios.post(URL+'/createaccount', {fname: firstname, lname: lastname, email: email, matric: matricnumber, password: password}).then(response => {
+			axios.post(URL+'/createuseraccount', {fname: firstname, lname: lastname, email: email, matric: matricnumber, password: password}).then(response => {
 				if(response.status===200){
 					let data = response.data;
 					if(data.err){

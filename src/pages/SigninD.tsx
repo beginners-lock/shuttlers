@@ -1,6 +1,14 @@
+import setfavicon from "../constants/setfavicon";
 import { NEUTRAL500, SECONDARY500, SECONDARY800 } from "../theme/colors";
+import { useEffect } from "react";
 
 export default function SigninD(){
+    useEffect(()=>{
+        setfavicon({ type:"driver" });
+    }, []);
+
+    
+
     return(
         <div className="w-full h-full flex flex-col items-center justify-start pt-6 px-4 font-poppins">
             <img alt="logo" className="w-8" src="../logoD.png"/>
@@ -37,7 +45,7 @@ export default function SigninD(){
 
             <div className="mt-4 flex flex-row font-semibold" style={{color: NEUTRAL500}}>
                 Don't have an account? 
-                <div className="ml-2" style={{color: SECONDARY500}}>Sign Up</div>
+                <div className="ml-2 cursor-pointer" style={{color: SECONDARY500}} onClick={()=>{ window.location.href="/driver/signup"; }}>Sign Up</div>
             </div>
         </div>
     );

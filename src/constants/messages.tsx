@@ -8,3 +8,6 @@ export const SIMILAR_USER = "A user already exists with this email or matric num
 export const INVALID_OTP_ERROR = "Invalid OTP";
 export const NO_EMAIL_EXISTS = "No user exists with this email";
 export const INVALID_PASSWORD = "Wrong password";
+export const INVALID_FULLNAME = "This field must follow the format 'Firstname Lastname'";
+export const INVALID_PHONE_ERROR = "Invalid phone number";
+export const DRIVER_PASSWORD_ERROR = "Password cannot be less than 8 characters long";
