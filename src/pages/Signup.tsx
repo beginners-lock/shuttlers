@@ -181,7 +181,7 @@ const Signup = () => {
 						setOtpwarning(PROCESSING_ERROR); setOtploading(false);
 					}else{
 						//State store user details in session
-						sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
+						sessionStorage.setItem('shuttlerssession', JSON.stringify(data.user));
 						window.location.href = '/user/dashboard';
 						setOtploading(false);
 					}

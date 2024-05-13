@@ -1,0 +1,105 @@
+Table of Contents
+.Project Name
+.Project Overview
+.Team Members
+.Introduction
+.Project Objectives
+.System Architecture
+.Technologies Used
+.Features
+.User Interface Design
+.Database Schema
+.Setup Instructions
+.Conclusion
+
+DOCUMENTATION
+Welcome to Shuttlers Docs,
+
+PROJECT NAME: Shuttlers
+
+PROJECT OVERVIEW
+
+Shuttlers is a web application designed to streamline transportation within the university environment. 
+The app aims to provide an efficient and convenient way for students to book rides to various destinations within the campus premises. 
+Whether it's getting to class, the library, or social events, Shuttlers ensures that students can easily access transportation services right from their smartphones or computers.
+
+By offering a reliable and user-friendly transportation solution, Shuttlers aims to enhance mobility and accessibility on campus, reducing the reliance on personal vehicles and promoting sustainable transportation practices. 
+Whether it's navigating between classes or attending extracurricular activities, Shuttlers ensures that students can travel safely and conveniently within the university environment.
+    
+    
+TEAM MEMBERS
+
+-> Madein David - UI/UX Designer
+-> Chukwu Developer - FullStack Developer
+
+
+INTRODUCTION
+
+In the bustling environment of university campuses, efficient transportation is paramount for students to navigate between classes, activities, and various campus facilities. 
+Recognizing this need, we introduce Shuttlers, a cutting-edge web application poised to revolutionize transportation within the university environment.
+
+Gone are the days of waiting in long queues or struggling to find pick-up. 
+Shuttlers offers a user-friendly platform where students can effortlessly request rides to their desired destinations within the campus area. 
+Whether it's a quick trip to class, a visit to the library, or attending extracurricular activities, Shuttlers ensures that students can access transportation services with just a few taps on their devices.
+Beyond convenience, Shuttlers prioritizes safety and reliability as drivers are properly screened and srutinized by the admin before being accepted as a registered shuttler driver.
+
+In this documentation, we delve into the various aspects of the Shuttlers project, including its objectives, features, system architecture, and deployment strategies. 
+By harnessing technology to address the transportation needs of students, Shuttlers aims to enhance mobility, accessibility, and overall campus experience. 
+Welcome to Shuttlers – your gateway to seamless transportation within the university environment.
+
+
+PROJET OBJECTIVES
+
+The Shuttlers web app project seeks to achieve the following objectives:
+
+-> To enhance mobility of students within the university environment and provide a platform for punctuality.
+-> To offer a user-friendly platform that makes booking rides quick and effortless for students.
+-> To have a accessible data and information on registered drivers therefore promoting safety and security.
+-> To improve its services based on user feedback and performance metrics.
+-> To scale and meet increasing demands as the university community grows and evolves.
+
+
+SYSTEM ARCHITECTURE
+
+Client-Side
+The client-side application comprises the user interface that user interact with and is built on the ReactJS framework using Typescript and TailwindCSS.
+It consists of the various web pages that are visited like: the authentication pages for signing in and creating an account, a page for changing password when forgotten, pages for depositing to and withdrawing from your shuttlers virtual wallet, a user dashboard page, pages for view available drivers, track their rides, manage their accounts, etc.
+    
+This client-side is divided into three possible routes depending on the user who is logging or the current user session. This could either be a driver, a student or an admin.
+    
+The admin is the user that is in charge of registering and accepting drivers that send a request after filling a form with proof of authenticity. They also have the various data and shuttler metrics on their dashboard which may inclde total number of shuttle drivers, shuttle rides completed, etc. The admin can also revoke a shuttle driver's shuttlers license or privilege.
+    
+The drivers would have their own distinct UI which would have features such as notification on pending ride orders from student passengers, funds withdrawal while the students UI would have the ability to book rides and see available drivers.
+
+
+Server-Side
+The server-side application manages the business logic, handles user requests, and interacts with the database and external services. 
+It manages the authentication process, storing of user data and sensitive information, handling requests from the client side and returning back responses.
+The server-side of this project is built on NodeJS and ExpressJS majorly using Typescript language.
+    
+Responses and requests are exchanged and parsed between client and server in a json format and without the need of keys. 
+Through asynchronous request handle we ensure to joggle multiple request simultaneously on the server-side thereby reducing communication lag between client and server.
+Various endpoints and routes are communicated to most times using POST request with the axios library which is a dependency on the client-side.
+
+
+Database
+The database stores all relevant data for the application, including user profiles, ride requests, driver information, and transaction records. 
+Databases can be RDBMS (relational database management system) such as MySQL, PostgreSQL or SQLite. Sometimes it could be NoSQL databases such
+as MongoDB. This project uses the MongoDB database to store data and information while using Firebase to store media(Firestore) and for real-time
+data communication.
+
+It is important to make a good choice for a database as well as setting proper security guidelines because a compromised database puts a lot of user
+information at risk of compromise. One possible work aroud for this would be the encryption on sensitive user information that is store in the database
+such as password using methods like 'password hashing'.
+
+
+API Layer
+The project made use of majorly two APIs for its functionality. REVISIT LATER.
+
+
+FRONTEND TOOLS - REACTJS, TAILWINDCSS
+BACKEND TOOLS - NODEJS, EXPRESSJS
+PROGRAMMING LANGUAGE - JAVASCRIPT, TYPESCRIPT, HTML, CSS
+DATABASE MANAGEMENT - MONGODB, PRISMA, FIREBASE
+DEVELOPMENT ENVIRONMENT - MICROSOFT VISUAL STUDIOS
+DEPLOYMENT SERVER - NETLIFY(FRONTEND), RENDER(BACKEND)

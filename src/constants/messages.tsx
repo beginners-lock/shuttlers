@@ -5,6 +5,7 @@ export const PASSWORD_REQ_ERROR = "Password does not meet the requirements";
 export const UNSIMILAR_PASSWORDS = "Passwords are not similar"
 export const PROCESSING_ERROR = "An error occured while processing, please try again later";
 export const SIMILAR_USER = "A user already exists with this email or matric number";
+export const SIMILAR_DRIVER = "A driver already exists with this email";
 export const INVALID_OTP_ERROR = "Invalid OTP";
 export const NO_EMAIL_EXISTS = "No user exists with this email";
 export const INVALID_PASSWORD = "Wrong password";

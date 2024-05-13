@@ -2,20 +2,23 @@ import setfavicon from "../constants/setfavicon";
 import { NEUTRAL500, SECONDARY500, SECONDARY800 } from "../theme/colors";
 import { useEffect, useState, useRef } from "react";
 import { DriverDataType } from "../constants/types";
-import { DRIVER_PASSWORD_ERROR, EMPTY_FIELD_ERROR, INVALID_EMAIL_ERROR, INVALID_FULLNAME, INVALID_OTP_ERROR, INVALID_PHONE_ERROR, PROCESSING_ERROR } from "../constants/messages";
+import { DRIVER_PASSWORD_ERROR, EMPTY_FIELD_ERROR, INVALID_EMAIL_ERROR, INVALID_FULLNAME, INVALID_OTP_ERROR, INVALID_PHONE_ERROR, PROCESSING_ERROR, SIMILAR_DRIVER } from "../constants/messages";
 import axios from "axios";
 import LoadingSpinner from "../components/Spinner";
 import SplitInput from "../components/SplitInput";
 import { URL } from "../constants/globalvariables";
+import { firebaseConfig } from '../firebaseconfig';
+import { initializeApp } from "firebase/app";
+import { ref, getDatabase, update } from "firebase/database";
 
 
 export default function SignupD(){
-    let inputRef = useRef<HTMLInputElement>(null);
-
     useEffect(()=>{
-        setfavicon({ type: "driver" });
+        setfavicon({ type:"driver" });
     }, []);
 
+    
+    let inputRef = useRef<HTMLInputElement>(null);
     const [driverdata, setDriverdata] = useState<DriverDataType|null>(null);
     const [otp, setOtp] = useState('');
     const [otpinput, setOtpinput] = useState<string>('');
@@ -31,7 +34,7 @@ export default function SignupD(){
     const [processwarning2, setProcesswarning2] = useState('');
     const [otpwarning, setOtpwarning] = useState('');
 
-    const [passvisible, setPassvisible] = useState(true);
+    const [passvisible, setPassvisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [otploading, setOtploading] = useState(false);
@@ -105,7 +108,7 @@ export default function SignupD(){
                 fullname: fnel.value,
                 email: eel.value,
                 phone: pel.value,
-                pwel: pwel.value,
+                password: pwel.value,
                 cartype: '',
                 carnumber: ''
             }   
@@ -119,7 +122,11 @@ export default function SignupD(){
                     if(data.err){
                         setProcesswarning1(PROCESSING_ERROR); setLoading1(false);
                     }else{
-                        sendotp(eel.value); setEmail(eel.value);
+                        if(data.msg){//Then there is a similar email
+                            setProcesswarning1(SIMILAR_DRIVER); setLoading1(false);
+                        }else{
+                            sendotp(eel.value); setEmail(eel.value);
+                        }
                     }
                 }else{
                     setProcesswarning1(PROCESSING_ERROR); setLoading1(false);
@@ -185,6 +192,7 @@ export default function SignupD(){
             let data = { ...driverdata };
             data.cartype = ctel.value;
             data.carnumber = cnel.value;
+            console.log(data);
 
             setLoading2(true);
             axios.post(URL+'/createdriveraccount',  data).then(response => {
@@ -192,9 +200,19 @@ export default function SignupD(){
                     let resdata = response.data;
                     
                     if(!resdata.err){
-                        sessionStorage.setItem('shuttlersuser', JSON.stringify(resdata.driver));
-                        window.location.href = '/driver/dashboard';
-                        setLoading2(false);
+                        //Add the driers branch to the firebase real-time database
+                        initializeApp(firebaseConfig);
+                        const db = getDatabase();
+                        const driverRef = ref(db, 'drivers/'+resdata.driver.id);
+
+                        update(driverRef, {
+                            wallet: 0,
+                            rides: []
+                        }).then(()=>{
+                            sessionStorage.setItem('shuttlerssession', JSON.stringify(resdata.driver));
+                            window.location.href = '/driver/dashboard?id='+resdata.driver.id;
+                            setLoading2(false);
+                        });
                     }else{
                         setProcesswarning2(PROCESSING_ERROR); setLoading2(false);
                     }
@@ -282,7 +300,7 @@ export default function SignupD(){
 
                 <div className="w-[190px] text-xl font-semibold text-center" style={{color: SECONDARY800}}>Enter code</div>
                 
-                <div className="mt-2 w-[270px] text-sm text-center" style={{color: NEUTRAL500}}>A code has been sent to +23480123456789</div>
+                <div className="mt-2 w-[270px] text-sm text-center" style={{color: NEUTRAL500}}>{'A code has been sent to '+email}</div>
 
                 <SplitInput
                     inputRef={inputRef}
@@ -360,6 +378,7 @@ export default function SignupD(){
                         :   'Submit'
                     }
                 </button>
+                <div className="text-center w-full text-red-700 text-xs mt-1">{processwarning2}</div>
             </div>
         </div>
     );

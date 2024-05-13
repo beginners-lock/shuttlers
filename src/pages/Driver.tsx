@@ -1,8 +1,13 @@
 import DNavbar from '../components/DNavbar';
-import { useState } from 'react';
+import setfavicon from '../constants/setfavicon';
+import { useState, useEffect } from 'react';
 import { ERROR500, NEUTRAL500, SECONDARY500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
 
 export default function Driver(){
+    useEffect(()=>{
+        setfavicon({ type:'driver' });
+    }, []);
+
     const [online, setOnline] = useState(false);
     const [activetriptab, setActivetriptab] = useState('available');
 
