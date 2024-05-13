@@ -256,7 +256,7 @@ export default function SignupD(){
 
                 <div className="w-full mt-8 flex flex-col items-start justify-start">
                     <label>Password</label>
-                    <div className="flex flex-row items-center justify-between box-border px-2 w-full h-12 mt-2 rounded-lg border border-slate-400">
+                    <div className="flex flex-row items-center justify-between box-border px-2 w-full h-11 mt-2 rounded-lg border border-slate-400">
                         <input id="driverpassword" type={passvisible?'text':'password'} className="rounded-md h-10 w-[100%] focus:outline-none active:outline-none"/>
                         <img alt="eye" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{setPassvisible((state)=>{ return !state; })}}/>
                     </div>
