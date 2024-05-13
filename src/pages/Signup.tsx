@@ -6,6 +6,9 @@ import { PASSWORD_LENGTH, URL } from '../constants/globalvariables';
 import { PRIMARY800, PRIMARY300, NEUTRAL500, NEUTRAL700, PRIMARY700, PRIMARY900, ERROR700, SECONDARY500, LIGHTPURPLE } from '../theme/colors';
 import LoadingSpinner from '../components/Spinner';
 import axios from 'axios';
+import { firebaseConfig } from '../firebaseconfig';
+import { initializeApp } from "firebase/app";
+import { ref, getDatabase, update } from 'firebase/database';
 
 const Signup = () => {
 	let inputRef = useRef<HTMLInputElement>(null);
@@ -180,10 +183,20 @@ const Signup = () => {
 					if(data.err){
 						setOtpwarning(PROCESSING_ERROR); setOtploading(false);
 					}else{
-						//State store user details in session
-						sessionStorage.setItem('shuttlerssession', JSON.stringify(data.user));
-						window.location.href = '/user/dashboard';
-						setOtploading(false);
+						//Add the driers branch to the firebase real-time database
+						initializeApp(firebaseConfig);
+                        const db = getDatabase();
+                        const userRef = ref(db, 'users/'+data.user.id);
+
+                        update(userRef, {
+                            wallet: 0,
+                            rides: []
+                        }).then(()=>{
+							//State store user details in session
+                            sessionStorage.setItem('shuttlerssession', JSON.stringify(data.user));
+                            window.location.href = '/user/dashboard?id='+data.user.id;
+                            setOtploading(false);
+                        });
 					}
 				}else{
 					setOtpwarning(PROCESSING_ERROR); setOtploading(false);
@@ -197,7 +210,7 @@ const Signup = () => {
 	return (
 		<div className="font-poppins w-full box-border flex flex-col items-center justify-start p-4">
 			<Navbar/>
-			<div id="createslider" className="w-full box-border mt-24 flex flex-row items-center justify-start overflow-x-hidden scroll-smooth snap-x snap-mandatory">
+			<div id="createslider" className="w-full box-border mt-10 flex flex-row items-start justify-start overflow-x-hidden scroll-smooth snap-x snap-mandatory">
 				<div className="min-w-full max-w-full box-border px-24 snap-center">
 					<div className='w-full flex flex-col justify-start items-center'>
 						<div className='flex flex-row items-center justify-center px-4 py-1.5 text-2xl font-bold rounded-full' style={{color: PRIMARY800, backgroundColor: PRIMARY300}}>
