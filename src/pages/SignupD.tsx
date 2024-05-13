@@ -159,7 +159,6 @@ export default function SignupD(){
     const finishotp = () => {
         setOtpwarning('');
         if(otp === otpinput){
-            console.log('got');
             next(2);
         }else{
             setOtpwarning(INVALID_OTP_ERROR);

@@ -3,7 +3,7 @@ import { NEUTRAL500, SECONDARY500, SECONDARY800 } from "../theme/colors";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import LoadingSpinner from "../components/Spinner";
-import { EMPTY_FIELD_ERROR, INVALID_EMAIL_ERROR, INVALID_PASSWORD, PROCESSING_ERROR } from "../constants/messages";
+import { EMPTY_FIELD_ERROR, INVALID_EMAIL_ERROR, INVALID_PASSWORD, PROCESSING_ERROR, INVALID_OTP_ERROR, UNSIMILAR_PASSWORDS, DRIVER_PASSWORD_ERROR } from "../constants/messages";
 import { URL } from "../constants/globalvariables";
 import SplitInput from "../components/SplitInput";
 
@@ -13,14 +13,30 @@ export default function SigninD(){
     }, []);
 
     let inputRef = useRef<HTMLInputElement>(null);
-    const [passvisible, setPassvisible] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [otpinput, setOtpinput] = useState('');
+    const [email, setEmail] = useState('');
+
+    const [passvisible1, setPassvisible1] = useState(false);
+    const [passvisible2, setPassvisible2] = useState(false);
     const [loading1, setLoading1] = useState(false);
-    const [processingwarning1, setProcesswarning1] = useState('');
+    const [otploading, setOtploading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+
+    const [processwarning1, setProcesswarning1] = useState('');
+    const [processwarning2, setProcesswarning2] = useState('');
     const [emailwarning, setEmailwarning] = useState('');
     const [passwarning, setPasswarning] = useState('');
+    const [otpwarning, setOtpwarning] = useState('');
+    const [npwarning, setNpwarning] = useState('');
+    const [cpwarning, setCpwarning] = useState('')
 
     const clearwarnings = () => {
         setProcesswarning1(''); setEmailwarning(''); setPasswarning('');
+    }
+
+    const clearcpwarnings = () => {
+        setNpwarning(''); setCpwarning(''); setProcesswarning2('');
     }
 
     const onPress = () => { 
@@ -93,6 +109,110 @@ export default function SigninD(){
         }
     }
 
+    const forgotscroll = () => {
+        clearwarnings();
+        let error = false;
+
+        let emailel = document.getElementById('driveremailinput') as HTMLInputElement;
+
+        //Checks
+        if(emailel.value.indexOf('@')===-1 || !emailel.value.indexOf('@')){
+            setEmailwarning(INVALID_EMAIL_ERROR); error=true;
+        }  
+        
+        if(!emailel.value){
+            setEmailwarning(EMPTY_FIELD_ERROR); error=true;
+        }
+
+        if(!error){
+            setLoading1(true);
+            setEmail(emailel.value);
+            sendotp(emailel.value);
+        }
+    }
+
+    const sendotp = (email: string) => {
+        setLoading1(true); setOtploading(true); setProcesswarning1(''); setOtpwarning('');
+
+        axios.post(URL+'/sendotp', { email: email}).then(response => {
+            if(response.status === 200){
+				let data = response.data;
+
+				if(data.err){
+					setProcesswarning1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+				}else{
+					setOtp(data.otp.toString()); console.log(data.otp.toString());
+					next(1);
+				}
+			}else{
+				setProcesswarning1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+			}
+
+			setLoading1(false); setOtploading(false);
+        });
+    }
+
+    const finishotp = () => {
+        setOtpwarning('');
+        if(otp === otpinput){
+            next(2);
+        }else{
+            setOtpwarning(INVALID_OTP_ERROR);
+        }
+    }
+
+    const changepassword = () => {
+        clearcpwarnings();
+        let err = false;
+
+        const newpass = document.getElementById('drivernewpassw') as HTMLInputElement;
+        const confirmpass = document.getElementById('driverconfirmpassw') as HTMLInputElement;
+
+        if(confirmpass.value !== newpass.value){
+            setNpwarning(UNSIMILAR_PASSWORDS); setCpwarning(UNSIMILAR_PASSWORDS); err=true;
+        }
+
+        if(newpass.value.length<8){
+            setNpwarning(DRIVER_PASSWORD_ERROR); err=true;
+        }
+
+        if(confirmpass.value.length<8){
+            setCpwarning(DRIVER_PASSWORD_ERROR); err=true;
+        }
+
+        if(!newpass.value){
+            setNpwarning(EMPTY_FIELD_ERROR); err=true;
+        }
+
+        if(!confirmpass.value){
+            setCpwarning(EMPTY_FIELD_ERROR); err=true;
+        }
+
+        if(!err){
+            let data = {
+                email: email,
+                password: newpass.value
+            }
+            setLoading2(true);
+            axios.post(URL+'/changedriverpassword', data ).then(async response => {
+                
+                if(response.status===200){
+                    let resdata = response.data;
+                    if(!resdata.err){
+                        sessionStorage.setItem('shuttlerssession', JSON.stringify(resdata.driver));
+                        window.location.href = '/driver/dashboard?id='+resdata.driver.id;
+                        setLoading2(false);
+                    }else{
+                        setProcesswarning2(PROCESSING_ERROR); setLoading2(false);
+                    }
+                }else{
+                    setProcesswarning2(PROCESSING_ERROR); setLoading2(false);
+                }
+            });
+        }
+
+    }
+
     return(
         <div id="signindscrollpane" className="w-full h-full pb-10 flex flex-row justify-start items-start overflow-x-hidden scroll-smooth">
             <div className="min-w-full max-w-full min-h-full max-h-full flex flex-col items-center justify-start pt-6 px-4 font-poppins">
@@ -115,8 +235,8 @@ export default function SigninD(){
                 <div className="w-full mt-6 flex flex-col items-start justify-start">
                     <label>Password</label>
                     <div className="flex flex-row items-center justify-between box-border px-2 w-full h-11 mt-2 rounded-lg border border-slate-400">
-                        <input id="driverpasswinput" type={passvisible?'text':'password'} className="rounded-md h-10 w-[100%] focus:outline-none active:outline-none"/>
-                        <img alt="eye" src={passvisible?"../show.png":"../hide.png"} onClick={()=>{setPassvisible((state)=>{ return !state; })}}/>
+                        <input id="driverpasswinput" type={passvisible1?'text':'password'} className="rounded-md h-10 w-[100%] focus:outline-none active:outline-none"/>
+                        <img alt="eye" src={passvisible1?"../show.png":"../hide.png"} onClick={()=>{setPassvisible1((state)=>{ return !state; })}}/>
                     </div>
                     <div className='mt-2 text-xs h-6 text-red-700'>{passwarning}</div>
                 </div>
@@ -126,7 +246,7 @@ export default function SigninD(){
                         <input type="checkbox" className="mr-2"/>
                         Remember Credentials
                     </div>
-                    <div style={{color: SECONDARY500}}>Forgot password</div>
+                    <div style={{color: SECONDARY500}} onClick={()=>{ forgotscroll(); }}>Forgot password</div>
                 </div>
 
                 <button className="mt-8 w-full rounded-full text-white py-2 font-semibold flex flex-row items-center justify-center" style={{backgroundColor:SECONDARY800}} onClick={()=>{ loginbtnclick(); }}>
@@ -142,7 +262,7 @@ export default function SigninD(){
                             />
                     }
                 </button>
-                <div className='w-full text-center text-xs mt-3 h-6 text-red-700'>{processingwarning1}</div>
+                <div className='w-full text-center text-xs mt-3 h-6 text-red-700'>{processwarning1}</div>
 
                 <div className="mt-4 flex flex-row font-semibold" style={{color: NEUTRAL500}}>
                     Don't have an account? 
@@ -190,40 +310,33 @@ export default function SigninD(){
             </div>
 
             
-            <div className="min-w-full max-w-full h-full flex flex-col items-center justify-start pt-6 px-4 font-poppins">
+            <div className="relative min-w-full max-w-full h-full flex flex-col items-center justify-start pt-6 px-4 font-poppins">
                 <img alt="logo" className="w-8" src="../logoD.png"/>
                 <div className="w-full mt-4">
                     <img alt="goback" src="../gobackD.png" onClick={()=>{ goback(1); }}/>
                 </div>
 
-                <div className="w-[190px] text-xl font-semibold text-center" style={{color: SECONDARY800}}>Car Details</div>
-                
-                <div className="mt-2 w-[270px] text-sm text-center" style={{color: NEUTRAL500}}>Enter the accurate details as regards your vehicle</div>
+                <div className="w-[190px] text-xl font-semibold text-center" style={{color: SECONDARY800}}>Change Password</div>
 
                 <div className="w-full mt-8 flex flex-col items-start justify-start">
-                    <label>Car Type</label>
-                    <select id="drivercartype" className="mt-2 border border-slate-400 rounded-md h-10 w-full text-sm px-2" onChange={(e)=>{ console.log(e.target.value); }}>
-                        <option className="text-xs" value={''}>Select your car type</option>
-                        <option className="text-xs"  value={'sedan'}>Sedan</option>
-                        <option className="text-xs"  value={'sienna'}>Sienna</option>
-                    </select>
-                    <div className="text-red-700 text-xs mt-1">{ctwarning}</div>
+                    <label>New password</label>
+                    <div className="flex flex-row items-center justify-between box-border px-2 w-full h-11 mt-2 rounded-lg border border-slate-400">
+                        <input id="drivernewpassw" type={passvisible2?'text':'password'} className="rounded-md h-10 w-[100%] focus:outline-none active:outline-none"/>
+                        <img alt="eye" src={passvisible2?"../show.png":"../hide.png"} onClick={()=>{setPassvisible2((state)=>{ return !state; })}}/>
+                    </div>
+                    <div className="text-red-700 text-xs mt-1">{npwarning}</div>
                 </div>
 
                 <div className="w-full mt-8 flex flex-col items-start justify-start">
-                    <label>Car Category</label>
-                    <select className="mt-2 border border-slate-400 rounded-md h-10 w-full text-sm px-2" defaultValue={''}>
-                        <option className="text-xs" value={''}>Select your car category</option>
-                    </select>
+                    <label>Confirm Password</label>
+                    <div className="flex flex-row items-center justify-between box-border px-2 w-full h-11 mt-2 rounded-lg border border-slate-400">
+                        <input id="driverconfirmpassw" type={passvisible2?'text':'password'} className="rounded-md h-10 w-[100%] focus:outline-none active:outline-none"/>
+                        <img alt="eye" src={passvisible2?"../show.png":"../hide.png"} onClick={()=>{setPassvisible2((state)=>{ return !state; })}}/>
+                    </div>
+                    <div className="text-red-700 text-xs mt-1">{cpwarning}</div>
                 </div>
 
-                <div className="w-full mt-8 flex flex-col items-start justify-start">
-                    <label>Car Number</label>
-                    <input id="drivercarnumber" type="text" className="mt-2 px-2 border border-slate-400 rounded-md h-10 w-full"/>
-                    <div className="text-red-700 text-xs mt-1">{cnwarning}</div>
-                </div>
-
-                <button className="mt-8 w-full rounded-full text-white py-2 flex flex-row items-center justify-center" style={{backgroundColor:SECONDARY800}} onClick={()=>{ if(!loading2){ submitClick(); } }}>
+                <button className="mt-14 w-full rounded-full text-white py-2 flex flex-row items-center justify-center" style={{backgroundColor:SECONDARY800}} onClick={()=>{ if(!loading2){ changepassword(); } }}>
                     {
                         loading2?
                             <LoadingSpinner
@@ -232,7 +345,7 @@ export default function SigninD(){
                                 borderTopColor="transparent"
                                 borderColor="white"
                             />
-                        :   'Submit'
+                        :   'Change password'
                     }
                 </button>
                 <div className="text-center w-full text-red-700 text-xs mt-1">{processwarning2}</div>

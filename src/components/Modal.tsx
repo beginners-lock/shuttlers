@@ -1,4 +1,4 @@
-import { MODALBG, PRIMARY700, NEUTRAL400, NEUTRAL300, MODALBODYTEXT, SECONDARY500, LIGHTPURPLE, NEUTRAL500, NEUTRAL800 } from "../theme/colors";
+import { MODALBG, PRIMARY700, NEUTRAL400, NEUTRAL300, MODALBODYTEXT, SECONDARY500, LIGHTPURPLE, NEUTRAL500, NEUTRAL800, SECONDARY800 } from "../theme/colors";
 //import { FORGOTPASSWORDMODAL, CHANGEPASSWORDMODAL, CURRENTLOCATIONMODAL, DESTINATIONMODAL, PAYMENTMETHODMODAL, DEPARTMENTMODAL, HOSTELMODAL, RIDETYPEMODAL, RECENTRIDESMODAL, LOGOUTMODAL, ARRIVINGMODAL } from "../theme/messages";
 import { ModalObjType } from "../constants/modalvariables";
 
@@ -8,10 +8,11 @@ import { ModalObjType } from "../constants/modalvariables";
 type ModalProps = {
     modalobj: ModalObjType,
     showmodal: boolean,
-    hidemodal?: ()=>void
+    hidemodal?: ()=>void,
+    type?: string
 }
 
-export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){    
+export default function Modal({ modalobj, showmodal, hidemodal, type }: ModalProps ){    
     const buttonClick1 = () => {
         if(modalobj.type==='changepasswordmodal' || modalobj.type==="forgotpasswordmodal"){
             window.location.href = '/user/dashboard';
@@ -52,10 +53,10 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                     
                     {
                         typeof modalobj.title==="string"?
-                            <div className="mt-5 text-center text-2xl font-semibold" style={{color: PRIMARY700}}>{modalobj.title}</div>
+                            <div className="mt-5 text-center text-2xl font-semibold" style={{color: type==='driver'?SECONDARY800:PRIMARY700}}>{modalobj.title}</div>
                         :   <div className="mt-5 w-full flex flex-row items-center justify-between">
                                 <img alt="driverpic" src={'../'+modalobj.title.userimg}/>
-                                <div className="w-[70%]" style={{color:PRIMARY700}}>
+                                <div className="w-[70%]" style={{color: type==='driver'?SECONDARY800:PRIMARY700}}>
                                     <div className="font-semibold text-xl">{'Arriving in '+modalobj.title.time.toString()+' mins'}</div>
                                     <div className="mt-0.5 text-sm">{modalobj.title.cardesc}</div>
                                 </div>
@@ -110,7 +111,7 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                         :""
                     }
                     
-                    <select className="w-full text-sm mt-2 p-3 border rounded-md box-border" style={{display: modalobj.dropdown?'flex':'none', color: NEUTRAL300, borderColor: NEUTRAL300}}>
+                    <select className="w-full text-sm mt-2 p-3 border rounded-md box-border" style={{display: modalobj.dropdown?'flex':'none', color: NEUTRAL300, borderColor: NEUTRAL300}} defaultValue={""}>
                         <option value="" disabled selected>
                             {
                                 typeof modalobj.dropdowntext === 'string' ? 
@@ -163,9 +164,9 @@ export default function Modal({ modalobj, showmodal, hidemodal }: ModalProps ){
                             Array.isArray(modalobj.buttontext) ?    
                                 <div className="mt-6 flex flex-row items-center justify-between w-[80%] box-border">
                                     <button className="w-[45%] font-md rounded-full p-2 border" style={{color: NEUTRAL400, borderColor: NEUTRAL400}} onClick={()=>{ buttonClick2(0); }}>{modalobj.buttontext[0]}</button>
-                                    <button className="w-[45%] text-white font-md rounded-full p-2" style={{backgroundColor: PRIMARY700}}  onClick={()=>{ if(modalobj.buttontext[0]==='Cancel'){ buttonClick2(1); } }}>{modalobj.buttontext[1]}</button>
+                                    <button className="w-[45%] text-white font-md rounded-full p-2" style={{backgroundColor: type==='driver'?SECONDARY800:PRIMARY700}}  onClick={()=>{ if(modalobj.buttontext[0]==='Cancel'){ buttonClick2(1); } }}>{modalobj.buttontext[1]}</button>
                                 </div>
-                            :   <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor: PRIMARY700}} onClick={()=>{ buttonClick1(); }}>{modalobj.buttontext}</button>
+                            :   <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor: type==='driver'?SECONDARY800:PRIMARY700}} onClick={()=>{ buttonClick1(); }}>{modalobj.buttontext}</button>
                         : ''    
                     }
                 </div>
