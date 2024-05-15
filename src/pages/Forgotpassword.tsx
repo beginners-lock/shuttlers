@@ -45,7 +45,7 @@ const Forgotpassword = () => {
 
         if(!error){
             setLoading1(true);
-            axios.post(URL+'/checkemailexistence', { email: email }).then(response => {
+            axios.post(URL+'/checkuseremailexistence', { email: email }).then(response => {
                 if(response.status === 200){
                     let data = response.data;
 
@@ -129,7 +129,7 @@ const Forgotpassword = () => {
 
         if(!error){
             setLoading2(true);
-            axios.post(URL+'/changepassword', {email: email, password: password}).then(response => {
+            axios.post(URL+'/changeuserpassword', {email: email, password: password}).then(response => {
                 if(response.status===200){
                     let data = response.data;
                     if(data.err){

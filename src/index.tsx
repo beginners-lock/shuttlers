@@ -20,6 +20,7 @@ import Documentation from './pages/Documentation';
 import Driver from './pages/Driver';
 import DSettings from './pages/DSettings';
 import DTrips from './pages/DTrips';
+import Routes from './pages/Routes';
 
 const router = createBrowserRouter([
 	{
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
 	{
 		path: "/user/changepassword",
 		element: <Changepassword/>
+	},
+	{
+		path: "/user/routes",
+		element: <Routes/>
 	},
 	{
 		path: "/user/settings",

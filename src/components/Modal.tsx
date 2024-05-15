@@ -1,6 +1,7 @@
 import { MODALBG, PRIMARY700, NEUTRAL400, NEUTRAL300, MODALBODYTEXT, SECONDARY500, LIGHTPURPLE, NEUTRAL500, NEUTRAL800, SECONDARY800 } from "../theme/colors";
 //import { FORGOTPASSWORDMODAL, CHANGEPASSWORDMODAL, CURRENTLOCATIONMODAL, DESTINATIONMODAL, PAYMENTMETHODMODAL, DEPARTMENTMODAL, HOSTELMODAL, RIDETYPEMODAL, RECENTRIDESMODAL, LOGOUTMODAL, ARRIVINGMODAL } from "../theme/messages";
 import { ModalObjType } from "../constants/modalvariables";
+import { LOCATIONS, PRICES } from "../constants/location";
 
 
 //const isModalPaymentListType = (x: any): x is ModalPaymentListType => x.text && x.img;
@@ -9,10 +10,11 @@ type ModalProps = {
     modalobj: ModalObjType,
     showmodal: boolean,
     hidemodal?: ()=>void,
-    type?: string
+    type?: string,
+    closemodal?: ()=>void
 }
 
-export default function Modal({ modalobj, showmodal, hidemodal, type }: ModalProps ){    
+export default function Modal({ modalobj, showmodal, hidemodal, type, closemodal }: ModalProps ){    
     const buttonClick1 = () => {
         if(modalobj.type==='changepasswordmodal' || modalobj.type==="forgotpasswordmodal"){
             window.location.href = '/user/dashboard';
@@ -46,7 +48,7 @@ export default function Modal({ modalobj, showmodal, hidemodal, type }: ModalPro
                             <img alt="goback" src="../goback.png" className="mr-2"/>
                             Go back
                         </div>
-                        <img alt="close" src="../modalclose.png" style={{visibility: modalobj.close?'visible':'hidden'}} />
+                        <img alt="close" src="../modalclose.png" style={{visibility: modalobj.close?'visible':'hidden'}} onClick={()=>{ if(closemodal){ closemodal(); } }} />
                     </div>
 
                     <img alt="modaltick" src="../modaltick.png" style={{display:modalobj.type==="changepasswordmodal" || modalobj.type==="forgotpasswordmodal"?"flex":"none" }}/>
@@ -111,8 +113,8 @@ export default function Modal({ modalobj, showmodal, hidemodal, type }: ModalPro
                         :""
                     }
                     
-                    <select className="w-full text-sm mt-2 p-3 border rounded-md box-border" style={{display: modalobj.dropdown?'flex':'none', color: NEUTRAL300, borderColor: NEUTRAL300}} defaultValue={""}>
-                        <option value="" disabled selected>
+                    <select className="w-full text-sm mt-2 p-3 border rounded-md box-border" style={{display: modalobj.dropdown?'flex':'none', color: NEUTRAL500, borderColor: NEUTRAL300}} defaultValue={""}>
+                        <option value="" selected>
                             {
                                 typeof modalobj.dropdowntext === 'string' ? 
                                     modalobj.dropdowntext
@@ -122,6 +124,13 @@ export default function Modal({ modalobj, showmodal, hidemodal, type }: ModalPro
                                     </div>
                             }
                         </option>
+                        {
+                            modalobj.type==="currentlocationmodal" || modalobj.type==="destinationmodal" ?
+                                LOCATIONS.map((location) => {
+                                    return <option value={location} className="text-xs">{location}</option>
+                                })
+                            :   ''
+                        }
                     </select>
 
 

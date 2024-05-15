@@ -4,10 +4,17 @@ import { NEUTRAL100, NEUTRAL300, NEUTRAL400, NEUTRAL50, PRIMARY300, PRIMARY800, 
 import { ARRIVINGMODAL, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL } from '../constants/modalvariables';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
+import { RideObj } from '../constants/types';
 
 const User = () => {
+	const urlstring = window.location.search;
+    const params = new URLSearchParams(urlstring);
+    const id = params.get('id');
+
 	const [showsidebar, setShowsidebar] = useState(false);
 	const [showmodal, setShowmodal] = useState(false);
+	const [activemodalobj, setActivemodalobj] = useState(CURRENTLOCATIONMODAL);
+	const [rideobj, setRideObj] = useState<RideObj>({currentlocation:null, destination:null, price:null, passengers:null});
 
 	const toggleSidebar = () => {
 		setShowsidebar( state => { return !state; } )
@@ -56,22 +63,17 @@ const User = () => {
 				</div>
 
 				<div className='w-full box-border flex flex-row items-center justify-between mt-8'>
-					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
+					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800}} onClick={()=>{ setShowmodal(true); setActivemodalobj(CURRENTLOCATIONMODAL); }}>
 						<img className='mb-2' alt="noofrides" src="../noofrides.png"/>
-						No of rides
+						Book a ride
 					</div>
 
-					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
+					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800}}>
 						<img className='mb-2' alt="bookrides" src="../bookrides.png"/>
-						Book rides
+						Rides History
 					</div>
 
-					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
-						<img className='mb-2' alt="tickets" src="../tickets.png"/>
-						Tickets
-					</div>
-
-					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
+					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800}} onClick={() => { window.location.href="/user/routes?id="+id; }}>
 						<img className='mb-2' alt="routes" src="../routes.png"/>
 						Routes
 					</div>
@@ -91,8 +93,9 @@ const User = () => {
 				</div>
 			</div>
 			<Modal
-				showmodal={showmodal}
-				modalobj={RIDETYPEMODAL}
+				showmodal={showmodal}//showmodal
+				modalobj={activemodalobj}
+				closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
 			/>
 			<Sidebar
 				showstate={showsidebar}
@@ -112,4 +115,13 @@ export default User;
 					</div>
 					<img alt="userpgbg" src="../userbg.png"/>
 				</div>
+
+
+	
+	
+	//Tickets
+					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
+						<img className='mb-2' alt="tickets" src="../tickets.png"/>
+						Tickets
+					</div>
  */

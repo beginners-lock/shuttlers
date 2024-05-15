@@ -27,7 +27,7 @@ const Navbar = ({ showSidebar }: NavbarProps) => {
 				Don't have an account? <Link to="/user/signup" style={{color: PRIMARY800, fontWeight:'bold', cursor:'pointer', marginLeft:'5px'}}>Create an account</Link>
 			</div>
 
-			<img alt="settings" src="../settings.png" style={{display:url.slice(url.lastIndexOf('/')+1)==='user'?'flex':'none'}} onClick={()=>{ if(showSidebar){ showSidebar(); } }}/>
+			<img alt="settings" src="../settings.png" style={{display:url.indexOf('/user')?'flex':'none'}} onClick={()=>{ if(showSidebar){ showSidebar(); } }}/>
 
 			<img alt="burger" src="../burger.png"  style={{display:url.slice(url.lastIndexOf('/')+1)==='forgotpassword'?'flex':'none'}}/>
 		</div>

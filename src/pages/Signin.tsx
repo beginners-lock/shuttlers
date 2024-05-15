@@ -34,7 +34,7 @@ const Signin = () => {
 
 		if(!error){
 			setLoading(true);
-			axios.post(URL+'/login', {email: email, password: password}).then(response => {
+			axios.post(URL+'/userlogin', {email: email, password: password}).then(response => {
 				if(response.status === 200){
 					let data = response.data;
 					if(data.err){
@@ -50,7 +50,7 @@ const Signin = () => {
 
 						if(data.msg==='success'){
 							sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
-							window.location.href = '/user/dashboard';
+							window.location.href = '/user/dashboard?id='+data.user.id;
 							setLoading(false);
 						}
 					}
