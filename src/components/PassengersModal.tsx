@@ -1,6 +1,7 @@
 import { MODALBODYTEXT, MODALBG, NEUTRAL500, NEUTRAL300, PRIMARY700, NEUTRAL700 } from "../theme/colors";
 import { useState, useRef } from 'react';
 import SplitInput from "./SplitInput";
+import { EMPTY_FIELD_ERROR, INSUFFICIENT_BAL_RIDE } from "../constants/messages";
 
 
 type PModal = {
@@ -9,10 +10,11 @@ type PModal = {
     destination: string|null,
     price: number,
     closemodal?: ()=>void,
-    finish: (passengers:number, price:number, pin:string)=>void
+    finish: (passengers:number, price:number, pin:string)=>void,
+    wallet: number
 }
 
-export default function PassengersModal({currentlocation, destination, showmodal, price, closemodal, finish}: PModal){
+export default function PassengersModal({currentlocation, destination, showmodal, price, wallet, closemodal, finish}: PModal){
     const type = "passengersmodal";
     const title = "Passengers";
     const buttontext = "Continue";
@@ -20,6 +22,7 @@ export default function PassengersModal({currentlocation, destination, showmodal
     let inputRef = useRef<HTMLInputElement>(null);
     const [passengers, setPassengers] = useState(0);
     const [pin, setPin] = useState('');
+    const [warning, setWarning] = useState('');
 
     const onPress = () => { 
         inputRef.current?.focus(); 
@@ -33,8 +36,14 @@ export default function PassengersModal({currentlocation, destination, showmodal
     }
 
     const scrolltopin = () => {
-        let el = document.getElementById('pmodalscrollpane') as HTMLDivElement;
-        el.scrollLeft = 450;
+        setWarning('');
+        if(wallet>passengers*price){
+            let el = document.getElementById('pmodalscrollpane') as HTMLDivElement;
+            el.scrollLeft = 450;
+        }else{
+            setWarning(INSUFFICIENT_BAL_RIDE);
+        }
+        
     }
 
     const scrollBack = () => {
@@ -72,10 +81,11 @@ export default function PassengersModal({currentlocation, destination, showmodal
                             <div className="mt-4 flex flex-col items-start justify-center">
                                 <div className="text-md font-semibold" style={{color:NEUTRAL700}}>Passengers</div>
                                 <input id="pmodalinput" className="border-0 border-b border-slate-700 w-28 h-10 active:outline-none focus:outline-none text-black" type="number" min={0} max={4} onChange={()=>{ passengerinputchange(); }}/>
+                                <div className='mt-2 text-xs h-6 text-red-700'>{warning}</div>
                             </div>    
                         </div>
 
-                        <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor:PRIMARY700}} onClick={()=>{ if(passengers){ scrolltopin(); } }}>{buttontext}</button>
+                        <button className="w-full text-white font-md rounded-full mt-6 p-2" style={{backgroundColor:PRIMARY700}} onClick={()=>{ setWarning(''); if(passengers){ scrolltopin(); }else{ setWarning(EMPTY_FIELD_ERROR) } }}>{buttontext}</button>
                     </div>
 
                     <div className="min-w-full max-w-full h-full flex flex-col items-center justify-start box-border">

@@ -31,6 +31,8 @@ const User = () => {
 	const [price, setPrice] = useState(0);
 	const [user, setUser] = useState<UserType|null>(null);
 	const [wallet, setWallet] = useState(0);
+	const [rides, setRides] = useState([]);
+	const [ridekeys, setRidekeys] = useState<string[]>([]);
 
 	useEffect(()=>{
 		let session = sessionStorage.getItem('shuttlerssession');
@@ -41,17 +43,22 @@ const User = () => {
 			window.location.href = '/';
 		}
 
-		/*const unsub = onValue(userridesRef, (snapshot)=>{
-            //let orders: any = snapshot.val();
-
-		});*/
+		const unsub = onValue(userridesRef, (snapshot)=>{
+			console.log('unsub');
+            let rides: any = snapshot.val();
+			if(rides){
+				setRides(Object.values(rides));
+				setRidekeys(Object.keys(rides));
+			}
+		});
 
 		const unsubwallet = onValue(userwalletRef, (snapshot)=>{
+			console.log('wallet');
             let wallet: number = snapshot.val();
 			setWallet(wallet);
 		});
 
-		return ()=>{ /*unsub();*/ unsubwallet(); }
+		return ()=>{ unsub(); unsubwallet(); }
 	}, [])
 
 	const toggleSidebar = () => {
@@ -148,13 +155,21 @@ const User = () => {
 		console.log(ride);
 
 		const ridesRef = ref(db, 'rides/');
-		const userRidesRef = ref(db, 'users/'+id+'/rides');
+		let balance = wallet - price;
+
+		let userRef = ref(db, '/users/'+id)
 		push(ridesRef, ride).then(val => {
-			push(userRidesRef, val.key).then(()=>{
-				setRideObj({currentlocation:null, destination:null, price:null, passengers:null});
-				setActivemodal('currentlocation');
-				setShowmodal(false);
-			});
+			//let data = {};
+			if(val.key){
+				let indx = val.key;
+				let data = { [indx]: ride };
+				push(userridesRef, data).then(()=>{
+					update(userRef, {wallet: balance});
+					setRideObj({currentlocation:null, destination:null, price:null, passengers:null});
+					setActivemodal('currentlocation');
+					setShowmodal(false);
+				});
+			}
 		});
 	}
 
@@ -221,13 +236,27 @@ const User = () => {
 					<div className='w-full font-bold'>
 						Recent Rides
 					</div>
-					<div className='w-full box-border flex flex-row items-center justify-between p-3 mt-3'>
-						<div className='flex flex-row items-center justify-start font-bold'>
-							<img alt="car" src="../car.png" className="mr-2"/>
-							Cucrid Building
-						</div>
-						<div className='text-sm font-bold' style={{color: SECONDARY500}}>12 mins ago</div>
-					</div>
+					{
+						rides.length>0?
+							rides.map((ride:any, index:number) => {
+								return(
+								<div key={ridekeys[index]} className='w-full box-border flex flex-row items-center justify-between p-3 mt-3'>
+									<div className='flex flex-row items-center justify-start font-bold'>
+										<img alt="car" src="../car.png" className="mr-2"/>
+										{ride.currentlocation +' -> '+ ride.destination}
+									</div>
+
+									<div className='flex flex-row items-center justify-center mr-4'>
+										<img alt="passengersicon" src="../passengers.png"/>
+										{ride.passengers}
+									</div>
+
+									<div className='text-sm font-bold' style={{color: SECONDARY500}}>{ride.booked?ride.booked:'02:10:15  05/03/2024'}</div>
+								</div>
+								);
+							})
+						:	<div className='w-full box-border flex flex-row items-center justify-center p-3 mt-3'>No pending rides</div>
+					}
 				</div>
 			</div>
 			{
@@ -271,6 +300,7 @@ const User = () => {
 						price={price}
 						closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
 						finish={bookfunct}
+						wallet={wallet}
 					/>
 			}
 
@@ -300,5 +330,14 @@ export default User;
 					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800,}}>
 						<img className='mb-2' alt="tickets" src="../tickets.png"/>
 						Tickets
+					</div>
+
+
+	<div className='w-full box-border flex flex-row items-center justify-between p-3 mt-3'>
+						<div className='flex flex-row items-center justify-start font-bold'>
+							<img alt="car" src="../car.png" className="mr-2"/>
+							Cucrid Building
+						</div>
+						<div className='text-sm font-bold' style={{color: SECONDARY500}}>12 mins ago</div>
 					</div>
  */
