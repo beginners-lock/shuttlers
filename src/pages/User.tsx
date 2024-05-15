@@ -11,12 +11,17 @@ import PassengersModal from '../components/PassengersModal';
 import { PRICES } from '../constants/location';
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, update, push } from 'firebase/database';
+import { ref, getDatabase, update, push, onValue } from 'firebase/database';
 
 const User = () => {
 	const urlstring = window.location.search;
     const params = new URLSearchParams(urlstring);
     const id = params.get('id');
+
+	initializeApp(firebaseConfig);
+	const db = getDatabase();
+	const userridesRef = ref(db, '/users/'+id+'/rides');
+	const userwalletRef = ref(db, '/users/'+id+'/wallet');
 
 	const [showsidebar, setShowsidebar] = useState(false);
 	const [showmodal, setShowmodal] = useState(false);
@@ -25,6 +30,7 @@ const User = () => {
 	const [locationexception, setLocationexception] = useState<string|null>(null);
 	const [price, setPrice] = useState(0);
 	const [user, setUser] = useState<UserType|null>(null);
+	const [wallet, setWallet] = useState(0);
 
 	useEffect(()=>{
 		let session = sessionStorage.getItem('shuttlerssession');
@@ -34,6 +40,18 @@ const User = () => {
 		}else{
 			window.location.href = '/';
 		}
+
+		/*const unsub = onValue(userridesRef, (snapshot)=>{
+            //let orders: any = snapshot.val();
+
+		});*/
+
+		const unsubwallet = onValue(userwalletRef, (snapshot)=>{
+            let wallet: number = snapshot.val();
+			setWallet(wallet);
+		});
+
+		return ()=>{ /*unsub();*/ unsubwallet(); }
 	}, [])
 
 	const toggleSidebar = () => {
@@ -95,7 +113,23 @@ const User = () => {
 		}
 	}
 
+	const datefunct = () => {
+		let today = new Date();
+
+		let dd = String(today.getDate()).padStart(2, '0');
+		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		let yyyy = today.getFullYear();
+
+		let H = today.getHours();
+		let M = today.getMinutes();
+		let S = today.getSeconds();
+
+		let str = H + ':' + M + ':' + S + '	 ' + dd + '/' + mm + '/' + yyyy;
+		return str;
+	}
+
 	const bookfunct = (passengers: number, price: number, pin: string) => {
+		let now = datefunct();
 		let ride = {
 			userid: id,
 			driverid: null,
@@ -106,13 +140,13 @@ const User = () => {
 			currentlocation: rideobj.currentlocation,
 			destination: rideobj.destination,
 			pin: pin,
-			status: 'pending'
+			status: 'pending',
+			booked: now,
+			dropped: null
 		}
 
 		console.log(ride);
 
-		initializeApp(firebaseConfig);
-		const db = getDatabase();
 		const ridesRef = ref(db, 'rides/');
 		const userRidesRef = ref(db, 'users/'+id+'/rides');
 		push(ridesRef, ride).then(val => {
@@ -145,7 +179,7 @@ const User = () => {
 					<div>
 						<div style={{color:'lightgrey'}}>Balance</div>
 						<div className="mt-2 flex flex-row items-center justify-start" style={{color:'white'}}>
-							<div className='text-3xl font-semibold'>1000 NGN</div>
+							<div className='text-3xl font-semibold'>{wallet+' NGN'}</div>
 							<div className='flex flex-row items-center justify-start ml-6'>
 								<img alt="addcircle" src="../addcircle.png" className='mr-1'/>
 								Top-Up
