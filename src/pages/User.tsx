@@ -49,6 +49,9 @@ const User = () => {
 			if(rides){
 				setRides(Object.values(rides));
 				setRidekeys(Object.keys(rides));
+			}else{
+				setRides([]);
+				setRidekeys([]);
 			}
 		});
 
@@ -131,7 +134,7 @@ const User = () => {
 		let M = today.getMinutes();
 		let S = today.getSeconds();
 
-		let str = H + ':' + M + ':' + S + '	 ' + dd + '/' + mm + '/' + yyyy;
+		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
 		return str;
 	}
 
@@ -161,9 +164,8 @@ const User = () => {
 		push(ridesRef, ride).then(val => {
 			//let data = {};
 			if(val.key){
-				let indx = val.key;
-				let data = { [indx]: ride };
-				push(userridesRef, data).then(()=>{
+				const userspecificrideRef = ref(db, '/users/'+id+'/rides/'+val.key);
+				update(userspecificrideRef, ride).then(()=>{
 					update(userRef, {wallet: balance});
 					setRideObj({currentlocation:null, destination:null, price:null, passengers:null});
 					setActivemodal('currentlocation');
@@ -234,24 +236,24 @@ const User = () => {
 
 				<div className='w-full box-border flex flex-col justify-start items-center mt-10'>
 					<div className='w-full font-bold'>
-						Recent Rides
+						Pending Rides
 					</div>
 					{
 						rides.length>0?
 							rides.map((ride:any, index:number) => {
 								return(
 								<div key={ridekeys[index]} className='w-full box-border flex flex-row items-center justify-between p-3 mt-3'>
-									<div className='flex flex-row items-center justify-start font-bold'>
+									<div className='flex flex-row items-center justify-start font-semibold text-sm w-[65%]'>
 										<img alt="car" src="../car.png" className="mr-2"/>
 										{ride.currentlocation +' -> '+ ride.destination}
 									</div>
 
-									<div className='flex flex-row items-center justify-center mr-4'>
+									<div className='flex flex-row items-center justify-center font-semibold text-sm w-[15%]'>
 										<img alt="passengersicon" src="../passengers.png"/>
 										{ride.passengers}
 									</div>
 
-									<div className='text-sm font-bold' style={{color: SECONDARY500}}>{ride.booked?ride.booked:'02:10:15  05/03/2024'}</div>
+									<div className='font-semibold text-sm w-[30%] text-right' style={{color: SECONDARY500}}>{ride.booked?ride.booked:'02:10:15  05/03/2024'}</div>
 								</div>
 								);
 							})
