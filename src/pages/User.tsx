@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
 import { NEUTRAL100, NEUTRAL300, NEUTRAL400, NEUTRAL50, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
-import { ARRIVINGMODAL, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL } from '../constants/modalvariables';
+//import { ARRIVINGMODAL, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL } from '../constants/modalvariables';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
-import { RideObj } from '../constants/types';
+import { RideObj, UserType } from '../constants/types';
+import CurrentLocationModal from '../components/CurrentLocationModal';
+import DestinationModal from '../components/DestinationModal';
+import PassengersModal from '../components/PassengersModal';
+import { PRICES } from '../constants/location';
+import { firebaseConfig } from '../firebaseconfig';
+import { initializeApp } from 'firebase/app';
+import { ref, getDatabase, update, push } from 'firebase/database';
 
 const User = () => {
 	const urlstring = window.location.search;
@@ -13,11 +20,108 @@ const User = () => {
 
 	const [showsidebar, setShowsidebar] = useState(false);
 	const [showmodal, setShowmodal] = useState(false);
-	const [activemodalobj, setActivemodalobj] = useState(CURRENTLOCATIONMODAL);
+	const [activemodal, setActivemodal] = useState("currentlocation");
 	const [rideobj, setRideObj] = useState<RideObj>({currentlocation:null, destination:null, price:null, passengers:null});
+	const [locationexception, setLocationexception] = useState<string|null>(null);
+	const [price, setPrice] = useState(0);
+	const [user, setUser] = useState<UserType|null>(null);
+
+	useEffect(()=>{
+		let session = sessionStorage.getItem('shuttlerssession');
+		if(session && session!=='undefined'){
+			let user = JSON.parse(session);
+			setUser(user);
+		}else{
+			window.location.href = '/';
+		}
+	}, [])
 
 	const toggleSidebar = () => {
 		setShowsidebar( state => { return !state; } )
+	}
+
+	const modalbtnclick = (type: string, location: string) => {
+		if(location){
+			if(type==='currentlocationmodal'){
+				let obj = { ...rideobj };
+				obj.currentlocation = location;
+				setActivemodal("destination");
+				setRideObj(obj);
+
+				if(location.includes('Hall')){
+					console.log('hall');
+					setLocationexception('Hall');
+				}
+
+				if(location.includes('Dept. Building')){
+					console.log('dept');
+					setLocationexception('Dept. Building');
+				}
+			}
+	
+			if(type==='destinationmodal'){
+				let obj = { ...rideobj };
+				obj.destination = location;
+				setActivemodal('passengers');
+				setRideObj(obj);
+
+				//Check for the route being talked about and the price
+				let curlocation = ""; let destination = "";
+				if(obj.currentlocation?.includes('Hall')){ curlocation="Hall"; }
+				if(obj.currentlocation?.includes('Dept. Building')){ curlocation="Dept. Building" }
+				if(obj.currentlocation==='Shuttle Stand'){ curlocation="Shuttle Stand" }
+				if(obj.currentlocation==='CST'){ curlocation="CST" }
+				if(obj.currentlocation==='Cafeteria 2'){ curlocation="Cafeteria 2" }
+
+				if(obj.destination?.includes('Hall')){ destination="Hall"; }
+				if(obj.destination?.includes('Dept. Building')){ destination="Dept. Building" }
+				if(obj.destination==='Shuttle Stand'){ destination="Shuttle Stand" }
+				if(obj.destination==='CST'){ destination="CST" }
+				if(obj.destination==='Cafeteria 2'){ destination="Cafeteria 2" }
+
+				let price = PRICES.filter((price) => { return(price.location===curlocation && price.destination===destination); });
+				setPrice(price[0].price);
+			}
+		}
+	}
+
+
+	const modalback = (type: string) => {
+		if(type==="destinationmodal"){
+			let obj = { ...rideobj };
+			obj.currentlocation = null;
+			obj.destination = null;
+			setActivemodal("currentlocation");
+		}
+	}
+
+	const bookfunct = (passengers: number, price: number, pin: string) => {
+		let ride = {
+			userid: id,
+			driverid: null,
+			username: user?.firstname+' '+user?.lastname,
+			useremail: user?.email,
+			passengers: passengers,
+			price: price,
+			currentlocation: rideobj.currentlocation,
+			destination: rideobj.destination,
+			pin: pin,
+			status: 'pending'
+		}
+
+		console.log(ride);
+
+		initializeApp(firebaseConfig);
+		const db = getDatabase();
+		const ridesRef = ref(db, 'rides/');
+		const userRidesRef = ref(db, 'users/'+id+'/rides');
+		push(ridesRef, ride).then(val => {
+			push(userRidesRef, val.key).then(()=>{
+				setRideObj({currentlocation:null, destination:null, price:null, passengers:null});
+				setActivemodal('currentlocation');
+				setShowmodal(false);
+			});
+		});
 	}
 
 	return (
@@ -27,7 +131,7 @@ const User = () => {
 			/>
 			<div className="mt-9 w-full flex flex-col items-start justify-start">
 				<div className='font-bold' style={{color: PRIMARY900}}>Welcome Back,</div>
-				<div className='font-bold' style={{color: PRIMARY900}}>Daniel</div>
+				<div className='font-bold' style={{color: PRIMARY900}}>{user?.firstname}</div>
 			</div>
 			<div className='box-border w-full px-3 flex flex-col items-center justify-start'>
 				<div className="relative mt-6 w-[600px] h-[250px] rounded-lg shadow-lg box-border px-6 py-8 flex flex-col items-start justify-between" style={{backgroundImage:'linear-gradient(to bottom right, #55004B 0%, #416E74 70%, #416E74 100%)'}}>
@@ -63,7 +167,7 @@ const User = () => {
 				</div>
 
 				<div className='w-full box-border flex flex-row items-center justify-between mt-8'>
-					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800}} onClick={()=>{ setShowmodal(true); setActivemodalobj(CURRENTLOCATIONMODAL); }}>
+					<div className='w-40 h-28 flex flex-col items-center justify-center font-bold' style={{backgroundColor:PRIMARY300, color:PRIMARY800}} onClick={()=>{ setShowmodal(true); setActivemodal("currentlocation"); }}>
 						<img className='mb-2' alt="noofrides" src="../noofrides.png"/>
 						Book a ride
 					</div>
@@ -92,11 +196,50 @@ const User = () => {
 					</div>
 				</div>
 			</div>
-			<Modal
-				showmodal={showmodal}//showmodal
-				modalobj={activemodalobj}
-				closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
-			/>
+			{
+				/*false && 
+					<Modal
+						showmodal={showmodal}//showmodal
+						modalobj={activemodal}
+						closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
+						locationbtnprop={modalbtnclick}
+						locationbackbtn={modalback}
+					/>*/
+			}
+			
+			{
+				activemodal==='currentlocation' &&
+					<CurrentLocationModal
+						showmodal={showmodal}
+						closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
+						locationbtnprop={modalbtnclick}
+					/>
+			}
+
+			{
+				activemodal==='destination' &&
+				<DestinationModal
+					showmodal={showmodal}
+					closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
+					locationbtnprop={modalbtnclick}
+					locationbackbtn={modalback}
+					locationexception={locationexception}
+					current={rideobj.currentlocation}
+				/>
+			}
+
+			{
+				activemodal==='passengers' &&
+					<PassengersModal
+						currentlocation={rideobj.currentlocation}
+						destination={rideobj.destination}
+						showmodal={showmodal}
+						price={price}
+						closemodal={()=>{ setRideObj({currentlocation:null, destination:null, price:null, passengers:null}); setShowmodal(false); }}
+						finish={bookfunct}
+					/>
+			}
+
 			<Sidebar
 				showstate={showsidebar}
 				hide={()=>{ setShowsidebar(false); }}

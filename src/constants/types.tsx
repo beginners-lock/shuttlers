@@ -12,3 +12,11 @@ export type RideObj = {
     passengers: number | null,
     price: string | null,
 }
+
+export type UserType = {
+    id: string,
+    firstname: string,
+    lastname: string,
+    matricnumber: string,
+    email: string
+}

@@ -49,7 +49,7 @@ const Signin = () => {
 						}
 
 						if(data.msg==='success'){
-							sessionStorage.setItem('shuttlersuser', JSON.stringify(data.user));
+							sessionStorage.setItem('shuttlerssession', JSON.stringify(data.user));
 							window.location.href = '/user/dashboard?id='+data.user.id;
 							setLoading(false);
 						}
