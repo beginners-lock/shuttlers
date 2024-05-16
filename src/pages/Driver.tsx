@@ -24,6 +24,8 @@ export default function Driver(){
     const [pinloading, setPinloading] = useState(false);
     const [pinwarning, setPinwarning] = useState('');
     const [showmodal, setShowmodal] = useState(false);
+    const [activerideid, setActiverideid] = useState<string|null>(null);
+    const [activeridepin, setActiveridepin] = useState<string|null>(null);
 
     useEffect(()=>{
         let session = sessionStorage.getItem('shuttlerssession');
@@ -86,6 +88,18 @@ export default function Driver(){
 
     const pincheck = (pin: string) => {
         console.log(pin);
+    }
+
+    const ridebtnclick = (id: string, pin: string) => {
+        setActiverideid(id);
+        setActiverideid(pin);
+        setShowmodal(true);
+    }
+
+    const closepinmodal = () => {
+        setActiverideid(null);
+        setActiverideid(null);
+        setShowmodal(false);
     }
 
     return(
@@ -169,7 +183,7 @@ export default function Driver(){
                                                     {ride.currentlocation+' -> '+ride.destination}
                                                 </div>
                                                 <div className='flex flex-row items-center justify-end mt-4'>
-                                                    <button className='text-xs text-white rounded-md py-2 px-4' style={{backgroundColor:SUCCESS700}}>Completed Ride</button>
+                                                    <button className='text-xs text-white rounded-md py-2 px-4' style={{backgroundColor:SUCCESS700}} onClick={()=>{ ridebtnclick(ride.id, ride.pin); }}>Completed Ride</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,6 +198,7 @@ export default function Driver(){
 
             <DNavbar/>
             <PinModal
+                close={closepinmodal}
                 visible={showmodal}
                 btnclick={pincheck}
                 loading={pinloading}

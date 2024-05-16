@@ -7,10 +7,11 @@ type PinModalProps = {
     btnclick: (pin: string)=>void,
     warning: string,
     loading: boolean,
-    visible: boolean
+    visible: boolean,
+    close: ()=>void
 }
 
-export default function PinModalD({ btnclick, warning, loading, visible }: PinModalProps){
+export default function PinModalD({ btnclick, warning, loading, visible, close }: PinModalProps){
     let inputRef = useRef<HTMLInputElement>(null);
     const [pin, setPin] = useState('');
 
@@ -21,6 +22,10 @@ export default function PinModalD({ btnclick, warning, loading, visible }: PinMo
     return(
         <div className="absolute w-full h-full flex-row justify-center items-center" style={{display:visible?'flex':'none', backgroundColor: MODALBG}}>
             <div className="bg-white w-[350px] box-border rounded-xl p-8">
+                <div className="w-full flex flex-row items-center justify-end">
+                    <img alt="close" src="../modalclose.png" onClick={()=>{ close(); }} />
+                </div>
+
                 <div className="font-bold text-lg" style={{color:SECONDARY800}}>Ride Pin</div>
                 <div className="mt-2 italic font-semibold">Ask passenger to input 4 digit pin used to book ride</div>
 
