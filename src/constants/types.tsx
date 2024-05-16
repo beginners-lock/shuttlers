@@ -18,5 +18,16 @@ export type UserType = {
     firstname: string,
     lastname: string,
     matricnumber: string,
-    email: string
+    email: string,
+    type: string
+}
+
+export type DriverType = {
+    id: string,
+    fullname: string,
+    email: string,
+    phone: string,
+    cartype: string,
+    carnumber: string,
+    type: string
 }

@@ -17,10 +17,12 @@ type SplitInputProps = {
     setOtp: React.Dispatch<React.SetStateAction<string>>,
     onPress: ()=>void
     confirmotp: ()=>void,
-    otplen: number
+    otplen: number,
+    height?: string,
+    fontsize?: string
 }
 
-const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen}: SplitInputProps) => {
+const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen, height, fontsize}: SplitInputProps) => {
     useEffect(()=>{
         //document.getElementById('otpinput').focus();
     }, []);
@@ -38,7 +40,7 @@ const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen}: SplitI
                     key={'si'+i}
                     className='flex flex-row items-center justify-center font-bold border rounded-md w-1/5 h-28'
                     onClick={onPress}
-                    style={{borderColor: NEUTRAL500, fontSize:'50px'}}
+                    style={{borderColor: NEUTRAL500, fontSize:fontsize?fontsize:'50px', height:height?height:''}}
                 >
                     {otp[i]}
                 </div>

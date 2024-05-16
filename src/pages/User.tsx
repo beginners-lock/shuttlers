@@ -38,7 +38,12 @@ const User = () => {
 		let session = sessionStorage.getItem('shuttlerssession');
 		if(session && session!=='undefined'){
 			let user = JSON.parse(session);
-			setUser(user);
+			if(user.type==='user'){
+                setUser(user);
+            }else{
+                sessionStorage.clear();
+			    window.location.href = '/';
+            }
 		}else{
 			window.location.href = '/';
 		}
