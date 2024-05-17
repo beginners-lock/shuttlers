@@ -25,6 +25,7 @@ export default function Driver(){
     const [pinwarning, setPinwarning] = useState('');
     const [showmodal, setShowmodal] = useState(false);
     const [activerideid, setActiverideid] = useState<string|null>(null);
+    const [activerideindex, setActiverideindex] = useState<number|null>(null);
     const [activeridepin, setActiveridepin] = useState<string|null>(null);
 
     useEffect(()=>{
@@ -52,7 +53,7 @@ export default function Driver(){
                 let vals = Object.values(rides);
                 let keys = Object.keys(rides);
                 
-                let pendingfilter = vals.map((val: any, index)=>{
+                let pendingfilter = vals.filter((val: any, index)=>{
                     if(val.status==='pending'){
                         val.id = keys[index];
                         return val;
@@ -86,19 +87,72 @@ export default function Driver(){
         setOnline((state)=>{ return !state });
     }
 
+    const datefunct = () => {
+		let today = new Date();
+
+		let dd = String(today.getDate()).padStart(2, '0');
+		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		let yyyy = today.getFullYear();
+
+		let H = today.getHours();
+		let M = today.getMinutes();
+		let S = today.getSeconds();
+
+		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
+		return str;
+	}
+
     const pincheck = (pin: string) => {
-        console.log(pin);
+        setPinwarning('');
+        if(activerideid!==null && activerideindex!==null && pin===activeridepin){
+            setPinloading(true);
+
+            let date = datefunct();
+            //Update user rides branch
+            let userid = availablerides[activerideindex].userid;
+            let userrideref = ref(db, '/users/'+userid+'/rides/'+activerideid);
+            update(userrideref, {status:'completed', arrival:date}).then(()=>{
+                //Add to the driver trips branch
+                let trip = availablerides[activerideindex];
+                let tripid = trip.id;
+                delete trip.id;
+                trip.status = "completed";
+                trip.arrival = date;
+                
+                let drivertripsref = ref(db, '/drivers/'+id+'/trips/'+tripid);
+                update(drivertripsref, trip).then(()=>{
+                    //Update driver wallet
+                    let balance = wallet+trip.price;
+                    let driverRef = ref(db, '/drivers/'+id);
+                    update(driverRef, {wallet: balance}).then(() => {
+                        //Update ride branch
+                        let rideref = ref(db, '/rides/'+activerideid);
+                        update(rideref, {status: 'completed', arrival: date}).then(()=>{
+                            setActiverideid(null);
+                            setActiverideindex(null);
+                            setActiveridepin(null);
+                            setPinloading(false);
+                            setShowmodal(false);
+                        });
+                    });
+                });
+            });   
+        }else{
+            setPinwarning('Wrong pin');
+        }
     }
 
-    const ridebtnclick = (id: string, pin: string) => {
+    const ridebtnclick = (id: string, pin: string, index:number) => {
         setActiverideid(id);
-        setActiverideid(pin);
+        setActiveridepin(pin);
+        setActiverideindex(index);
         setShowmodal(true);
     }
 
     const closepinmodal = () => {
         setActiverideid(null);
-        setActiverideid(null);
+        setActiveridepin(null);
+        setActiverideindex(null);
         setShowmodal(false);
     }
 
@@ -168,7 +222,7 @@ export default function Driver(){
                     <div className='w-full mt-6 px-2 flex flex-col items-center justify-start text-center text-sm' style={{color:NEUTRAL500}}>
                         {
                             online ?
-                                availablerides.map((ride) => {
+                                availablerides.map((ride, index) => {
                                     return(
                                         <div className='w-full' key={ride.id}>
                                             <div className="w-full border border-slate-300 rounded-md px-2 py-4 mb-4">
@@ -183,7 +237,7 @@ export default function Driver(){
                                                     {ride.currentlocation+' -> '+ride.destination}
                                                 </div>
                                                 <div className='flex flex-row items-center justify-end mt-4'>
-                                                    <button className='text-xs text-white rounded-md py-2 px-4' style={{backgroundColor:SUCCESS700}} onClick={()=>{ ridebtnclick(ride.id, ride.pin); }}>Completed Ride</button>
+                                                    <button className='text-xs text-white rounded-md py-2 px-4' style={{backgroundColor:SUCCESS700}} onClick={()=>{ ridebtnclick(ride.id, ride.pin, index); }}>Completed Ride</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,13 +251,15 @@ export default function Driver(){
             </div>
 
             <DNavbar/>
-            <PinModal
-                close={closepinmodal}
-                visible={showmodal}
-                btnclick={pincheck}
-                loading={pinloading}
-                warning={pinwarning}
-            />
+            {
+                showmodal &&    
+                <PinModal
+                    close={closepinmodal}
+                    btnclick={pincheck}
+                    loading={pinloading}
+                    warning={pinwarning}
+                />
+            }
         </div>
     )
 }

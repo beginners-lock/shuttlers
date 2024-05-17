@@ -1,26 +1,29 @@
 import SplitInput from "./SplitInput";
 import LoadingSpinner from "./Spinner";
 import { MODALBG, SECONDARY800 } from "../theme/colors";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 type PinModalProps = {
     btnclick: (pin: string)=>void,
     warning: string,
     loading: boolean,
-    visible: boolean,
     close: ()=>void
 }
 
-export default function PinModalD({ btnclick, warning, loading, visible, close }: PinModalProps){
+export default function PinModalD({ btnclick, warning, loading, close }: PinModalProps){
     let inputRef = useRef<HTMLInputElement>(null);
     const [pin, setPin] = useState('');
+
+    useEffect(() => {
+        return ()=>{ setPin(''); }  
+    }, []);
 
     const onPress = () => { 
         inputRef.current?.focus(); 
     }
 
     return(
-        <div className="absolute w-full h-full flex-row justify-center items-center" style={{display:visible?'flex':'none', backgroundColor: MODALBG}}>
+        <div className="absolute w-full h-full flex flex-row justify-center items-center" style={{backgroundColor: MODALBG}}>
             <div className="bg-white w-[350px] box-border rounded-xl p-8">
                 <div className="w-full flex flex-row items-center justify-end">
                     <img alt="close" src="../modalclose.png" onClick={()=>{ close(); }} />
@@ -48,7 +51,7 @@ export default function PinModalD({ btnclick, warning, loading, visible, close }
                             <LoadingSpinner
                                 loading={loading}
                                 borderColor="white"
-                                borderTopColor="tranparent"
+                                borderTopColor="transparent"
                                 size="20px"
                             />
                         :   'Confirm'
