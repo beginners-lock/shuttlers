@@ -27,3 +27,8 @@ export const ERROR500 = "#FA3C4C";
 
 export const SUCCESS500 = "#00CC8F";
 export const SUCCESS700 = "#00835C";
+
+export const ADMINBG = "#F8FBFF";
+export const ADMINPRIMARY1 = "#1C274C";
+export const ADMINTABLETEXTH = "#061F6A";
+export const ADMINGRAY1 = "#94A3B8";

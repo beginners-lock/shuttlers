@@ -21,6 +21,8 @@ import Driver from './pages/Driver';
 import DSettings from './pages/DSettings';
 import DTrips from './pages/DTrips';
 import Routes from './pages/Routes';
+import SigninA from './pages/SigninA';
+import Admin from './pages/Admin';
 
 const router = createBrowserRouter([
 	{
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
 	{
 		path: "/driver/settings",
 		element: <DSettings/>
+	},
+	{
+		path: "/admin/signin",
+		element: <SigninA/>
+	},
+	{
+		path: "/admin/dashboard",
+		element: <Admin/>
 	},
 	{
 		path: "/docs",
