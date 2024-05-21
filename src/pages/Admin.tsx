@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SidebarA from "../components/SidebarA";
 import { ADMINTABLETEXTH, ADMINPRIMARY1, SECONDARY500, NEUTRAL600 } from "../theme/colors";
+import EmptyATable from "../components/EmptyATable";
 
 export default function Admin(){
     const [activetable, setActivetable] = useState('drivers');
@@ -69,10 +70,10 @@ export default function Admin(){
                             activetable==='students'?
                                 students.length>0?
                                     ''
-                                :   <img className="w-20" alt="emptytable" src="../emptytable.png"/>
+                                :   <EmptyATable table="students"/>
                             :   drivers.length>0?
                                     ''
-                                :   <img alt="emptytable" src="../emptytable.png"/>
+                                :   <EmptyATable table="drivers"/>
                         }
                         
                     </div>
@@ -88,6 +89,14 @@ export default function Admin(){
                         <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}>View All</div>
                     </div>
                     
+                    <div className="w-full h-[100%] mt-2 border border-black flex flex-row items-center justify-center">
+                        {
+                            emissions.length>0?
+                                ''
+                            :   <EmptyATable table="emissions"/>
+                        }
+                        
+                    </div>
                 </div>
             </div>
         </div>
