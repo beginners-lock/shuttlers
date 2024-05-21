@@ -2,12 +2,15 @@ import { useState } from "react";
 import SidebarA from "../components/SidebarA";
 import { ADMINTABLETEXTH, ADMINPRIMARY1, SECONDARY500, NEUTRAL600 } from "../theme/colors";
 import EmptyATable from "../components/EmptyATable";
+import StudentsTable from "../components/StudentsTable";
+import DriversTable from "../components/DriversTable";
+import EmissionsTable from "../components/EmissionsTable";
 
 export default function Admin(){
     const [activetable, setActivetable] = useState('drivers');
-    const [students, setStudents] = useState([]);
-    const [drivers, setDrivers] = useState([]);
-    const [emissions, setEmissions] = useState([]);
+    const [students, setStudents] = useState([0]);
+    const [drivers, setDrivers] = useState([0]);
+    const [emissions, setEmissions] = useState([0]);
 
 
     return(
@@ -65,14 +68,14 @@ export default function Admin(){
                         <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}>View All</div>
                     </div>
                     
-                    <div className="w-full h-[100%] mt-2 border border-black flex flex-row items-center justify-center">
+                    <div className="w-full h-[100%] mt-2 flex flex-row items-center justify-center">
                         {
                             activetable==='students'?
                                 students.length>0?
-                                    ''
+                                    <StudentsTable/>
                                 :   <EmptyATable table="students"/>
                             :   drivers.length>0?
-                                    ''
+                                    <DriversTable/>
                                 :   <EmptyATable table="drivers"/>
                         }
                         
@@ -89,10 +92,10 @@ export default function Admin(){
                         <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}>View All</div>
                     </div>
                     
-                    <div className="w-full h-[100%] mt-2 border border-black flex flex-row items-center justify-center">
+                    <div className="w-full h-[100%] mt-2 flex flex-row items-center justify-center">
                         {
                             emissions.length>0?
-                                ''
+                                <EmissionsTable/>
                             :   <EmptyATable table="emissions"/>
                         }
                         
