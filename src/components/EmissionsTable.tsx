@@ -1,6 +1,11 @@
 import { SECONDARY800, NEUTRAL500, ADMINTABLETEXTH } from "../theme/colors"
 
-export default function EmissionsTable(){
+type EmissionTableProps = {
+    keys: string[],
+    data: any[]
+}
+
+export default function EmissionsTable({ keys, data }: EmissionTableProps){
     const LOW = { bg:'#27AE6040', color:'#27AE60'};
     const MEDIUM = { bg:'#0055CC40', color:'#0055CC'};
     const HIGH = { bg:'#FBDDDD', color:'red'};

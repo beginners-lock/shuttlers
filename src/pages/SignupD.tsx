@@ -10,6 +10,7 @@ import { URL } from "../constants/globalvariables";
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from "firebase/app";
 import { ref, getDatabase, update } from "firebase/database";
+import { datefunct } from "../constants/globalvariables";
 
 
 export default function SignupD(){
@@ -203,8 +204,16 @@ export default function SignupD(){
                         initializeApp(firebaseConfig);
                         const db = getDatabase();
                         const driverRef = ref(db, 'drivers/'+resdata.driver.id);
+                        let date = datefunct();
 
                         update(driverRef, {
+                            regdate: date,
+                            fullname:driverdata?.fullname,
+                            email:driverdata?.email,
+                            phone:driverdata?.phone,
+                            cartype:driverdata?.cartype,
+                            carnumber:driverdata?.carnumber,
+                            verified:false,
                             wallet: 0,
                             rides: []
                         }).then(()=>{

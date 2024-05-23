@@ -9,6 +9,7 @@ import axios from 'axios';
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from "firebase/app";
 import { ref, getDatabase, update } from 'firebase/database';
+import { datefunct } from '../constants/globalvariables';
 
 const Signup = () => {
 	let inputRef = useRef<HTMLInputElement>(null);
@@ -187,8 +188,14 @@ const Signup = () => {
 						initializeApp(firebaseConfig);
                         const db = getDatabase();
                         const userRef = ref(db, 'users/'+data.user.id);
+						let date = datefunct();
 
                         update(userRef, {
+							regdate: date, 
+							firstname: firstname,
+							lastname: lastname,
+							matricnumber: matricnumber,
+							email: email,
                             wallet: 0,
                             rides: []
                         }).then(()=>{

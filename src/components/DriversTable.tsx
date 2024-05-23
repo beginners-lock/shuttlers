@@ -1,6 +1,11 @@
 import { SECONDARY800, NEUTRAL500, ADMINTABLETEXTH } from "../theme/colors"
 
-export default function DriversTable(){
+type DriversTableProps = {
+    keys: string[],
+    drivers: any[]
+}
+
+export default function DriversTable({ keys, drivers }: DriversTableProps){
     const ACTIVE = { bg:'#27AE6040', color:'#27AE60'};
     const INACTIVE = { bg:'#FBDDDD', color:'red'};
 

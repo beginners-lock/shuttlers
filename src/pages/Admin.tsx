@@ -1,17 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SidebarA from "../components/SidebarA";
 import { ADMINTABLETEXTH, ADMINPRIMARY1, SECONDARY500, NEUTRAL600 } from "../theme/colors";
 import EmptyATable from "../components/EmptyATable";
 import StudentsTable from "../components/StudentsTable";
 import DriversTable from "../components/DriversTable";
 import EmissionsTable from "../components/EmissionsTable";
+import { firebaseConfig } from '../firebaseconfig';
+import { initializeApp } from 'firebase/app';
+import { ref, getDatabase, update, push, onValue } from 'firebase/database';
 
 export default function Admin(){
-    const [activetable, setActivetable] = useState('drivers');
-    const [students, setStudents] = useState([0]);
-    const [drivers, setDrivers] = useState([0]);
-    const [emissions, setEmissions] = useState([0]);
+    initializeApp(firebaseConfig);
+	const db = getDatabase();
 
+    const ridesRef = ref(db, '/rides');
+	const driversRef = ref(db, '/drivers');
+    const usersRef = ref(db, '/users');
+
+    const [activetable, setActivetable] = useState('drivers');
+    const [students, setStudents] = useState([]);
+    const [drivers, setDrivers] = useState([]);
+    const [rides, setRides] = useState([]);
+    const [studentskeys, setStudentskeys] = useState<string[]>([]);
+    const [driverskeys, setDriverskeys] = useState<string[]>([]);
+    const [rideskeys, setRideskeys] = useState<string[]>([]);
+    
+    const [emissions, setEmissions] = useState([]);
+    const [emisssionskeys, setEmissionskeys] = useState([]);
+
+    useEffect(() => {
+        const ridesSub = onValue(ridesRef, (snapshot)=>{
+            let rides: any = snapshot.val();
+            setRides(Object.values(rides));
+            setRideskeys(Object.keys(rides));
+        });
+
+        const driversSub = onValue(driversRef, (snapshot)=>{
+            let drivers: any = snapshot.val();
+            setDrivers(Object.values(drivers));
+            setDriverskeys(Object.keys(drivers));
+        });
+
+        const usersSub = onValue(usersRef, (snapshot)=>{
+            let users: any = snapshot.val();
+            setStudents(Object.values(users));
+            setStudentskeys(Object.keys(users));
+        });
+
+
+        return ()=>{ ridesSub(); driversSub(); usersSub(); }
+    }, []);
 
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
@@ -25,7 +63,7 @@ export default function Admin(){
                             <div className="text-xs font-semibold" style={{color:ADMINPRIMARY1}}>No of Rides</div>
                             <img alt="car" src="../premiumcar.png"/>
                         </div>
-                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>0</div>
+                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>{rideskeys.length}</div>
                     </div>
 
                     <div className="w-[220px] h-[120px] rounded-md px-5 py-7 flex flex-col items-start justify-between" style={{backgroundColor:'#EFEAFF'}}>
@@ -33,7 +71,7 @@ export default function Admin(){
                             <div className="text-xs font-semibold" style={{color:ADMINPRIMARY1}}>No of Drivers</div>
                             <img alt="car" src="../premiumcar.png"/>
                         </div>
-                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>0</div>
+                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>{driverskeys.length}</div>
                     </div>
 
                     <div className="w-[220px] h-[120px] rounded-md px-5 py-7 flex flex-col items-start justify-between" style={{backgroundColor:'#EFEAFF'}}>
@@ -41,7 +79,7 @@ export default function Admin(){
                             <div className="text-xs font-semibold" style={{color:ADMINPRIMARY1}}>No of Students</div>
                             <img alt="car" src="../premiumcar.png"/>
                         </div>
-                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>0</div>
+                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>{studentskeys.length}</div>
                     </div>
 
                     <div className="w-[220px] h-[120px] rounded-md px-5 py-7 flex flex-col items-start justify-between" style={{backgroundColor:'#EFEAFF'}}>
@@ -49,7 +87,7 @@ export default function Admin(){
                             <div className="text-xs font-semibold" style={{color:ADMINPRIMARY1}}>Booked Rides</div>
                             <img alt="car" src="../premiumcar.png"/>
                         </div>
-                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>0</div>
+                        <div className="font-bold text-2xl" style={{color:ADMINPRIMARY1}}>{ rides.filter((ride:any)=>{ return(!ride.arrival); }).length }</div>
                     </div>
                 </div>
 
@@ -72,10 +110,16 @@ export default function Admin(){
                         {
                             activetable==='students'?
                                 students.length>0?
-                                    <StudentsTable/>
+                                    <StudentsTable
+                                        keys={studentskeys}
+                                        students={students}
+                                    />
                                 :   <EmptyATable table="students"/>
                             :   drivers.length>0?
-                                    <DriversTable/>
+                                    <DriversTable
+                                        keys={driverskeys}
+                                        drivers={drivers}
+                                    />
                                 :   <EmptyATable table="drivers"/>
                         }
                         
@@ -95,7 +139,10 @@ export default function Admin(){
                     <div className="w-full h-[100%] mt-2 flex flex-row items-center justify-center">
                         {
                             emissions.length>0?
-                                <EmissionsTable/>
+                                <EmissionsTable
+                                    keys={emisssionskeys}
+                                    data={emissions}
+                                />
                             :   <EmptyATable table="emissions"/>
                         }
                         
