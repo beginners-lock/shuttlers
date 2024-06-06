@@ -1,4 +1,5 @@
-export const URL = 'http://localhost:3001';
+//export const URL = 'http://localhost:3001';
+export const URL = 'https://shuttlers-be.vercel.app';
 export const PASSWORD_LENGTH = 9;
 
 export const datefunct = () => {
