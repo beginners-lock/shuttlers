@@ -97,7 +97,7 @@ const router = createBrowserRouter([
 		element: <AdminUsersTable/>
 	},
 	{
-		path: "/admin/emissiontable",
+		path: "/admin/emissionstable",
 		element: <AdminEmissionTable/>
 	},
 	{

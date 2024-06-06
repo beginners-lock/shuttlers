@@ -7,15 +7,15 @@ import DriversTable from "../components/DriversTable";
 import EmissionsTable from "../components/EmissionsTable";
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, update, push, onValue } from 'firebase/database';
+import { ref, getDatabase/*, update, push*/, onValue } from 'firebase/database';
 
 export default function Admin(){
     initializeApp(firebaseConfig);
-	const db = getDatabase();
+	/*const db = getDatabase();
 
     const ridesRef = ref(db, '/rides');
 	const driversRef = ref(db, '/drivers');
-    const usersRef = ref(db, '/users');
+    const usersRef = ref(db, '/users');*/
 
     const [activetable, setActivetable] = useState('drivers');
     const [students, setStudents] = useState([]);
@@ -25,8 +25,10 @@ export default function Admin(){
     const [driverskeys, setDriverskeys] = useState<string[]>([]);
     const [rideskeys, setRideskeys] = useState<string[]>([]);
     
-    const [emissions, setEmissions] = useState([]);
-    const [emisssionskeys, setEmissionskeys] = useState([]);
+    const emissions: any[] = [];
+    const emisssionskeys: any[] = [];
+    /*const [emissions, setEmissions] = useState([]);
+    const [emisssionskeys, setEmissionskeys] = useState([]);*/
 
     useEffect(() => {
         let session = sessionStorage.getItem('shuttlerssession');
@@ -35,6 +37,12 @@ export default function Admin(){
             sessionStorage.removeItem('shuttlerssession');
             window.location.href = '/admin/signin';
         }
+
+        const db = getDatabase();
+
+        const ridesRef = ref(db, '/rides');
+        const driversRef = ref(db, '/drivers');
+        const usersRef = ref(db, '/users');
 
         const ridesSub = onValue(ridesRef, (snapshot)=>{
             let rides: any = snapshot.val();
@@ -110,7 +118,7 @@ export default function Admin(){
                             </div>
                         </div>
 
-                        <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}>View All</div>
+                        <div className="text-xs cursor-pointer" style={{color:SECONDARY500}} onClick={()=>{ window.location.href="/admin/userstable"; }}>View All</div>
                     </div>
                     
                     <div className="w-full h-[100%] mt-2 flex flex-row items-center justify-center">
@@ -140,7 +148,7 @@ export default function Admin(){
                             <div className="text-sm font-semibold ml-2" style={{color:ADMINTABLETEXTH}}>Carbon Emissions Data</div>
                         </div>
 
-                        <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}>View All</div>
+                        <div className="text-xs cursor-pointer" style={{color:SECONDARY500}}onClick={()=>{ window.location.href="/admin/emissionstable"; }}>View All</div>
                     </div>
                     
                     <div className="w-full h-[100%] mt-2 flex flex-row items-center justify-center">
