@@ -1,10 +1,10 @@
 import DNavbar from "../components/DNavbar";
 import { useState, useEffect } from 'react';
 import setfavicon from '../constants/setfavicon';
-import { DriverType } from "../constants/types";
+import PinModal from '../components/PinModalD';
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, onValue } from 'firebase/database';
+import { ref, getDatabase, onValue, update } from 'firebase/database';
 import { ERROR500, NEUTRAL500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
 
 export default function DTrips(){
@@ -17,18 +17,22 @@ export default function DTrips(){
 
     const [online, setOnline] = useState(false);
     const [activetriptab, setActivetriptab] = useState('available');
-    const [driver, setDriver] = useState<DriverType|null>(null);
+    const [wallet, setWallet] = useState(0);
 	const [availablerides, setAvailablerides] = useState<any[]>([]);
     const [completedrides, setCompletedrides] = useState<any[]>([]);
+    const [pinloading, setPinloading] = useState(false);
+    const [pinwarning, setPinwarning] = useState('');
+    const [showmodal, setShowmodal] = useState(false);
+    const [activerideid, setActiverideid] = useState<string|null>(null);
+    const [activerideindex, setActiverideindex] = useState<number|null>(null);
+    const [activeridepin, setActiveridepin] = useState<string|null>(null);
 
     useEffect(()=>{
         let session = sessionStorage.getItem('shuttlerssession');
 
 		if(session && session!=='undefined' && session!==undefined && session!=='null' && session!==null){
 			let driver = JSON.parse(session);
-            if(driver.type==='driver'){
-                setDriver(driver);
-            }else{
+            if(driver.type!=='driver'){
                 sessionStorage.clear();
 			    window.location.href = '/';
             }
@@ -42,6 +46,7 @@ export default function DTrips(){
         const db = getDatabase();
         const ridesRef = ref(db, '/rides');
         const tripsRef = ref(db, '/drivers/'+id+'/trips'); //These are the rides that have been completed by the driver
+        const driverwalletRef = ref(db, '/drivers/'+id+'/wallet');
 
         const unsub = onValue(ridesRef, (snapshot)=>{
 			console.log('unsub');
@@ -89,14 +94,81 @@ export default function DTrips(){
 			}
         });
 
-        return ()=>{ unsubCompleted(); unsub(); }
+        const unsubwallet = onValue(driverwalletRef, (snapshot)=>{
+            let wallet: number = snapshot.val();
+			setWallet(wallet);
+		});
+
+        return ()=>{ unsubCompleted(); unsub(); unsubwallet(); }
     }, [id]);
 
+    const datefunct = () => {
+		let today = new Date();
+
+		let dd = String(today.getDate()).padStart(2, '0');
+		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		let yyyy = today.getFullYear();
+
+		let H = today.getHours();
+		let M = today.getMinutes();
+		let S = today.getSeconds();
+
+		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
+		return str;
+	}
+
+    const pincheck = (pin: string) => {
+        setPinwarning('');
+        if(activerideid!==null && activerideindex!==null && pin===activeridepin){
+            setPinloading(true);
+
+            let date = datefunct();
+            //Update user rides branch
+            let userid = availablerides[activerideindex].userid;
+            let userrideref = ref(db, '/users/'+userid+'/rides/'+activerideid);
+            update(userrideref, {status:'completed', arrival:date}).then(()=>{
+                //Add to the driver trips branch
+                let trip = availablerides[activerideindex];
+                let tripid = trip.id;
+                delete trip.id;
+                trip.status = "completed";
+                trip.arrival = date;
+                
+                let drivertripsref = ref(db, '/drivers/'+id+'/trips/'+tripid);
+                update(drivertripsref, trip).then(()=>{
+                    //Update driver wallet
+                    let balance = wallet+trip.price;
+                    let driverRef = ref(db, '/drivers/'+id);
+                    update(driverRef, {wallet: balance}).then(() => {
+                        //Update ride branch
+                        let rideref = ref(db, '/rides/'+activerideid);
+                        update(rideref, {status: 'completed', arrival: date}).then(()=>{
+                            setActiverideid(null);
+                            setActiverideindex(null);
+                            setActiveridepin(null);
+                            setPinloading(false);
+                            setShowmodal(false);
+                        });
+                    });
+                });
+            });   
+        }else{
+            setPinwarning('Wrong pin');
+        }
+    }
+
     const ridebtnclick = (id: string, pin: string, index:number) => {
-        /*setActiverideid(id);
+        setActiverideid(id);
         setActiveridepin(pin);
         setActiverideindex(index);
-        setShowmodal(true);*/
+        setShowmodal(true);
+    }
+
+    const closepinmodal = () => {
+        setActiverideid(null);
+        setActiveridepin(null);
+        setActiverideindex(null);
+        setShowmodal(false);
     }
 
     return(
@@ -176,8 +248,17 @@ export default function DTrips(){
                 }
             </div>
 
-            
             <DNavbar/>
+            
+            {
+                showmodal &&    
+                <PinModal
+                    close={closepinmodal}
+                    btnclick={pincheck}
+                    loading={pinloading}
+                    warning={pinwarning}
+                />
+            }
         </div>
     )
 }
