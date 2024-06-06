@@ -69,7 +69,7 @@ export default function Admin(){
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
             <SidebarA/>
-            <div className="w-[1100px] px-8 pt-10 pb-8 h-full flex flex-col items-start justify-start">
+            <div className="w-[80%] pl-4 pr-8 pt-10 pb-8 h-full flex flex-col items-start justify-start">
                 <div className="text-xl font-semibold" style={{color:ADMINPRIMARY1}}>Welcome, Admin!</div>
                 
                 <div className="mt-6 w-full flex flex-row items-center justify-between">

@@ -7,7 +7,7 @@ export default function SidebarA(){
     }
 
     return(
-        <div className="w-[250px] px-5 py-10 rounded-tr-xl rounded-br-xl h-full text-white flex flex-col justify-start items-start font-poppins" style={{backgroundColor:SECONDARY800}}>
+        <div className="min-w-[230px] max-w-[250px] px-5 py-10 rounded-tr-xl rounded-br-xl h-full text-white flex flex-col justify-start items-start font-poppins border-box" style={{backgroundColor:SECONDARY800}}>
             <div className="flex flex-row items-center justify-start">
                 <img className="w-8" alt="logo" src="../logoAwhite.png" />
                 <div className="h-8 ml-2 pl-2 flex flex-row items-center border-0 border-l-[1px] border-white text-lg font-semibold">Shuttlers!</div>

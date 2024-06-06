@@ -7,6 +7,7 @@ import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
 import { ref, getDatabase, update, onValue } from 'firebase/database';
 import PinModal from '../components/PinModalD';
+import { datefunct } from '../constants/globalvariables';
 
 export default function Driver(){
     const urlstring = window.location.search;
@@ -85,21 +86,6 @@ export default function Driver(){
     const toggleonlinestatus = () => {
         setOnline((state)=>{ return !state });
     }
-
-    const datefunct = () => {
-		let today = new Date();
-
-		let dd = String(today.getDate()).padStart(2, '0');
-		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-		let yyyy = today.getFullYear();
-
-		let H = today.getHours();
-		let M = today.getMinutes();
-		let S = today.getSeconds();
-
-		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
-		return str;
-	}
 
     const pincheck = (pin: string) => {
         setPinwarning('');

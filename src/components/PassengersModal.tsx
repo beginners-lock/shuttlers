@@ -1,4 +1,4 @@
-import { MODALBODYTEXT, MODALBG, NEUTRAL500, NEUTRAL300, PRIMARY700, NEUTRAL700 } from "../theme/colors";
+import { MODALBODYTEXT, MODALBG, PRIMARY700, NEUTRAL700 } from "../theme/colors";
 import { useState, useRef } from 'react';
 import SplitInput from "./SplitInput";
 import { EMPTY_FIELD_ERROR, INSUFFICIENT_BAL_RIDE } from "../constants/messages";
@@ -15,7 +15,6 @@ type PModal = {
 }
 
 export default function PassengersModal({currentlocation, destination, showmodal, price, wallet, closemodal, finish}: PModal){
-    const type = "passengersmodal";
     const title = "Passengers";
     const buttontext = "Continue";
 

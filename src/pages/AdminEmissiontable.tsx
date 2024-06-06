@@ -16,7 +16,7 @@ export default function AdminEmissionTable(){
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
             <SidebarA/>
-            <div className="w-[1100px] px-8 pt-10 pb-8 h-full flex flex-col items-start justify-start">
+            <div className="w-[80%]  pl-4 pr-8  pt-10 pb-8 h-full flex flex-col items-start justify-start">
                 <div className="mt-6 w-full h-[30%] flex flex-col items-start justify-start">
                     <div className="w-full flex flex-row items-center justify-between">
                         <div className="flex flex-row items-center justify-start">

@@ -6,6 +6,7 @@ import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
 import { ref, getDatabase, onValue, update } from 'firebase/database';
 import { ERROR500, NEUTRAL500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
+import { datefunct } from "../constants/globalvariables";
 
 export default function DTrips(){
     const urlstring = window.location.search;
@@ -101,21 +102,6 @@ export default function DTrips(){
 
         return ()=>{ unsubCompleted(); unsub(); unsubwallet(); }
     }, [id]);
-
-    const datefunct = () => {
-		let today = new Date();
-
-		let dd = String(today.getDate()).padStart(2, '0');
-		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-		let yyyy = today.getFullYear();
-
-		let H = today.getHours();
-		let M = today.getMinutes();
-		let S = today.getSeconds();
-
-		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
-		return str;
-	}
 
     const pincheck = (pin: string) => {
         setPinwarning('');
