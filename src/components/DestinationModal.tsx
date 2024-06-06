@@ -15,7 +15,7 @@ export default function DestinationModal({showmodal, closemodal, locationbackbtn
     const title = "Your Destination";
     const body = "Select your destination from the drop-down to get the fastest ride";
     const buttontext = "Continue";
-    const dropdowntext = "Select your destination from the drop-down"
+    const dropdowntext = "Select your destination from the drop-down";
     
     const locationbtnclick = (type: string) => {
         let el = document.getElementById('locationselect') as HTMLSelectElement;
@@ -45,6 +45,8 @@ export default function DestinationModal({showmodal, closemodal, locationbackbtn
                                 if(locationexception){
                                     if(!location.includes(locationexception) && location!==current ){
                                         return <option value={location} className="text-xs">{location}</option>
+                                    }else{
+                                        return '';
                                     }
                                 }else{
                                     return <option value={location} className="text-xs">{location}</option>

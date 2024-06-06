@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { PRIMARY800, NEUTRAL700 } from '../theme/colors'; 
 import { Link } from 'react-router-dom';
 

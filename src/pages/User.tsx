@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
-import { NEUTRAL100, NEUTRAL300, NEUTRAL400, NEUTRAL50, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
-//import { ARRIVINGMODAL, CURRENTLOCATIONMODAL, DEPARTMENTMODAL, DESTINATIONMODAL, HOSTELMODAL, LOGOUTMODAL, PAYMENTMETHODMODAL, RECENTRIDESMODAL, RIDETYPEMODAL } from '../constants/modalvariables';
-import Modal from '../components/Modal';
+import { NEUTRAL100, NEUTRAL300, NEUTRAL400, PRIMARY300, PRIMARY800, PRIMARY900, SECONDARY500 } from '../theme/colors';
 import Sidebar from '../components/Sidebar';
 import { RideObj, UserType } from '../constants/types';
 import CurrentLocationModal from '../components/CurrentLocationModal';
@@ -20,8 +18,6 @@ const User = () => {
 
 	initializeApp(firebaseConfig);
 	const db = getDatabase();
-	const userridesRef = ref(db, '/users/'+id+'/rides');
-	const userwalletRef = ref(db, '/users/'+id+'/wallet');
 
 	const [showsidebar, setShowsidebar] = useState(false);
 	const [showmodal, setShowmodal] = useState(false);
@@ -48,6 +44,10 @@ const User = () => {
 			window.location.href = '/';
 		}
 
+		const db = getDatabase();
+		const userridesRef = ref(db, '/users/'+id+'/rides');
+		const userwalletRef = ref(db, '/users/'+id+'/wallet');
+
 		const unsub = onValue(userridesRef, (snapshot)=>{
 			console.log('unsub');
             let rides: any = snapshot.val();
@@ -67,7 +67,7 @@ const User = () => {
 		});
 
 		return ()=>{ unsub(); unsubwallet(); }
-	}, [])
+	}, [id])
 
 	const toggleSidebar = () => {
 		setShowsidebar( state => { return !state; } )
