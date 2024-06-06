@@ -3,23 +3,11 @@
 import './App.css';
 import LoadingSpinner from './components/Spinner';
 import { PRIMARY700, SECONDARY800 } from './theme/colors';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import setfavicon from './constants/setfavicon';
 
 function App() {
 	const [logintype, setLogintype] = useState('user');
-
-	useEffect(()=>{
-		/*setTimeout(()=>{
-			let user = sessionStorage.getItem('shuttlersuser');
-			console.log(user);
-			if(user){
-				window.location.href = "/user/dashboard";
-			}else{
-				window.location.href = "/user/signin";
-			}
-		}, 8000)*/
-	}, []);
 
 	const btnClick = (type: string) => {
 		setLogintype(type);

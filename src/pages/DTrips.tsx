@@ -1,10 +1,103 @@
 import DNavbar from "../components/DNavbar";
-import { useState } from 'react';
-import { ERROR500, NEUTRAL500, SECONDARY500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
+import { useState, useEffect } from 'react';
+import setfavicon from '../constants/setfavicon';
+import { DriverType } from "../constants/types";
+import { firebaseConfig } from '../firebaseconfig';
+import { initializeApp } from 'firebase/app';
+import { ref, getDatabase, onValue } from 'firebase/database';
+import { ERROR500, NEUTRAL500, SECONDARY900, SUCCESS500, SUCCESS700 } from '../theme/colors';
 
 export default function DTrips(){
+    const urlstring = window.location.search;
+    const params = new URLSearchParams(urlstring);
+    const id = params.get('id');
+
+    initializeApp(firebaseConfig);
+	const db = getDatabase();
+
     const [online, setOnline] = useState(false);
     const [activetriptab, setActivetriptab] = useState('available');
+    const [driver, setDriver] = useState<DriverType|null>(null);
+	const [availablerides, setAvailablerides] = useState<any[]>([]);
+    const [completedrides, setCompletedrides] = useState<any[]>([]);
+
+    useEffect(()=>{
+        let session = sessionStorage.getItem('shuttlerssession');
+
+		if(session && session!=='undefined' && session!==undefined && session!=='null' && session!==null){
+			let driver = JSON.parse(session);
+            if(driver.type==='driver'){
+                setDriver(driver);
+            }else{
+                sessionStorage.clear();
+			    window.location.href = '/';
+            }
+		}else{
+			window.location.href = '/';
+		}
+
+        console.log('effect');
+        setfavicon({ type:'driver' });
+
+        const db = getDatabase();
+        const ridesRef = ref(db, '/rides');
+        const tripsRef = ref(db, '/drivers/'+id+'/trips'); //These are the rides that have been completed by the driver
+
+        const unsub = onValue(ridesRef, (snapshot)=>{
+			console.log('unsub');
+            let rides: any = snapshot.val();
+			if(rides){
+                //Some action is done here
+                let vals = Object.values(rides);
+                let keys = Object.keys(rides);
+                
+                let pendingfilter: any = [];
+                vals.map((val: any, index)=>{
+                    if(val.status==='pending'){
+                        val.id = keys[index];
+                        pendingfilter.push(val);
+                    }
+                    return '';
+                });
+                
+                console.log(pendingfilter);
+                setAvailablerides(pendingfilter);
+			}else{
+				setAvailablerides([]);
+			}
+		});
+
+        const unsubCompleted = onValue(tripsRef, (snapshot)=>{
+            console.log('unsubCompleted');
+            let trips: any = snapshot.val();
+            if(trips){
+                //Some action is done here
+                let vals = Object.values(trips);
+                let keys = Object.keys(trips);
+                
+                let completedfilter: any = [];
+                vals.map((val: any, index)=>{
+                    val.id = keys[index];
+                    completedfilter.push(val);
+                    return '';
+                });
+                
+                console.log(completedfilter);
+                setCompletedrides(completedfilter);
+			}else{
+				setCompletedrides([]);
+			}
+        });
+
+        return ()=>{ unsubCompleted(); unsub(); }
+    }, [id]);
+
+    const ridebtnclick = (id: string, pin: string, index:number) => {
+        /*setActiverideid(id);
+        setActiveridepin(pin);
+        setActiverideindex(index);
+        setShowmodal(true);*/
+    }
 
     return(
         <div className="relative w-full h-full flex flex-col items-center justify-start">
@@ -39,19 +132,48 @@ export default function DTrips(){
             </div>
 
             <div className="px-2 mt-4 w-full pb-16">
-                <div className="w-full border border-slate-300 rounded-md px-2 py-3 mb-4">
-                    <div className='w-full flex flex-row items-center justify-between'>
-                        <div className='text-left text-md font-semibold' style={{color:SECONDARY900}}>Student Username</div>
-                        <div className='text-sm'>Dest: EIE</div>
-                    </div>
-                    <div className='w-full flex flex-row items-center justify-between mt-4'>
-                        <div className='flex flex-row items-center justify-start' style={{color:NEUTRAL500}}>
-                            <img alt="passengers" src="../trippassengers.png" className='mr-2'/>
-                            3 passengers
-                        </div>
-                        <div className='text-xs'>45 mins ago</div>
-                    </div>
-                </div>
+                {
+                    activetriptab==='available'?
+                        availablerides.map((ride:any, index:number)=>{
+                            return(
+                                <div className='w-full' key={ride.id}>
+                                    <div className="w-full border border-slate-300 rounded-md px-2 py-4 mb-4">
+                                        <div className='flex flex-row items-center justify-between'>
+                                            <div className='text-left text-md font-semibold' style={{color:SECONDARY900}}>{ride.username}</div>
+                                            <div className='flex flex-row items-center justify-start text-xs' style={{color:NEUTRAL500}}>
+                                                <img alt="passengers" src="../passengers.png" className='w-3 mr-2'/>
+                                                {ride.passengers+(ride.passengers===1?' passenger':' passengers')}
+                                            </div>
+                                        </div>
+                                        <div className='w-full flex flex-row items-center justify-between mt-2 text-xs'>
+                                            {ride.currentlocation+' -> '+ride.destination}
+                                        </div>
+                                        <div className='flex flex-row items-center justify-end mt-4'>
+                                            <button className='text-xs text-white rounded-md py-2 px-4' style={{backgroundColor:SUCCESS700}} onClick={()=>{ ridebtnclick(ride.id, ride.pin, index); }}>Completed Ride</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    :   completedrides.map((ride:any, index:number)=>{
+                            return(
+                                <div className='w-full' key={ride.id}>
+                                    <div className="w-full border border-slate-300 rounded-md px-2 py-4 mb-4">
+                                        <div className='flex flex-row items-center justify-between'>
+                                            <div className='text-left text-md font-semibold' style={{color:SECONDARY900}}>{ride.username}</div>
+                                            <div className='flex flex-row items-center justify-start text-xs' style={{color:NEUTRAL500}}>
+                                                <img alt="passengers" src="../passengers.png" className='w-3 mr-2'/>
+                                                {ride.passengers+(ride.passengers===1?' passenger':' passengers')}
+                                            </div>
+                                        </div>
+                                        <div className='w-full flex flex-row items-center justify-between mt-2 text-xs'>
+                                            {ride.currentlocation+' -> '+ride.destination}
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                }
             </div>
 
             

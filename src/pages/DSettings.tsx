@@ -1,14 +1,36 @@
-import { useState } from "react";
-import { ERROR700, NEUTRAL600, NEUTRAL700, NEUTRAL800, SECONDARY900 } from "../theme/colors";
+import { useState, useEffect } from "react";
+import setfavicon from '../constants/setfavicon';
+import { ERROR700, NEUTRAL600, NEUTRAL700, SECONDARY900 } from "../theme/colors";
 import Modal from "../components/Modal";
 import { LOGOUTMODAL } from "../constants/modalvariables";
+//import { DriverType } from "../constants/types";
 import DNavbar from "../components/DNavbar";
 
 export default function DSettings(){
     const [showmodal, setShowmodal] = useState(false);
+    //const [driver, setDriver] = useState<DriverType|null>(null);
+
+    useEffect(()=>{
+        let session = sessionStorage.getItem('shuttlerssession');
+
+		if(session && session!=='undefined' && session!==undefined && session!=='null' && session!==null){
+			let driver = JSON.parse(session);
+            if(driver.type==='driver'){
+                //setDriver(driver);
+            }else{
+                sessionStorage.clear();
+			    window.location.href = '/';
+            }
+		}else{
+			window.location.href = '/';
+		}
+
+        setfavicon({ type:'driver' });
+    }, []);
 
     return(
-        <div className="font-poppins w-full box-border flex flex-col items-center justify-start px-2 pb-16 overflow-hidden">
+        <div className="font-poppins w-full h-full box-border flex flex-col items-center justify-start px-2 pb-16 overflow-y-auto">
+            <div className="w-full h-auto pb-20">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 font-bold"  style={{color:SECONDARY900}}>
                 <img alt="backimg" src="../back.png" onClick={()=>{ window.location.href = '/user'; }}/>
                 Profile Settings
@@ -75,6 +97,7 @@ export default function DSettings(){
                     <img className="mr-3 w-5" alt="delete" src="../deleteaccount.png"/>
                     Delete Account
                 </div>
+            </div>
             </div>
             
             <Modal

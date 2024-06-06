@@ -5,7 +5,7 @@ import { ERROR500, NEUTRAL500, SECONDARY500, SECONDARY900, SUCCESS500, SUCCESS70
 import { DriverType } from '../constants/types';
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, update, push, onValue } from 'firebase/database';
+import { ref, getDatabase, update, onValue } from 'firebase/database';
 import PinModal from '../components/PinModalD';
 
 export default function Driver(){
@@ -15,9 +15,10 @@ export default function Driver(){
 
     initializeApp(firebaseConfig);
 	const db = getDatabase();
-	const ridesRef = ref(db, '/rides');
-	const driverwalletRef = ref(db, '/drivers/'+id+'/wallet');
-
+	/*const ridesRef = ref(db, '/rides');
+	const driverwalletRef = ref(db, '/drivers/'+id+'/wallet');*/
+    
+    const [online, setOnline] = useState(true);
     const [driver, setDriver] = useState<DriverType|null>(null);
     const [wallet, setWallet] = useState(0);
 	const [availablerides, setAvailablerides] = useState<any[]>([]);
@@ -31,7 +32,7 @@ export default function Driver(){
     useEffect(()=>{
         let session = sessionStorage.getItem('shuttlerssession');
 
-		if(session && session!=='undefined'){
+		if(session && session!=='undefined' && session!==undefined && session!=='null' && session!==null){
 			let driver = JSON.parse(session);
             if(driver.type==='driver'){
                 setDriver(driver);
@@ -45,6 +46,10 @@ export default function Driver(){
 
         setfavicon({ type:'driver' });
 
+        const db = getDatabase();
+        const ridesRef = ref(db, '/rides');
+        const driverwalletRef = ref(db, '/drivers/'+id+'/wallet');
+
         const unsub = onValue(ridesRef, (snapshot)=>{
 			console.log('unsub');
             let rides: any = snapshot.val();
@@ -53,35 +58,29 @@ export default function Driver(){
                 let vals = Object.values(rides);
                 let keys = Object.keys(rides);
                 
-                let pendingfilter = vals.filter((val: any, index)=>{
+                let pendingfilter: any = [];
+                vals.map((val: any, index)=>{
                     if(val.status==='pending'){
                         val.id = keys[index];
-                        return val;
+                        pendingfilter.push(val);
                     }
+                    return '';
                 });
-
+                
                 console.log(pendingfilter);
                 setAvailablerides(pendingfilter);
-                /*let ridesArr
-                let streamed = rides.filter((obj: any) => { return obj. });
-				setRides(Object.values(rides));
-				setRidekeys(Object.keys(rides));*/
 			}else{
 				setAvailablerides([]);
 			}
 		});
 
         const unsubwallet = onValue(driverwalletRef, (snapshot)=>{
-			console.log('wallet');
             let wallet: number = snapshot.val();
 			setWallet(wallet);
 		});
-
-        return ()=>{ /*unsub();*/ unsubwallet(); }
-    }, []);
-
-    const [online, setOnline] = useState(false);
-    //const [activetriptab, setActivetriptab] = useState('available');
+        console.log('effect');
+        return ()=>{ unsub(); unsubwallet(); }
+    }, [id]);
 
     const toggleonlinestatus = () => {
         setOnline((state)=>{ return !state });
@@ -217,7 +216,7 @@ export default function Driver(){
                             <div className='px-2.5 py-1 rounded-full text-sm mr-2 font-semibold' style={{color: SECONDARY900}}>Ride Requests</div>
                         </div>
 
-                        <div className='text-xs' style={{color:SECONDARY500}}>view more</div>
+                        <div className='text-xs' style={{color:SECONDARY500}} onClick={()=>{ window.location.href='/driver/trips?id='+id; }}>view more</div>
                     </div>
                     <div className='w-full mt-6 px-2 flex flex-col items-center justify-start text-center text-sm' style={{color:NEUTRAL500}}>
                         {
