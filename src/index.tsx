@@ -23,6 +23,8 @@ import DTrips from './pages/DTrips';
 import Routes from './pages/Routes';
 import SigninA from './pages/SigninA';
 import Admin from './pages/Admin';
+import AdminUsersTable from './pages/AdminUserstable';
+import AdminEmissionTable from './pages/AdminEmissiontable';
 
 const router = createBrowserRouter([
 	{
@@ -79,12 +81,24 @@ const router = createBrowserRouter([
 		element: <DSettings/>
 	},
 	{
+		path: "/admin",
+		element: <SigninA/>
+	},
+	{
 		path: "/admin/signin",
 		element: <SigninA/>
 	},
 	{
 		path: "/admin/dashboard",
 		element: <Admin/>
+	},
+	{
+		path: "/admin/userstable",
+		element: <AdminUsersTable/>
+	},
+	{
+		path: "/admin/emissiontable",
+		element: <AdminEmissionTable/>
 	},
 	{
 		path: "/docs",

@@ -29,6 +29,13 @@ export default function Admin(){
     const [emisssionskeys, setEmissionskeys] = useState([]);
 
     useEffect(() => {
+        let session = sessionStorage.getItem('shuttlerssession');
+        
+        if(session===null || session==='null' || session===undefined || session==='undefined'){
+            sessionStorage.removeItem('shuttlerssession');
+            window.location.href = '/admin/signin';
+        }
+
         const ridesSub = onValue(ridesRef, (snapshot)=>{
             let rides: any = snapshot.val();
             setRides(Object.values(rides));
