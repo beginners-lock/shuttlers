@@ -46,7 +46,7 @@ const SplitInput = ({inputRef, otp, setOtp, onPress, confirmotp, otplen, height,
                 </div>
             ))}
         </div>
-    , [onPress, otp, otplen]);
+    , [onPress, otp, otplen, fontsize, height]);
 
     return (
         <div className='w-full'>

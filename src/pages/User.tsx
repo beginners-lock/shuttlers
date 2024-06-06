@@ -7,6 +7,7 @@ import CurrentLocationModal from '../components/CurrentLocationModal';
 import DestinationModal from '../components/DestinationModal';
 import PassengersModal from '../components/PassengersModal';
 import { PRICES } from '../constants/location';
+import { datefunct } from '../constants/globalvariables';
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
 import { ref, getDatabase, update, push, onValue } from 'firebase/database';
@@ -52,8 +53,21 @@ const User = () => {
 			console.log('unsub');
             let rides: any = snapshot.val();
 			if(rides){
-				setRides(Object.values(rides));
-				setRidekeys(Object.keys(rides));
+				let vals = Object.values(rides);
+                let keys = Object.keys(rides);
+                
+                let pendingfilter: any = [];
+				let pendingkeys: any = [];
+                vals.map((val: any, index)=>{
+                    if(val.status==='pending'){
+                        pendingfilter.push(val);
+						pendingkeys.push(keys[index]);
+                    }
+                    return '';
+                });
+
+				setRides(pendingfilter);
+				setRidekeys(pendingkeys);
 			}else{
 				setRides([]);
 				setRidekeys([]);
@@ -126,21 +140,6 @@ const User = () => {
 			obj.destination = null;
 			setActivemodal("currentlocation");
 		}
-	}
-
-	const datefunct = () => {
-		let today = new Date();
-
-		let dd = String(today.getDate()).padStart(2, '0');
-		let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-		let yyyy = today.getFullYear();
-
-		let H = today.getHours();
-		let M = today.getMinutes();
-		let S = today.getSeconds();
-
-		let str = H + ':' + M + ':' + S + '	    ' + dd + '/' + mm + '/' + yyyy;
-		return str;
 	}
 
 	const bookfunct = (passengers: number, price: number, pin: string) => {

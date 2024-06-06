@@ -1,4 +1,4 @@
-import { ADMINTABLETEXTH, NEUTRAL500, SECONDARY800 } from "../theme/colors";
+import { ADMINTABLETEXTH, NEUTRAL500 } from "../theme/colors";
 
 type StudentsTableProps = {
     keys: string[],

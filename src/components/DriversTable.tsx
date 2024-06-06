@@ -1,4 +1,4 @@
-import { SECONDARY800, NEUTRAL500, ADMINTABLETEXTH } from "../theme/colors"
+import { NEUTRAL500, ADMINTABLETEXTH } from "../theme/colors"
 
 type DriversTableProps = {
     keys: string[],

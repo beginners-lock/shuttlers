@@ -32,10 +32,10 @@ export default function CurrentLocationModal({showmodal, closemodal, locationbtn
                     <div className="text-center text-md mt-3.5" style={{color: MODALBODYTEXT}}>{body}</div>
 
                     <select id="locationselect" className="w-full text-sm mt-2 p-3 border rounded-md box-border" style={{color: NEUTRAL500, borderColor: NEUTRAL300}} defaultValue={""}>
-                        <option value="" selected>{dropdowntext}</option>
+                        <option value="">{dropdowntext}</option>
                         {
                             LOCATIONS.map((location) => {
-                                return <option value={location} className="text-xs">{location}</option>
+                                return <option key={location} value={location} className="text-xs">{location}</option>
                             })
                         }
                     </select>

@@ -26,7 +26,7 @@ export default function Documentation(){
                     <div className="font-bold text-2xl underline" style={{color: PRIMARY800}}>Project Name</div>
                     <div className="flex flex-col items-center justify-start mt-4">
                         <div className="font-bold text-xl" style={{color: PRIMARY800}}>Shuttlers</div>
-                        <img className="w-12 mt-4" src="../logo.png"/>
+                        <img alt="logo" className="w-12 mt-4" src="../logo.png"/>
                     </div>
                 </div>
 

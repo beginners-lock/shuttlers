@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 import { NEUTRAL700, PRIMARY800 } from "../theme/colors";
 import { LOCATIONS, PRICES } from "../constants/location";
 
@@ -22,7 +23,7 @@ export default function Routes(){
                     {
                         LOCATIONS.map(location => {
                             return(
-                                <div className="mt-3 w-[30%] flex flex-row items-center justify-start">{location}</div>
+                                <div key={location} className="mt-3 w-[30%] flex flex-row items-center justify-start">{location}</div>
                             )
                         })
                     }
@@ -38,9 +39,9 @@ export default function Routes(){
                         <div className="w-[16%] font-semibold text-lg" style={{color:NEUTRAL700}}>Price</div>
                     </div>
                     {
-                        PRICES.map(price => {
+                        PRICES.map((price, index) => {
                             return(
-                                <div className="mt-4 w-full flex flex-row items-center justify-start">
+                                <div key={index} className="mt-4 w-full flex flex-row items-center justify-start">
                                     <div className="w-[42%]">{price.location}</div>
                                     <div className="w-[42%]">{price.destination}</div>
                                     <div className="w-[16%]">{'₦ '+price.price}</div>
@@ -50,6 +51,10 @@ export default function Routes(){
                     }
                 </div>
             </div>
+            <Sidebar
+				showstate={showsidebar}
+				hide={()=>{ setShowsidebar(false); }}
+			/>
         </div>
     );
 }
