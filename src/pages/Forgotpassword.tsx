@@ -53,7 +53,7 @@ const Forgotpassword = () => {
                         setProcessingw1(PROCESSING_ERROR); setLoading1(false);
                     }else{
                         if(data.success){
-                            setEmail(email); sendotp(email);
+                            setEmail(email); sendotp(email); console.log('got ere');
                         }else{
                             console.log('hree');
                             setProcessingw1(NO_EMAIL_EXISTS); setLoading1(false);

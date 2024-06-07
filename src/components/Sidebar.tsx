@@ -6,6 +6,9 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ showstate, hide }: SidebarProps){
+    const urlstring = window.location.search;
+    const params = new URLSearchParams(urlstring);
+    const id = params.get('id');
     const url = window.location.href;
 
 	useEffect(()=>{
@@ -23,7 +26,7 @@ export default function Sidebar({ showstate, hide }: SidebarProps){
                 </div>
 
                 <div className="mt-16 flex flex-col items-start justify-start">
-                    <div className="w-full py-2 mb-8 flex flex-row items-center justify-start font-semibold text-lg" onClick={()=>{ if(url.slice(url.lastIndexOf('/')+1)!=='user'){ window.location.href = '/user' } }}>
+                    <div className="w-full py-2 mb-8 flex flex-row items-center justify-start font-semibold text-lg" onClick={()=>{ if(url.slice(url.lastIndexOf('/')+1)!=='user'){ window.location.href = '/user/dashboard?id='+id } }}>
                         <img alt="homeimg" src="../home.png" className="mr-2" style={{width:"30px"}}/>
                         Home
                     </div>
@@ -40,7 +43,7 @@ export default function Sidebar({ showstate, hide }: SidebarProps){
                 </div>
 
                 <div className="mt-12 flex flex-col items-start justify-start">
-                    <div className="w-full py-2 mb-8 flex flex-row items-center justify-start font-semibold text-lg" onClick={()=>{ if(url.slice(url.lastIndexOf('/')+1)!=='settings'){ window.location.href = '/settings' } }}>
+                    <div className="w-full py-2 mb-8 flex flex-row items-center justify-start font-semibold text-lg" onClick={()=>{ if(url.slice(url.lastIndexOf('/')+1)!=='settings'){ window.location.href = '/user/settings?id='+id } }}>
                         <img alt="settingsimg" src="../settings.png" className="mr-2" style={{width:"30px"}}/>
                         Settings
                     </div>

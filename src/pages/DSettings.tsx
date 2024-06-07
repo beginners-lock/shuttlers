@@ -4,6 +4,10 @@ import { ERROR700, NEUTRAL600, NEUTRAL700, SECONDARY900 } from "../theme/colors"
 import DNavbar from "../components/DNavbar";
 
 export default function DSettings(){
+    const urlstring = window.location.search;
+    const params = new URLSearchParams(urlstring);
+    const id = params.get('id');
+    
     useEffect(()=>{
         let session = sessionStorage.getItem('shuttlerssession');
 
@@ -29,7 +33,7 @@ export default function DSettings(){
         <div className="font-poppins w-full h-full box-border flex flex-col items-center justify-start px-2 pb-16 overflow-y-auto">
             <div className="w-full h-auto pb-20">
             <div className="mt-4 w-full flex flex-row items-center justify-between py-4 px-4 font-bold"  style={{color:SECONDARY900}}>
-                <img alt="backimg" src="../back.png" onClick={()=>{ window.location.href = '/user'; }}/>
+                <img alt="backimg" src="../back.png" onClick={()=>{ window.location.href = '/driver/dashboard?id='+id; }}/>
                 Profile Settings
                 <div></div>
             </div>
