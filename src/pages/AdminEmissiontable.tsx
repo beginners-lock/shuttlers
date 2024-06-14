@@ -6,12 +6,28 @@ import EmptyATable from "../components/EmptyATable";
 import { initializeApp } from 'firebase/app';
 import { ref, getDatabase, update, push, onValue } from 'firebase/database';*/
 import { ADMINTABLETEXTH/*, SECONDARY500, NEUTRAL600*/ } from "../theme/colors";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { URL } from "../constants/globalvariables";
 
 export default function AdminEmissionTable(){
-    const emissions: any[] = [];
-    const emisssionskeys: any[] = [];
-    /*const [emissions, setEmissions] = useState([]);
-    const [emisssionskeys, setEmissionskeys] = useState([]);*/
+    const [emissions, setEmissions] = useState([]);
+
+    useEffect(()=>{
+        getemissiondata();
+    }, []);
+
+    const getemissiondata = () => {
+        axios.post(URL+'/getemissiondata', {}).then(response => {
+            let res = response.data;
+            
+            if(res.err){
+                console.log('An error occured while getting emission data');
+            }else{
+                setEmissions(res.data);
+            }
+        });
+    }
 
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
@@ -29,7 +45,6 @@ export default function AdminEmissionTable(){
                         {
                             emissions.length>0?
                                 <EmissionsTable
-                                    keys={emisssionskeys.reverse()}
                                     data={emissions.reverse()}
                                 />
                             :   <EmptyATable table="emissions"/>

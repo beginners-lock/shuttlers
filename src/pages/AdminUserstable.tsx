@@ -4,15 +4,16 @@ import { /*SECONDARY500,*/ ADMINTABLETEXTH, NEUTRAL600 } from "../theme/colors";
 import StudentsTable from "../components/StudentsTable";
 import DriversTable from "../components/DriversTable";
 import EmptyATable from "../components/EmptyATable";
+import AdminModal from "../components/AdminModal";
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase, /*update, push,*/ onValue } from 'firebase/database';
+import { ref, getDatabase, /*update, push,*/ onValue, remove } from 'firebase/database';
 
 export default function AdminUsersTable(){
     initializeApp(firebaseConfig);
-	/*const db = getDatabase();
+	const db = getDatabase();
 
-	const driversRef = ref(db, '/drivers');
+	/*const driversRef = ref(db, '/drivers');
     const usersRef = ref(db, '/users');*/
 
     const [activetable, setActivetable] = useState('drivers');
@@ -20,6 +21,9 @@ export default function AdminUsersTable(){
     const [drivers, setDrivers] = useState([]);
     const [studentskeys, setStudentskeys] = useState<string[]>([]);
     const [driverskeys, setDriverskeys] = useState<string[]>([]);
+    const [activeid, setActiveid] = useState('');
+    const [activeusertype, setActiveusertype] = useState('');
+    const [showmodal, setShowmodal] = useState(false);
 
     useEffect(() => {
         let session = sessionStorage.getItem('shuttlerssession');
@@ -50,8 +54,39 @@ export default function AdminUsersTable(){
         return ()=>{ driversSub(); usersSub(); }
     }, []);
 
+    const deletefunc = (arg: string, usertype: string, id: string) => {
+        if(arg==='deleteproceed'){
+            const customref = ref(db, `/${usertype}s/`+id);
+            remove(customref).then(()=>{
+                setShowmodal(false);
+                setActiveid(''); setActiveusertype('');
+            });  
+        }
+
+        if(arg==='deletecancel'){
+            setShowmodal(false);
+            setActiveid(''); setActiveusertype(''); 
+        }
+    }
+
+    const deleteuser = (id: string) => {
+        setShowmodal(true);
+        setActiveid(id); setActiveusertype('user'); 
+    }
+
+    const deletedriver = (id: string) => {
+        setShowmodal(true);
+        setActiveid(id); setActiveusertype('driver'); 
+    }
+
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
+            <AdminModal
+                visible={showmodal}
+                person={activeusertype}
+                btnclick={(arg, usertype, id)=>{ deletefunc(arg, usertype, id); }}
+                id={activeid}
+            />
             <SidebarA/>
             <div className="w-[80%]  pl-4 pr-8 pt-10 pb-8 h-full flex flex-col items-start justify-start">
                 <div className="mt-6 w-full h-[30%] flex flex-col items-start justify-start">
@@ -74,12 +109,14 @@ export default function AdminUsersTable(){
                                     <StudentsTable
                                         keys={studentskeys.reverse()}
                                         students={students.reverse()}
+                                        deleteuser={(id)=>{ deleteuser(id); }}
                                     />
                                 :   <EmptyATable table="students"/>
                             :   drivers.length>0?
                                     <DriversTable
                                         keys={driverskeys.reverse()}
                                         drivers={drivers.reverse()}
+                                        deletedriver={(id)=>{ deletedriver(id); }}
                                     />
                                 :   <EmptyATable table="drivers"/>
                         }

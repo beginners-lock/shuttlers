@@ -4,16 +4,19 @@ import { ADMINTABLETEXTH, ADMINPRIMARY1, SECONDARY500, NEUTRAL600 } from "../the
 import EmptyATable from "../components/EmptyATable";
 import StudentsTable from "../components/StudentsTable";
 import DriversTable from "../components/DriversTable";
+import AdminModal from "../components/AdminModal";
 import EmissionsTable from "../components/EmissionsTable";
 import { firebaseConfig } from '../firebaseconfig';
 import { initializeApp } from 'firebase/app';
-import { ref, getDatabase/*, update, push*/, onValue } from 'firebase/database';
+import { ref, getDatabase/*, update, push*/, onValue, remove } from 'firebase/database';
+import { URL } from "../constants/globalvariables";
+import axios from "axios";
 
 export default function Admin(){
     initializeApp(firebaseConfig);
-	/*const db = getDatabase();
+	const db = getDatabase();
 
-    const ridesRef = ref(db, '/rides');
+    /*const ridesRef = ref(db, '/rides');
 	const driversRef = ref(db, '/drivers');
     const usersRef = ref(db, '/users');*/
 
@@ -24,11 +27,10 @@ export default function Admin(){
     const [studentskeys, setStudentskeys] = useState<string[]>([]);
     const [driverskeys, setDriverskeys] = useState<string[]>([]);
     const [rideskeys, setRideskeys] = useState<string[]>([]);
-    
-    const emissions: any[] = [];
-    const emisssionskeys: any[] = [];
-    /*const [emissions, setEmissions] = useState([]);
-    const [emisssionskeys, setEmissionskeys] = useState([]);*/
+    const [emissions, setEmissions] = useState([]);
+    const [activeid, setActiveid] = useState('');
+    const [activeusertype, setActiveusertype] = useState('');
+    const [showmodal, setShowmodal] = useState(false);
 
     useEffect(() => {
         let session = sessionStorage.getItem('shuttlerssession');
@@ -62,12 +64,57 @@ export default function Admin(){
             setStudentskeys(Object.keys(users));
         });
 
+        getemissiondata();
+
 
         return ()=>{ ridesSub(); driversSub(); usersSub(); }
     }, []);
 
+    const getemissiondata = () => {
+        axios.post(URL+'/getemissiondata', {}).then(response => {
+            let res = response.data;
+            
+            if(res.err){
+                console.log('An error occured while getting emission data');
+            }else{
+                setEmissions(res.data);
+            }
+        });
+    }
+
+    const deletefunc = (arg: string, usertype: string, id: string) => {
+        if(arg==='deleteproceed'){
+            const customref = ref(db, `/${usertype}s/`+id);
+            remove(customref).then(()=>{
+                setShowmodal(false);
+                setActiveid(''); setActiveusertype('');
+            });  
+        }
+
+        if(arg==='deletecancel'){
+            setShowmodal(false);
+            setActiveid(''); setActiveusertype(''); 
+        }
+    }
+
+    const deleteuser = (id: string) => {
+        setShowmodal(true);
+        setActiveid(id); setActiveusertype('user'); 
+    }
+
+    const deletedriver = (id: string) => {
+        setShowmodal(true);
+        setActiveid(id); setActiveusertype('driver'); 
+    }
+
     return(
         <div className="w-full h-full flex flex-row items-center justify-between">
+            <AdminModal
+                visible={showmodal}
+                person={activeusertype}
+                btnclick={(arg, usertype, id)=>{ deletefunc(arg, usertype, id); }}
+                id={activeid}
+            />
             <SidebarA/>
             <div className="w-[80%] pl-4 pr-8 pt-10 pb-8 h-full flex flex-col items-start justify-start">
                 <div className="text-xl font-semibold" style={{color:ADMINPRIMARY1}}>Welcome, Admin!</div>
@@ -126,14 +173,16 @@ export default function Admin(){
                             activetable==='students'?
                                 students.length>0?
                                     <StudentsTable
-                                        keys={studentskeys.reverse()}
-                                        students={students.reverse()}
+                                        keys={studentskeys.reverse().slice(0,5)}
+                                        students={students.reverse().slice(0,5)}
+                                        deleteuser={(id)=>{ deleteuser(id); }}
                                     />
                                 :   <EmptyATable table="students"/>
                             :   drivers.length>0?
                                     <DriversTable
-                                        keys={driverskeys.reverse()}
-                                        drivers={drivers.reverse()}
+                                        keys={driverskeys.reverse().slice(0,5)}
+                                        drivers={drivers.reverse().slice(0,5)}
+                                        deletedriver={(id)=>{ deletedriver(id); }}
                                     />
                                 :   <EmptyATable table="drivers"/>
                         }
@@ -155,8 +204,7 @@ export default function Admin(){
                         {
                             emissions.length>0?
                                 <EmissionsTable
-                                    keys={emisssionskeys.reverse()}
-                                    data={emissions.reverse()}
+                                    data={emissions.reverse().slice(0,5)}
                                 />
                             :   <EmptyATable table="emissions"/>
                         }
