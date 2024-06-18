@@ -139,7 +139,46 @@ export default function SignupD(){
     const sendotp = (email: string) => {
         setLoading1(true); setOtploading(true); setProcesswarning1(''); setOtpwarning('');
 
-        axios.post(URL+'/sendotp', { email: email}).then(response => {
+        let randomnum = Math.floor((Math.random() * (9999-1000+1))+1000)
+
+		let fullname = document.getElementById('driversfullname') as HTMLInputElement;
+    
+		const data = {
+            service_id: 'service_tk7d65k',
+            template_id: 'template_bpgvhf4',
+            user_id: 'gvLyooBWZ_EVuDO3x',
+            template_params: {
+                'username': 'Shuttlers Admin',//'Rophi Chukwu',
+                'to_email': email,
+                'to_name': fullname.value,
+                'from_name': 'Shuttlers Admin',
+				'from_email': 'shuttlers.mail@gmail.com',
+                'message': randomnum.toString()
+            }
+        };
+
+        axios.post('https://api.emailjs.com/api/v1.0/email/send', JSON.stringify(data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response=>{
+            if(response.status===200){
+                setOtp(randomnum.toString());
+				console.log(randomnum.toString());
+				next(1);
+                setLoading1(false); setOtploading(false);
+            }else{
+                console.log(response.status);
+                setProcesswarning1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+                setLoading1(false); setOtploading(false);
+            }
+        }).catch(e => {
+            setProcesswarning1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+			setLoading1(false); setOtploading(false);
+        });
+
+        /*axios.post(URL+'/sendotp', { email: email}).then(response => {
             if(response.status === 200){
 				let data = response.data;
 
@@ -154,7 +193,7 @@ export default function SignupD(){
 			}
 
 			setLoading1(false); setOtploading(false);
-        });
+        });*/
     }
 
     const finishotp = () => {

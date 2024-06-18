@@ -26,6 +26,7 @@ const Forgotpassword = () => {
     const [passwordw, setPasswordw] = useState('');
     const [otpwarning, setOtpwarning] = useState('');
     const [passvisible, setPassvisible] = useState(false);
+    const [firstname, setFirstname] = useState('');
 
     let inputRef = useRef<HTMLInputElement>(null);
     
@@ -53,7 +54,7 @@ const Forgotpassword = () => {
                         setProcessingw1(PROCESSING_ERROR); setLoading1(false);
                     }else{
                         if(data.success){
-                            setEmail(email); sendotp(email); console.log('got ere');
+                            setEmail(email); setFirstname(data.firstname); sendotp(email); console.log('got ere');
                         }else{
                             console.log('hree');
                             setProcessingw1(NO_EMAIL_EXISTS); setLoading1(false);
@@ -69,7 +70,45 @@ const Forgotpassword = () => {
     const sendotp = (arg=email) => {
 		setOtpwarning(''); setProcessingw1('');
 
-        axios.post(URL+'/sendotp', {email: arg}).then(response => {
+        let randomnum = Math.floor((Math.random() * (9999-1000+1))+1000)
+
+        const data = {
+            service_id: 'service_tk7d65k',
+            template_id: 'template_bpgvhf4',
+            user_id: 'gvLyooBWZ_EVuDO3x',
+            template_params: {
+                'username': 'Shuttlers Admin',//'Rophi Chukwu',
+                'to_email': email,
+                'to_name': firstname,
+                'from_name': 'Shuttlers Admin',
+				'from_email': 'shuttlers.mail@gmail.com',
+                'message': randomnum.toString()
+            }
+        };
+
+        axios.post('https://api.emailjs.com/api/v1.0/email/send', JSON.stringify(data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response=>{
+            if(response.status===200){
+                setOtp(randomnum.toString());
+                let slider = document.getElementById('fpslider') as HTMLDivElement;
+                slider.scrollLeft = window.innerWidth; console.log(randomnum);
+                setLoading1(false); setOtploading(false);
+            }else{
+                console.log(response.status);
+                setProcessingw1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+                setLoading1(false); setOtploading(false);
+            }
+        }).catch(e => {
+            console.log(e);
+            setProcessingw1(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+            setLoading1(false); setOtploading(false);
+        })
+
+        /*axios.post(URL+'/sendotp', {email: arg}).then(response => {
 			if(response.status === 200){
 				let data = response.data;
 
@@ -86,7 +125,7 @@ const Forgotpassword = () => {
 			}
 
 			setLoading1(false); setOtploading(false);
-		});
+		});*/
     }
 
     const scrollToResetPage = () => {

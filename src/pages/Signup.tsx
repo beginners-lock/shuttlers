@@ -131,7 +131,8 @@ const Signup = () => {
 						if(data.msg){ //This is means there is a user already registered with that email or matric number
 							setLoading(false); setProcesswarning(SIMILAR_USER);
 						}else{
-							sendotp(email);
+							console.log('>>'+process.env.HEY);
+							sendotp(email, fname);
 						}
 					}
 				}else{
@@ -142,10 +143,49 @@ const Signup = () => {
 		}
 	}
 
-	const sendotp = (arg = email) => {
+	const sendotp = (arg = email, first: string = firstname) => {
 		setOtpwarning(''); setProcesswarning(''); setLoading(true); setOtploading(true);
 
-		axios.post(URL+'/sendotp', {email: arg}).then(response => {
+		let randomnum = Math.floor((Math.random() * (9999-1000+1))+1000)
+
+		console.log(first);
+		const data = {
+            service_id: 'service_tk7d65k',
+            template_id: 'template_bpgvhf4',
+            user_id: 'gvLyooBWZ_EVuDO3x',
+            template_params: {
+                'username': 'Shuttlers Admin',//'Rophi Chukwu',
+                'to_email': arg,
+                'to_name': first,
+                'from_name': 'Shuttlers Admin',
+				'from_email': 'shuttlers.mail@gmail.com',
+                'message': randomnum.toString()
+            }
+        };
+
+        axios.post('https://api.emailjs.com/api/v1.0/email/send', JSON.stringify(data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response=>{
+            if(response.status===200){
+                setOtp(randomnum.toString());
+				let slider = document.getElementById('createslider') as HTMLDivElement;
+				slider.scrollLeft = window.innerWidth;
+				console.log(randomnum);
+                setLoading(false); setOtploading(false);
+            }else{
+                console.log(response.status);
+                setProcesswarning(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+                setLoading(false); setOtploading(false);
+            }
+        }).catch(e => {
+            setProcesswarning(PROCESSING_ERROR); setOtpwarning(PROCESSING_ERROR);
+			setLoading(false); setOtploading(false);
+        })
+
+		/*axios.post(URL+'/sendotp', {email: arg}).then(response => {
 			if(response.status === 200){
 				let data = response.data;
 
@@ -162,7 +202,7 @@ const Signup = () => {
 			}
 
 			setLoading(false); setOtploading(false);
-		});
+		});*/
 	}
 
 	const goback = () => {

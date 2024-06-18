@@ -16,7 +16,7 @@ export default function DTrips(){
     initializeApp(firebaseConfig);
 	const db = getDatabase();
 
-    const [online, setOnline] = useState(false);
+    const [online, setOnline] = useState(true);
     const [activetriptab, setActivetriptab] = useState('available');
     const [wallet, setWallet] = useState(0);
 	const [availablerides, setAvailablerides] = useState<any[]>([]);
