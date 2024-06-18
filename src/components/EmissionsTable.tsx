@@ -29,8 +29,8 @@ export default function EmissionsTable({ data }: EmissionTableProps){
                             <div className="px-1.5 py-1.5 text-sm w-[17%] text-center">08123456789</div>
                             <div className="px-1.5 py-1.5 text-sm w-[20%] text-center">{data[1]+' ppm'}</div>
                             <div className="px-1.5 py-1.5 text-sm w-[17%] text-center flex flex-row items-center justify-center">
-                                <div className="w-14 py-0.5 rounded-full" style={{backgroundColor:data[1]<=50?LOW.bg:data[1]<=150?MEDIUM.bg:HIGH.bg, color:data[1]<=50?LOW.color:data[1]<=150?MEDIUM.color:HIGH.color}}>
-                                    {data[1]<=50?'Low':data[1]<=150?'Medium':'High'}
+                                <div className="w-14 py-0.5 rounded-full" style={{backgroundColor:data[1]<=1000?LOW.bg:data[1]<=4000?MEDIUM.bg:HIGH.bg, color:data[1]<=1000?LOW.color:data[1]<=4000?MEDIUM.color:HIGH.color}}>
+                                    {data[1]<=1000?'Low':data[1]<=4000?'Medium':'High'}
                                 </div>
                             </div>
                             <div className="px-1.5 py-1.5 text-sm w-[12%] text-center flex flex-row items-center justify-center">
